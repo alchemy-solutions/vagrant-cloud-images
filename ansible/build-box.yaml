@@ -1,0 +1,74 @@
+---
+- name: Create template vars
+  copy:
+    content: |
+      ---
+      distro_name: "{{ distro.name }}"
+      release_name: "{{ release.name }}"
+      release_version: "{{ release.version }}"
+      arch_name: "{{ arch.key }}"
+      arch_type: "{{ arch.value }}"
+      base_url: "{{ release.base_url|default(distro.base_url) }}"
+      file_url: "{{ release.file_url|default(distro.file_url) }}"
+      checksum: "{{ release.checksum|default(distro.checksum|default(omit)) }}"
+    dest: "{{ build_path }}/distro.yaml"
+
+- name: Load templated vars
+  include_vars: "{{ build_path }}/distro.yaml"
+
+- name: Identify latest build
+  shell: |
+    curl -fsSL {{ base_url }} | \
+    pup {{ distro.pup_filter }} | \
+    awk {{ distro.awk_filter }} | \
+    sort --unique --sort=version | \
+    tail -1
+  register: distro_build
+  retries: 5
+  until: distro_build.stdout != ""
+
+- name: Identify latest build version
+  set_fact:
+    build: "{{ distro_build.stdout }}"
+    current_build_version: "{{ ((distro_build.stdout|replace('-','.')+'.0.0')|split('.'))[:3]|join('.') }}"
+
+- name: Check if {{ arch_name }} is already present
+  set_fact:
+    arch_present: "{{ providers|default([])|selectattr('architecture', 'search', arch_name)|length > 0 }}"
+  vars:
+    providers: "{{ box_info.json.versions|selectattr('number', 'eq', current_build_version)|map(attribute='providers')|first }}"
+
+- name: Create Vagrant Cloud box version {{ current_build_version }}
+  uri:
+    url: "https://app.vagrantup.com/api/v2/box/{{ vagrant_cloud_user }}/{{ vagrant_box }}/versions"
+    method: POST
+    body_format: json
+    headers:
+      Content-Type: application/json
+      Authorization: "Bearer {{ vagrant_cloud_token }}"
+    body: "{{ data }}"
+  vars:
+    data:
+      version:
+        version: "{{ current_build_version }}"
+  when: current_box_version is version(current_build_version, '<')
+
+- include_tasks: build-packer.yaml
+  when: not arch_present
+
+- name: Release Vagrant box version {{ current_build_version }}
+  uri:
+    url: "https://app.vagrantup.com/api/v2/box/{{ vagrant_cloud_user }}/{{ vagrant_box }}/version/{{ current_build_version }}/release"
+    method: PUT
+    headers:
+      Content-Type: application/json
+      Authorization: "Bearer {{ vagrant_cloud_token }}"
+  when: current_box_version is version(current_build_version, '<')
+
+- set_fact:
+    current_box_version: "{{ current_build_version }}"
+
+- name: Remove template vars
+  file:
+    path: "{{ build_path }}/distro.yaml"
+    state: absent

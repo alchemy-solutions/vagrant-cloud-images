@@ -1,0 +1,4 @@
+---
+build_path: "{{ playbook_dir }}/../build"
+vagrant_cloud_user: "{{ lookup('env', 'VAGRANT_CLOUD_USER', default=Undefined) }}"
+vagrant_cloud_token: "{{ lookup('env', 'VAGRANT_CLOUD_TOKEN', default=Undefined) }}"

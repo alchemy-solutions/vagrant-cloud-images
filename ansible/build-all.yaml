@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+  - name: Install required packages
+    package:
+      name:
+        - guestmount
+      state: latest
+    become: true
+  - include_tasks: build-distro.yaml
+    loop: "{{ distros }}"
+    loop_control:
+      loop_var: distro

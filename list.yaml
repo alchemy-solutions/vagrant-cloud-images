@@ -1,0 +1,154 @@
+---
+distros:
+# https://endoflife.date/almalinux
+# https://wiki.almalinux.org/release-notes/
+- name: almalinux
+  base_url: !unsafe "https://repo.almalinux.org/almalinux/{{ release_name }}/cloud/{{ arch_type }}/images"
+  file_url: !unsafe "{{ base_url }}/AlmaLinux-{{ release_name }}-GenericCloud-{{ release_version }}-{{ build }}.{{ arch_type }}.qcow2"
+  checksum: !unsafe "sha256:{{ base_url }}/CHECKSUM"
+  pup_filter: "'a text{}'"
+  awk_filter: "-F- '/GenericCloud-.*[0-9]{8}/{ split($5,ver,\".\"); print ver[1] }'"
+  releases:
+  - name: 9
+    version: 9.4
+    description: AlmaLinux 9.4 (Seafoam Ocelot) Cloud Images
+    eos: May 2027
+    eol: May 2032
+    arch:
+      amd64: x86_64
+      arm64: aarch64
+  - name: 8
+    version: 8.9
+    description: AlmaLinux 8.9 (Midnight Oncilla) Cloud Images
+    eos: May 2024
+    eol: Mar 2029
+    arch:
+      amd64: x86_64
+      arm64: aarch64
+
+# https://wiki.debian.org/LTS
+# https://cloud.debian.org/images/cloud/
+- name: debian
+  base_url: !unsafe "https://cloud.debian.org/images/cloud/{{ release_name }}"
+  file_url: !unsafe "{{ base_url }}/{{ build }}/{{ distro_name }}-{{ release_version }}-generic-{{ arch_type }}-{{ build }}.qcow2"
+  checksum: !unsafe "sha512:{{ base_url }}/{{ build }}/SHA512SUMS"
+  pup_filter: "'td.indexcolname text{}'"
+  awk_filter: "-F/ '/[0-9]{8}-[0-9]{4}/{ print $1 }'"
+  releases:
+  - name: bookworm
+    version: 12
+    description: Debian 12 (Bookworm) Cloud Images
+    eos: June 2026
+    eol: June 2028
+    arch:
+      amd64: amd64
+      arm64: arm64
+  - name: bullseye
+    version: 11
+    description: Debian 11 (Bullseye) Cloud Images
+    eos: August 2024
+    eol: June 2026
+    arch:
+      amd64: amd64
+      arm64: arm64
+  - name: buster
+    version: 10
+    description: Debian 10 (Buster) Cloud Images
+    eos: August 2022
+    eol: June 2024
+    arch:
+      amd64: amd64
+      arm64: arm64
+
+# https://fedorapeople.org/groups/schedule
+# https://fedoraproject.org/cloud/download
+- name: fedora
+  base_url: !unsafe "https://download.fedoraproject.org/pub/fedora/linux/releases/{{ release_name }}/Cloud/{{ arch_type }}/images"
+  file_url: !unsafe "{{ base_url }}/Fedora-Cloud-Base-Generic.{{ arch_type }}-{{ release_name }}-{{ build }}.qcow2"
+  #checksum: !unsafe "sha256:{{ base_url }}/Fedora-Cloud-{{ release_name }}-{{ build }}-{{ arch_type }}-CHECKSUM"
+  pup_filter: "'a attr{href}'"
+  awk_filter: "-F- '/^Fedora.*CHECKSUM$/{ print $4 }'"
+  releases:
+  - name: 40
+    version: 40
+    description: Fedora 40 Cloud Images
+    eol: May 2025
+    arch:
+      amd64: x86_64
+      arm64: aarch64
+  - name: 39
+    version: 39
+    description: Fedora 39 Cloud Images
+    eol: November 2024
+    file_url: !unsafe "{{ base_url }}/Fedora-Cloud-Base-{{ release_name }}-{{ build }}.{{ arch_type }}.qcow2"
+    arch:
+      amd64: x86_64
+      arm64: aarch64
+  - name: 38
+    version: 38
+    description: Fedora 38 Cloud Images
+    eol: November 2024
+    file_url: !unsafe "{{ base_url }}/Fedora-Cloud-Base-{{ release_name }}-{{ build }}.{{ arch_type }}.qcow2"
+    arch:
+      amd64: x86_64
+      arm64: aarch64
+
+# https://wiki.ubuntu.com/Releases
+# https://cloud-images.ubuntu.com
+- name: ubuntu
+  base_url: !unsafe "https://cloud-images.ubuntu.com/{{ release_name }}"
+  file_url: !unsafe "{{ base_url }}/{{ build }}/{{ release_name }}-server-cloudimg-{{ arch_type }}.img"
+  checksum: !unsafe "sha256:{{ base_url }}/{{ build }}/SHA256SUMS"
+  pup_filter: "'a text{}'"
+  awk_filter: "-F/ '/[0-9]{8}\\.?[0-9]*/{ print $1 }'"
+  releases:
+  - name: noble
+    version: 24.04
+    description: Ubuntu 24.04 LTS (Noble Numbat) Cloud Images
+    eos: June 2029
+    eol: April 2036
+    arch:
+      amd64: amd64
+      arm64: arm64
+  - name: jammy
+    version: 22.04
+    description: Ubuntu 22.04 LTS (Jammy Jellyfish) Cloud Images
+    eos: June 2027
+    eol: April 2034
+    arch:
+      amd64: amd64
+      arm64: arm64
+  - name: focal
+    version: 20.04
+    description: Ubuntu 20.04 LTS (Focal Fossa) Cloud Images
+    eos: April 2025
+    eol: April 2032
+    arch:
+      amd64: amd64
+      arm64: arm64
+  - name: bionic
+    version: 18.04
+    description: Ubuntu 18.04 LTS (Bionic Beaver) Cloud Images
+    eos: June 2023
+    eol: April 2030
+    arch:
+      amd64: amd64
+      arm64: arm64
+  - name: xenial
+    version: 16.04
+    description: Ubuntu 16.04 LTS (Xenial Xerus) Cloud Images
+    eos: April 2021
+    eol: April 2028
+    file_url: !unsafe "{{ base_url }}/{{ build }}/{{ release_name }}-server-cloudimg-{{ arch_type }}-disk1.img"
+    arch:
+      amd64: amd64
+      arm64: arm64
+  - name: trusty
+    version: 14.04
+    description: Ubuntu 14.04 LTS (Trusty Tahr) Cloud Images
+    eos: April 2019
+    eol: April 2026
+    file_url: !unsafe "{{ base_url }}/{{ build }}/{{ release_name }}-server-cloudimg-{{ arch_type }}-disk1.img"
+    arch:
+      amd64: amd64
+      arm64: arm64

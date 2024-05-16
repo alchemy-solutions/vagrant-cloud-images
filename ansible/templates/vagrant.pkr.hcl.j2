@@ -1,0 +1,29 @@
+packer {
+  required_plugins {
+    vagrant = {
+      version = "~> 1"
+      source = "github.com/hashicorp/vagrant"
+    }
+  }
+}
+
+source "null" "vagrant" {
+  communicator = "none"
+}
+
+build {
+  sources = ["source.null.vagrant"]
+
+  post-processors {
+    post-processor "artifice" {
+      files = ["{{ box_file }}"]
+    }
+    post-processor "vagrant-cloud" {
+      default_architecture = {{ (arch_name == 'amd64')|ternary('true', 'false') }}
+      access_token = "{{ vagrant_cloud_token }}"
+      box_tag      = "{{ vagrant_cloud_user }}/{{ distro_name }}-{{ release_version }}"
+      version      = "{{ current_build_version }}"
+      architecture = "{{ arch_name }}"
+    }
+  }
+}

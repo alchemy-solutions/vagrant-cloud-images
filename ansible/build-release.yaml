@@ -1,0 +1,47 @@
+---
+- name: Build {{ distro.name }}-{{ release.version }} releases
+  set_fact:
+    vagrant_box: "{{ distro.name }}-{{ release.version }}"
+
+- name: Check Vagrant Cloud box
+  uri:
+    url: "https://app.vagrantup.com/api/v2/box/{{ vagrant_cloud_user }}/{{ vagrant_box }}"
+    return_content: true
+  failed_when: false
+  register: box_info
+
+- name: Create Vagrant Cloud box
+  uri:
+    url: https://app.vagrantup.com/api/v2/boxes
+    method: POST
+    body_format: json
+    return_content: true
+    headers:
+      Content-Type: application/json
+      Authorization: "Bearer {{ vagrant_cloud_token }}"
+    body: "{{ data }}"
+  vars:
+    data:
+      box:
+        username: "{{ vagrant_cloud_user }}"
+        name: "{{ vagrant_box }}"
+        short_description: "{{ release.description }}"
+        is_private: false
+  register: box_create
+  when: box_info.status == 404
+
+- name: Set initial box version
+  set_fact:
+    current_box_version: "0.0.0"
+    box_info: "{{ box_create }}"
+  when: box_create is not skipped
+
+- name: Get current box version
+  set_fact:
+    current_box_version: "{{ box_info.json.current_version.version if box_info.json.current_version != None else '0.0.0' }}"
+  when: box_create is skipped
+
+- include_tasks: build-box.yaml
+  loop: "{{ release.arch|dict2items }}"
+  loop_control:
+    loop_var: arch
