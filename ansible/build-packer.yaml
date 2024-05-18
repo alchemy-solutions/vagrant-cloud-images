@@ -1,9 +1,9 @@
 ---
-- name: Define artifacts location for {{ distro.name }}-{{ release.version }}-{{ arch_name }}
+- name: Define artifacts location for {{ distro.name }}-{{ release.version }}-{{ arch.name }}
   set_fact:
-    disk_path: "{{ build_path }}/{{ distro_name }}-{{ release_version }}-{{ arch_name }}.qcow2"
+    disk_path: "{{ build_path }}/{{ distro.name }}-{{ release.version }}-{{ arch.name }}.qcow2"
     box_img_path: "{{ build_path }}/box.img"
-    box_file: "{{ distro_name }}-{{ release_version }}-{{ current_build_version }}-{{ arch_name }}.box"
+    box_file: "{{ distro.name }}-{{ release.version }}-{{ build_version }}-{{ arch.name }}.box"
 
 - name: Create temporary mount directory
   tempfile:
@@ -30,7 +30,7 @@
   - name: Mount disk image
     command: guestmount -a "{{ box_img_path }}" -i --rw "{{ tmp_mount.path }}"
 
-  - name: Inject Vagrant cloud-inig configuration file
+  - name: Inject Vagrant cloud-init configuration file
     template:
       src: "99_vagrant.cfg.j2"
       dest: "{{ tmp_mount.path }}/etc/cloud/cloud.cfg.d/99_vagrant.cfg"
@@ -48,7 +48,6 @@
   with_items:
     - Vagrantfile
     - metadata.json
-    - vagrant.pkr.hcl
 
 - name: Create box archive
   command: tar cvzf "{{ box_file }}" Vagrantfile metadata.json box.img
@@ -64,7 +63,7 @@
 
 - name: Create Vagrant Cloud libvirt provider 
   uri:
-    url: "https://app.vagrantup.com/api/v2/box/{{ vagrant_cloud_user }}/{{ vagrant_box }}/version/{{ current_build_version }}/providers"
+    url: "https://app.vagrantup.com/api/v2/box/{{ vagrant_cloud_user }}/{{ vagrant_box }}/version/{{ build_version }}/providers"
     method: POST
     body_format: json
     headers:
@@ -77,12 +76,12 @@
         checksum: "{{ box_checksum.stat.checksum }}"
         checksum_type: md5
         name: libvirt
-        architecture: "{{ arch_name }}"
-        default_architecture: "{{ (arch_name == 'amd64')|ternary('true', 'false') }}"
+        architecture: "{{ arch.name }}"
+        default_architecture: "{{ (arch.name == 'amd64')|ternary('true', 'false') }}"
 
 - name: Get Vagrant Cloud object store URL
   uri:
-    url: "https://app.vagrantup.com/api/v2/box/{{ vagrant_cloud_user }}/{{ vagrant_box }}/version/{{ current_build_version }}/provider/libvirt/{{ arch_name }}/upload"
+    url: "https://app.vagrantup.com/api/v2/box/{{ vagrant_cloud_user }}/{{ vagrant_box }}/version/{{ build_version }}/provider/libvirt/{{ arch.name }}/upload"
     return_content: true
     method: GET
     headers:
@@ -106,4 +105,4 @@
     - "{{ box_img_path }}"
     - "{{ build_path }}/Vagrantfile"
     - "{{ build_path }}/metadata.json"
-    - "{{ build_path }}/vagrant.pkr.hcl"
+    - "{{ build_path }}/{{ box_file }}"

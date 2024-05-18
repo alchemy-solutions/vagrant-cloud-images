@@ -3,42 +3,45 @@
   copy:
     content: |
       ---
-      distro_name: "{{ distro.name }}"
-      release_name: "{{ release.name }}"
-      release_version: "{{ release.version }}"
-      arch_name: "{{ arch.key }}"
-      arch_type: "{{ arch.value }}"
-      base_url: "{{ release.base_url|default(distro.base_url) }}"
-      file_url: "{{ release.file_url|default(distro.file_url) }}"
-      checksum: "{{ release.checksum|default(distro.checksum|default(omit)) }}"
+      distro_build: "{{ release.build|default(distro.build|default('0.0.0')) }}"
+      base_url: "{{ release.base_url|default(distro.base_url|default(None)) }}"
+      file_url: "{{ release.file_url|default(distro.file_url|default(None)) }}"
+      checksum: "{{ release.checksum|default(distro.checksum|default(None)) }}"
     dest: "{{ build_path }}/distro.yaml"
 
 - name: Load templated vars
   include_vars: "{{ build_path }}/distro.yaml"
 
-- name: Identify latest build
-  shell: |
-    curl -fsSL {{ base_url }} | \
-    pup {{ distro.pup_filter }} | \
-    awk {{ distro.awk_filter }} | \
-    sort --unique --sort=version | \
-    tail -1
-  register: distro_build
-  retries: 5
-  until: distro_build.stdout != ""
+- name: Set build version from URL
+  when: distro_build == '0.0.0'
+  block:
+  - name: Identify latest build
+    shell: |
+      curl -fsSL {{ base_url }} | \
+      pup {{ distro.pup_filter }} | \
+      awk {{ distro.awk_filter }} | \
+      sort --unique -V | \
+      tail -1
+    register: latest_build
+    retries: 5
+    until: latest_build.stdout != ""
 
-- name: Identify latest build version
-  set_fact:
-    build: "{{ distro_build.stdout }}"
-    current_build_version: "{{ ((distro_build.stdout|replace('-','.')+'.0.0')|split('.'))[:3]|join('.') }}"
+  - name: Identify latest build version
+    set_fact:
+      build_version: "{{ ((latest_build.stdout|replace('-','.')+'.0.0')|split('.'))[:3]|join('.') }}"
 
-- name: Check if {{ arch_name }} is already present
+- name: Set build version from YAML
+  when: distro_build != '0.0.0'
   set_fact:
-    arch_present: "{{ providers|default([])|selectattr('architecture', 'search', arch_name)|length > 0 }}"
+    build_version: "{{ distro_build }}"
+
+- name: Check if {{ arch.name }} is already present
+  set_fact:
+    arch_present: "{{ providers|default([])|selectattr('architecture', 'search', arch.name)|length > 0 }}"
   vars:
-    providers: "{{ box_info.json.versions|selectattr('number', 'eq', current_build_version)|map(attribute='providers')|first }}"
+    providers: "{{ box_info.json.versions|selectattr('number', 'eq', build_version)|map(attribute='providers')|first }}"
 
-- name: Create Vagrant Cloud box version {{ current_build_version }}
+- name: Create Vagrant Cloud box version {{ build_version }}
   uri:
     url: "https://app.vagrantup.com/api/v2/box/{{ vagrant_cloud_user }}/{{ vagrant_box }}/versions"
     method: POST
@@ -50,23 +53,23 @@
   vars:
     data:
       version:
-        version: "{{ current_build_version }}"
-  when: current_box_version is version(current_build_version, '<')
+        version: "{{ build_version }}"
+  when: current_box_version is version(build_version, '<')
 
 - include_tasks: build-packer.yaml
   when: not arch_present
 
-- name: Release Vagrant box version {{ current_build_version }}
+- name: Release Vagrant box version {{ build_version }}
   uri:
-    url: "https://app.vagrantup.com/api/v2/box/{{ vagrant_cloud_user }}/{{ vagrant_box }}/version/{{ current_build_version }}/release"
+    url: "https://app.vagrantup.com/api/v2/box/{{ vagrant_cloud_user }}/{{ vagrant_box }}/version/{{ build_version }}/release"
     method: PUT
     headers:
       Content-Type: application/json
       Authorization: "Bearer {{ vagrant_cloud_token }}"
-  when: current_box_version is version(current_build_version, '<')
+  when: current_box_version is version(build_version, '<')
 
 - set_fact:
-    current_box_version: "{{ current_build_version }}"
+    current_box_version: "{{ build_version }}"
 
 - name: Remove template vars
   file:

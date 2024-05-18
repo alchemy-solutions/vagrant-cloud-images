@@ -42,6 +42,6 @@
   when: box_create is skipped
 
 - include_tasks: build-box.yaml
-  loop: "{{ release.arch|dict2items }}"
+  loop: "{{ release.arch }}"
   loop_control:
     loop_var: arch
