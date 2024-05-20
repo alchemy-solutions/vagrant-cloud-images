@@ -1,4 +1,10 @@
 ---
+- name: Create build directory
+  file:
+    path: "{{ build_path }}"
+    state: directory
+    mode: '0755'
+
 - name: Create template vars
   copy:
     content: |
@@ -29,6 +35,7 @@
   - name: Identify latest build version
     set_fact:
       build_version: "{{ ((latest_build.stdout|replace('-','.')+'.0.0')|split('.'))[:3]|join('.') }}"
+      build: "{{ latest_build.stdout }}"
 
 - name: Set build version from YAML
   when: distro_build != '0.0.0'
@@ -54,7 +61,23 @@
     data:
       version:
         version: "{{ build_version }}"
+        description: "{{ lookup('template', 'description.md.j2') }}"
   when: current_box_version is version(build_version, '<')
+
+- name: Updating Vagrant Cloud box version {{ build_version }}
+  uri:
+    url: "https://app.vagrantup.com/api/v2/box/{{ vagrant_cloud_user }}/{{ vagrant_box }}/version/{{ build_version }}"
+    method: PUT
+    body_format: json
+    headers:
+      Content-Type: application/json
+      Authorization: "Bearer {{ vagrant_cloud_token }}"
+    body: "{{ data }}"
+  vars:
+    data:
+      version:
+        description: "{{ lookup('template', 'description.md.j2') }}"
+  when: current_box_version is version(build_version, '=')
 
 - include_tasks: build-packer.yaml
   when: not arch_present

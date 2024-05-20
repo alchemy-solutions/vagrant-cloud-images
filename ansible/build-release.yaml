@@ -10,6 +10,22 @@
   failed_when: false
   register: box_info
 
+- name: Update Vagrant Cloud box
+  uri:
+    url: "https://app.vagrantup.com/api/v2/box/{{ vagrant_cloud_user }}/{{ vagrant_box }}"
+    method: PUT
+    body_format: json
+    headers:
+      Content-Type: application/json
+      Authorization: "Bearer {{ vagrant_cloud_token }}"
+    body: "{{ data }}"
+  vars:
+    data:
+      box:
+        short_description: "{{ release.description }}"
+        is_private: false
+  when: box_info.status == 200
+
 - name: Create Vagrant Cloud box
   uri:
     url: https://app.vagrantup.com/api/v2/boxes

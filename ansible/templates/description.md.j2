@@ -1,0 +1,27 @@
+# {{ release.description }}
+
+This is a Vagrant Box derived from the official Cloud Image without modification except for the Vagrant user injected using cloud-init configuration file.
+
+## Usage
+
+Install `libvirt` provider using the standard Vagrant plugin installation commnd.
+
+```bash
+vagrant plugin install vagrant-libvirt
+```
+
+Create a minimal `Vagrant` file as follow:
+
+```ruby
+Vagrant.configure("2") do |config|
+  config.vagrant.plugins = "vagrant-libvirt"
+
+  config.vm.box = "{{ vagrant_cloud_user }}/{{ distro.name }}-{{ release.version }}"
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+end
+```
+
+Here a more exaustive example:
+```ruby
+{% include 'Vagrantfile.j2' %}
+```

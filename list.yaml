@@ -11,7 +11,7 @@ distros:
   releases:
   - name: 9
     version: 9.4
-    description: AlmaLinux 9.4 (Seafoam Ocelot) Cloud Images
+    description: AlmaLinux 9.4 (Seafoam Ocelot) Cloud Image
     eos: May 2027
     eol: May 2032
     arch:
@@ -21,7 +21,7 @@ distros:
       type: aarch64
   - name: 8
     version: 8.9
-    description: AlmaLinux 8.9 (Midnight Oncilla) Cloud Images
+    description: AlmaLinux 8.9 (Midnight Oncilla) Cloud Image
     eos: May 2024
     eol: Mar 2029
     arch:
@@ -41,7 +41,7 @@ distros:
   releases:
   - name: bookworm
     version: 12
-    description: Debian 12 (Bookworm) Cloud Images
+    description: Debian 12 (Bookworm) Cloud Image
     eos: June 2026
     eol: June 2028
     arch:
@@ -51,7 +51,7 @@ distros:
       type: arm64
   - name: bullseye
     version: 11
-    description: Debian 11 (Bullseye) Cloud Images
+    description: Debian 11 (Bullseye) Cloud Image
     eos: August 2024
     eol: June 2026
     arch:
@@ -61,7 +61,7 @@ distros:
       type: arm64
   - name: buster
     version: 10
-    description: Debian 10 (Buster) Cloud Images
+    description: Debian 10 (Buster) Cloud Image
     eos: August 2022
     eol: June 2024
     arch:
@@ -81,7 +81,7 @@ distros:
   releases:
   - name: 40
     version: 40
-    description: Fedora 40 Cloud Images
+    description: Fedora 40 Cloud Image
     eol: May 2025
     arch:
     - name: amd64
@@ -90,7 +90,7 @@ distros:
       type: aarch64
   - name: 39
     version: 39
-    description: Fedora 39 Cloud Images
+    description: Fedora 39 Cloud Image
     eol: November 2024
     file_url: !unsafe "{{ base_url }}/Fedora-Cloud-Base-{{ release.name }}-{{ build }}.{{ arch.type }}.qcow2"
     arch:
@@ -100,7 +100,7 @@ distros:
       type: aarch64
   - name: 38
     version: 38
-    description: Fedora 38 Cloud Images
+    description: Fedora 38 Cloud Image
     eol: November 2024
     file_url: !unsafe "{{ base_url }}/Fedora-Cloud-Base-{{ release.name }}-{{ build }}.{{ arch.type }}.qcow2"
     arch:
@@ -108,39 +108,6 @@ distros:
       type: x86_64
     - name: arm64
       type: aarch64
-
-# https://yum.oracle.com/oracle-linux-templates.html
-- name: oracle
-  build: !unsafe "{{ release.version }}.{{ release.subversion }}.0"
-  releases:
-  - name: OL9
-    version: 9
-    subversion: 3
-    description: Oracle Linux 9 Cloud Images
-    eos: Jun 2032
-    eol: Jun 2035
-    file_url: !unsafe "https://yum.oracle.com/templates/OracleLinux/OL9/u3/{{ arch.type }}/OL9U3_{{ arch.type }}-kvm-b{{ arch.build }}.qcow2"
-    arch:
-      - name: amd64
-        type: x86_64
-        build: 220
-      - name: arm64
-        type: aarch64
-        build: 63
-  - name: OL8
-    version: 8
-    subversion: 9
-    description: Oracle Linux 8 Cloud Images
-    eos: Jul 2029
-    eol: Jul 2032
-    file_url: !unsafe "https://yum.oracle.com/templates/OracleLinux/OL8/u9/{{ arch.type }}/OL8U9_{{ arch.type }}-kvm-b{{ arch.build }}.qcow2"
-    arch:
-      - name: amd64
-        type: x86_64
-        build: 219
-      - name: arm64
-        type: aarch64
-        build: 61
 
 # https://wiki.ubuntu.com/Releases
 # https://cloud-images.ubuntu.com
@@ -153,7 +120,7 @@ distros:
   releases:
   - name: noble
     version: 24.04
-    description: Ubuntu 24.04 LTS (Noble Numbat) Cloud Images
+    description: Ubuntu 24.04 LTS (Noble Numbat) Cloud Image
     eos: June 2029
     eol: April 2036
     arch:
@@ -163,7 +130,7 @@ distros:
       type: arm64
   - name: jammy
     version: 22.04
-    description: Ubuntu 22.04 LTS (Jammy Jellyfish) Cloud Images
+    description: Ubuntu 22.04 LTS (Jammy Jellyfish) Cloud Image
     eos: June 2027
     eol: April 2034
     arch:
@@ -173,7 +140,7 @@ distros:
       type: arm64
   - name: focal
     version: 20.04
-    description: Ubuntu 20.04 LTS (Focal Fossa) Cloud Images
+    description: Ubuntu 20.04 LTS (Focal Fossa) Cloud Image
     eos: April 2025
     eol: April 2032
     arch:
@@ -183,7 +150,7 @@ distros:
       type: arm64
   - name: bionic
     version: 18.04
-    description: Ubuntu 18.04 LTS (Bionic Beaver) Cloud Images
+    description: Ubuntu 18.04 LTS (Bionic Beaver) Cloud Image
     eos: June 2023
     eol: April 2030
     arch:
@@ -193,7 +160,7 @@ distros:
       type: arm64
   - name: xenial
     version: 16.04
-    description: Ubuntu 16.04 LTS (Xenial Xerus) Cloud Images
+    description: Ubuntu 16.04 LTS (Xenial Xerus) Cloud Image
     eos: April 2021
     eol: April 2028
     file_url: !unsafe "{{ base_url }}/{{ build }}/{{ release.name }}-server-cloudimg-{{ arch.type }}-disk1.img"
@@ -204,7 +171,7 @@ distros:
       type: arm64
   - name: trusty
     version: 14.04
-    description: Ubuntu 14.04 LTS (Trusty Tahr) Cloud Images
+    description: Ubuntu 14.04 LTS (Trusty Tahr) Cloud Image
     eos: April 2019
     eol: April 2026
     file_url: !unsafe "{{ base_url }}/{{ build }}/{{ release.name }}-server-cloudimg-{{ arch.type }}-disk1.img"
