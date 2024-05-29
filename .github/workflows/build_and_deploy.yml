@@ -1,7 +1,7 @@
 name: Build and Deploy
 
 on:
-  #push:
+  push:
   workflow_dispatch:
 
 env:
@@ -21,4 +21,4 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y libguestfs-tools
     - name: Build images
-      run: ansible-playbook -e @list.yaml ansible/build-all.yaml -vvv
+      run: ansible-playbook ansible/site.yaml -vvv

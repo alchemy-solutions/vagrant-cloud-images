@@ -1,2 +1,5 @@
-pacher_cache/
 build/
+# Ignore vim files:
+*~
+*.swp
+*.swo

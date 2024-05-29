@@ -24,7 +24,9 @@
       box:
         short_description: "{{ release.description }}"
         is_private: false
-  when: box_info.status == 200
+  when:
+  - update
+  - box_info.status == 200
 
 - name: Create Vagrant Cloud box
   uri:
@@ -44,7 +46,9 @@
         short_description: "{{ release.description }}"
         is_private: false
   register: box_create
-  when: box_info.status == 404
+  when:
+  - create
+  - box_info.status == 404
 
 - name: Set initial box version
   set_fact:
@@ -57,7 +61,7 @@
     current_box_version: "{{ box_info.json.current_version.version if box_info.json.current_version != None else '0.0.0' }}"
   when: box_create is skipped
 
-- include_tasks: build-box.yaml
+- include_tasks: provider.yaml
   loop: "{{ release.arch }}"
   loop_control:
     loop_var: arch

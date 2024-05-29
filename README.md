@@ -48,6 +48,14 @@ Packer is not used at all. The disk image are downloaded, mounted, injected, the
 
 # Usage
 
+There are multiple Vagrant providers available:
+
+* libvirt
+* qemu
+
+
+## libvirt
+
 Install [`libvirt`](https://vagrant-libvirt.github.io/vagrant-libvirt/)
 provider using the standard Vagrant plugin installation commnd:
 
@@ -116,4 +124,37 @@ Vagrant.configure("2") do |config|
     #libvirt.vm.provision :shell, path: 'bootstrap.sh'
   end
 end
+```
+
+## qemu
+
+Install [`qemu`](https://github.com/ppggff/vagrant-qemu)
+provider using the standard Vagrant plugin installation commnd:
+
+```bash
+vagrant plugin install vagrant-qemu
+```
+
+For an Apple Silicon, create a `Vagrantfile` as follow:
+
+```ruby
+Vagrant.configure("2") do |config|
+  config.vagrant.plugins = "vagrant-qemu"
+
+  config.vm.box = "cloud-image/debian-12"
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  config.vm.provider :qemu do |qemu|
+    qemu.machine = "virt,accel=hvf,highmem=off"
+    qemu.cpu = "cortex-a72"
+    qemu.smp = "1"
+    qemu.memory = "512M"
+  end
+end
+```
+
+Start Vagrant:
+
+```bash
+vagrant up --provider=qemu
 ```

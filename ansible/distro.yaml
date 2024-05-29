@@ -1,5 +1,5 @@
 ---
-- include_tasks: build-release.yaml
+- include_tasks: release.yaml
   loop: "{{ distro.releases }}"
   loop_control:
     loop_var: release

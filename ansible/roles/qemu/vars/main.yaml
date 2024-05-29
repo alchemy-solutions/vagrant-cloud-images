@@ -1,0 +1,9 @@
+---
+box_format: qcow2
+disk_file: "{{ distro.name }}-{{ release.version }}-{{ arch.name }}.{{ distro.disk_format }}"
+disk_path: "{{ build_path }}/{{ disk_file }}"
+box_file: "box.img"
+box_path: "{{ build_path }}/{{ box_file }}"
+box_size: "10G"
+vagrant_box_file: "{{ distro.name }}-{{ release.version }}-{{ build_version }}-{{ provider }}-{{ arch.name }}.box"
+vagrant_box_path: "{{ build_path }}/{{ vagrant_box_file }}"

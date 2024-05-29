@@ -3,7 +3,7 @@
   connection: local
   gather_facts: false
   tasks:
-  - include_tasks: build-distro.yaml
+  - include_tasks: distro.yaml
     loop: "{{ distros }}"
     loop_control:
       loop_var: distro
