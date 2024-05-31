@@ -51,7 +51,9 @@
     build_version: "{{ distro_build }}"
 
 - name: Check for providers
-  include_tasks: box.yaml
+  #include_tasks: box.yaml
+  include_role:
+    name: "{{ provider }}"
   vars:
     archs: "{{ box_info.json.versions|selectattr('number', 'eq', build_version)|map(attribute='providers')|first|default([])|selectattr('name', 'eq', provider)|map(attribute='architecture') }}"
   loop: "{{ providers }}"

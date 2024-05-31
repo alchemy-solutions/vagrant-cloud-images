@@ -41,6 +41,8 @@
         description: "{{ lookup('template', 'description.md.j2') }}"
 
 - name: Download {{ file_url }}
+  when:
+  - create
   get_url:
     url: "{{ file_url }}"
     dest: "{{ disk_path }}"
@@ -50,21 +52,28 @@
     ansible_remote_tmp: "{{ build_path }}"
 
 - name: Convert disk image
-  when: distro.disk_format != box_format
+  when:
+  - create
+  - distro.disk_format != box_format
   command: qemu-img convert -f "{{ distro.disk_format }}" -O "{{ box_format }}" "{{ disk_path }}" "{{ box_path }}"
   register: qemu_convert
 
 - name: Copy disk image
-  when: distro.disk_format == box_format
+  when:
+  - create
+  - distro.disk_format == box_format
   copy:
     src: "{{ disk_path }}"
     dest: "{{ box_path }}"
 
 - name: Resize disk image
+  when:
+  - create
   command: qemu-img resize "{{ box_path }}" "{{ box_size }}"
 
 - name: Execute as root...
-  when: not dryrun
+  when:
+  - create
   become: true
   block:
   - name: Create temporary mount directory
@@ -92,6 +101,8 @@
       state: absent
 
 - name: Populate box files
+  when:
+  - create
   template:
     src: "{{ item }}.j2"
     dest: "{{ build_path }}/{{ item }}"
@@ -100,12 +111,16 @@
     - metadata.json
 
 - name: Create box archive
+  when:
+  - create
   command: tar cvzf "{{ vagrant_box_file }}" Vagrantfile metadata.json box.img
   args:
     chdir: "{{ build_path }}"
     creates: "{{ vagrant_box_path }}"
 
 - name: Remove box files
+  when:
+  - create
   file:
     path: "{{ build_path }}/{{ item }}"
     state: absent
@@ -115,7 +130,8 @@
     - box.img
 
 - name: Calculate MD5 checksum
-  when: create
+  when:
+  - create
   stat:
     path: "{{ vagrant_box_path }}"
     checksum_algorithm: md5
@@ -123,7 +139,8 @@
     box_checksum
 
 - name: Create Vagrant Cloud {{ provider }} provider
-  when: create
+  when:
+  - create
   uri:
     url: "https://app.vagrantup.com/api/v2/box/{{ vagrant_cloud_user }}/{{ vagrant_box }}/version/{{ build_version }}/providers"
     method: POST
@@ -142,7 +159,9 @@
         default_architecture: "{{ (arch.name == 'amd64')|ternary('true', 'false') }}"
 
 - name: Get Vagrant Cloud object store URL
-  when: upload
+  when:
+  - create
+  - upload
   uri:
     url: "https://app.vagrantup.com/api/v2/box/{{ vagrant_cloud_user }}/{{ vagrant_box }}/version/{{ build_version }}/provider/{{ provider }}/{{ arch.name }}/upload"
     return_content: true
@@ -153,14 +172,17 @@
   register: object_store
 
 - name: Upload Vagrant cloud box
-  when: upload
+  when:
+  - create
+  - upload
   uri:
     url: "{{ object_store.json.upload_path }}"
     method: PUT
     src: "{{ vagrant_box_path }}"
 
 - name: Cleanup temporary files
-  when: not preserve
+  when:
+  - not preserve
   file:
     path: "{{ item }}"
     state: absent

@@ -1,7 +1,7 @@
-name: Build and Deploy
+name: Testing
 
 on:
-  workflow_dispatch:
+  push:
 
 env:
   VAGRANT_CLOUD_USER: ${{ vars.VAGRANT_CLOUD_USER }}
@@ -17,7 +17,5 @@ jobs:
     - name: Install dependencies
       run: |
         go install github.com/ericchiang/pup@latest
-        sudo apt-get update
-        sudo apt-get install -y libguestfs-tools
     - name: Build images
-      run: ansible-playbook ansible/site.yaml
+      run: ansible-playbook -e dryrun=true ansible/site.yaml -vvv
