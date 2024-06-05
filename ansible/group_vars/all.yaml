@@ -18,8 +18,8 @@ distros:
   pup_filter: "'a text{}'"
   awk_filter: "-F- '/GenericCloud-.*[0-9]{8}/{ split($5,ver,\".\"); print ver[1] }'"
   releases:
-  - name: 9
-    version: 9.4
+  - name: "9"
+    version: "9.4"
     description: AlmaLinux 9.4 (Seafoam Ocelot) Cloud Image
     checksum: !unsafe "sha256:{{ base_url }}/CHECKSUM"
     eos: May 2027
@@ -29,8 +29,8 @@ distros:
       type: x86_64
     - name: arm64
       type: aarch64
-  - name: 8
-    version: 8.10
+  - name: "8"
+    version: "8.10"
     description: AlmaLinux 8.10 (Cerulean Leopard) Cloud Image
     eos: May 2024
     eol: Mar 2029
@@ -103,16 +103,6 @@ distros:
   - name: 39
     version: 39
     description: Fedora 39 Cloud Image
-    eol: November 2024
-    file_url: !unsafe "{{ base_url }}/Fedora-Cloud-Base-{{ release.name }}-{{ build }}.{{ arch.type }}.qcow2"
-    arch:
-    - name: amd64
-      type: x86_64
-    - name: arm64
-      type: aarch64
-  - name: 38
-    version: 38
-    description: Fedora 38 Cloud Image
     eol: November 2024
     file_url: !unsafe "{{ base_url }}/Fedora-Cloud-Base-{{ release.name }}-{{ build }}.{{ arch.type }}.qcow2"
     arch:

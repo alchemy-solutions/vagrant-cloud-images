@@ -7,13 +7,12 @@ all (or, at least, the minimum possible).
 | distribution | version | vagrant box | method |
 | ------------ | :-----: | ----------- | ------ |
 | AlmaLinux | 9.4 | almalinux-9.4 | cloud-init injection |
-| AlmaLinux | 8.9 | almalinux-8.9 | cloud-init injection |
+| AlmaLinux | 8.10 | almalinux-8.10 | cloud-init injection |
 | Debian | 12 | debian-12 | cloud-init injection |
 | Debian | 11 | debian-11 | cloud-init injection |
 | Debian | 10 | debian-10 | cloud-init injection |
 | Fedora | 40 | fedora-40 | cloud-init injection |
 | Fedora | 39 | fedora-39 | cloud-init injection |
-| Fedora | 38 | fedora-38 | cloud-init injection |
 | Ubuntu | 24.04 | ubuntu-24.04 | cloud-init injection |
 | Ubuntu | 22.04 | ubuntu-22.04 | cloud-init injection |
 | Ubuntu | 20.04 | ubuntu-20.04 | cloud-init injection |

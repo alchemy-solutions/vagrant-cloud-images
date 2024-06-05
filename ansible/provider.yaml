@@ -51,7 +51,9 @@
     build_version: "{{ distro_build }}"
 
 - name: Check for providers
-  #include_tasks: box.yaml
+  when:
+  - create
+  - arch.name not in archs
   include_role:
     name: "{{ provider }}"
   vars:
@@ -59,4 +61,3 @@
   loop: "{{ providers }}"
   loop_control:
     loop_var: provider
-  when: arch.name not in archs
