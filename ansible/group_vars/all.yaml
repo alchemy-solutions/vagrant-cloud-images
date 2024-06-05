@@ -30,8 +30,8 @@ distros:
     - name: arm64
       type: aarch64
   - name: 8
-    version: 8.9
-    description: AlmaLinux 8.9 (Midnight Oncilla) Cloud Image
+    version: 8.10
+    description: AlmaLinux 8.10 (Cerulean Leopard) Cloud Image
     eos: May 2024
     eol: Mar 2029
     arch:
