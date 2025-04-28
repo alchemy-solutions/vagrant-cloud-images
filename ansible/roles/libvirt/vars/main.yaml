@@ -1,4 +1,4 @@
 ---
-provider: qemu
+provider: libvirt
 vagrant_disk_file: "box.img"
 vagrant_disk_format: "qcow2"

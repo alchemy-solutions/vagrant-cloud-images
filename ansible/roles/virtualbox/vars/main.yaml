@@ -1,0 +1,8 @@
+---
+provider: virtualbox
+vagrant_disk_file: "box.vmdk"
+vagrant_disk_format: "vmdk"
+custom_templates:
+- ../virtualbox/templates/Vagrantfile
+- ../virtualbox/templates/box.ovf
+- templates/metadata.json

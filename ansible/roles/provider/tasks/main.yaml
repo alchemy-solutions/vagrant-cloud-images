@@ -1,0 +1,132 @@
+---
+- name: Updating Vagrant Cloud box version {{ vagrant_version }}
+  uri:
+    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box }}/version/{{ vagrant_version }}"
+    method: PUT
+    body_format: json
+    headers:
+      Content-Type: application/json
+      Authorization: "Bearer {{ vagrant_cloud_token }}"
+    body:
+      description: "{{ lookup('template', 'description.md.j2') }}"
+  register: hcp_update_version
+  failed_when: hcp_update_version.status != 200
+  changed_when: hcp_update_version.status == 200
+
+- name: Create Vagrant Box Registry provider {{ provider }}
+  uri:
+    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box }}/version/{{ vagrant_version }}/providers"
+    method: POST
+    body_format: json
+    headers:
+      Content-Type: application/json
+      Authorization: "Bearer {{ vagrant_cloud_token }}"
+    body:
+      name: "{{ provider }}"
+  register: hcp_create_provider
+  failed_when: hcp_create_provider.status not in [200, 409]
+  changed_when: hcp_create_provider.status == 200
+
+- name: Create Vagrant Box Registry architecture {{ arch.name }}
+  uri:
+    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box }}/version/{{ vagrant_version }}/provider/{{ provider }}/architectures"
+    method: POST
+    body_format: json
+    return_content: true
+    headers:
+      Content-Type: application/json
+      Authorization: "Bearer {{ vagrant_cloud_token }}"
+    body:
+      architecture_type: "{{ arch.name }}"
+  register: hcp_create_architecture
+  failed_when: hcp_create_architecture.status not in [200, 409]
+  changed_when: hcp_create_architecture.status == 200
+
+- name: Download {{ cloud_image_url }}
+  get_url:
+    url: "{{ cloud_image_url }}"
+    dest: "{{ cloud_image_path }}"
+    # FIXME: what about checksum with GPG?
+    checksum: "{{ cloud_image_checksum|default(omit) }}"
+  vars:
+    ansible_remote_tmp: "{{ build_path }}"
+
+- name: Convert disk image to raw
+  command: qemu-img convert -f "{{ distro.disk_format }}" -O raw "{{ cloud_image_path }}" "{{ build_path }}/disk.raw"
+
+- name: Read disk image stats
+  stat:
+    path: "{{ build_path }}/disk.raw"
+    get_checksum: false
+  register: disk_raw
+
+- name: Resize disk image
+  when: disk_raw.stat.size < vagrant_disk_size|human_to_bytes
+  command: qemu-img resize "{{ build_path }}/disk.raw" {{ vagrant_disk_size }}
+
+- name: Set disk size
+  set_fact:
+    disk_size: "{{ [disk_raw.stat.size, vagrant_disk_size|human_to_bytes]|max }}"
+
+- include_role:
+    name: guestfs
+
+- name: Convert disk image to {{ vagrant_disk_format }}
+  command: qemu-img convert -f raw -O "{{ vagrant_disk_format }}" "{{ build_path }}/disk.raw" "{{ vagrant_disk_path }}"
+
+- name: Populate box files
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ build_path }}/{{ item|basename }}"
+  loop: "{{ custom_templates }}"
+
+- name: Create box archive
+  command: tar cvzf "{{ vagrant_box_file }}" {{ files }}
+  args:
+    chdir: "{{ build_path }}"
+  vars:
+    files: "{{ custom_templates|map('regex_replace', '^.*/', '')|join(' ') }} {{ vagrant_disk_file }}"
+
+- name: Calculate MD5 checksum
+  stat:
+    path: "{{ vagrant_box_path }}"
+    checksum_algorithm: md5
+  register: box_file
+
+- meta: end_play
+
+- name: Get Vagrant Cloud object store URL
+  when:
+  - create
+  - upload
+  uri:
+    url: "https://app.vagrantup.com/api/v2/box/{{ vagrant_cloud_user }}/{{ vagrant_box }}/version/{{ vagrant_version }}/provider/{{ provider }}/{{ arch.name }}/upload"
+    return_content: true
+    method: GET
+    headers:
+      Content-Type: application/json
+      Authorization: "Bearer {{ vagrant_cloud_token }}"
+  register: object_store
+
+- name: Upload Vagrant cloud box
+  when:
+  - create
+  - upload
+  uri:
+    url: "{{ object_store.json.upload_path }}"
+    method: PUT
+    src: "{{ vagrant_box_path }}"
+
+- name: Release Vagrant box version {{ vagrant_version }}
+  when:
+  - create
+  - current_box_version is version(vagrant_version, '<')
+  uri:
+    url: "https://app.vagrantup.com/api/v2/box/{{ vagrant_cloud_user }}/{{ vagrant_box }}/version/{{ vagrant_version }}/release"
+    method: PUT
+    headers:
+      Content-Type: application/json
+      Authorization: "Bearer {{ vagrant_cloud_token }}"
+
+- set_fact:
+    current_box_version: "{{ vagrant_version }}"

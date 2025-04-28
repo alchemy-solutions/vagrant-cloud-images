@@ -1,63 +1,57 @@
 ---
-- name: Create build directory
-  file:
-    path: "{{ build_path }}"
-    state: directory
-    mode: '0755'
-
 - name: Create template vars
   copy:
     content: |
       ---
-      distro_build: "{{ release.build|default(distro.build|default('0.0.0')) }}"
-      base_url: "{{ release.base_url|default(distro.base_url|default(None)) }}"
-      file_url: "{{ release.file_url|default(distro.file_url|default(None)) }}"
-      checksum: "{{ release.checksum|default(distro.checksum|default(None)) }}"
+      cloud_image_build: {{ release.cloud_image_build|default(distro.cloud_image_build|default('null')) }}
+      cloud_image_base_url: "{{ release.cloud_image_base_url|default(distro.cloud_image_base_url|default(None)) }}"
+      cloud_image_url: "{{ release.cloud_image_url|default(distro.cloud_image_url|default(None)) }}"
+      cloud_image_checksum: "{{ release.cloud_image_checksum|default(distro.cloud_image_checksum|default(None)) }}"
     dest: "{{ build_path }}/distro.yaml"
   changed_when: false
 
 - name: Load templated vars
   include_vars: "{{ build_path }}/distro.yaml"
 
-- name: Remove template vars
-  file:
-    path: "{{ build_path }}/distro.yaml"
-    state: absent
-  changed_when: false
-
 - name: Set build version from URL
-  when: distro_build == '0.0.0'
+  when: cloud_image_build == None
   block:
   - name: Identify latest build
     shell: |
-      curl -fsSL {{ base_url }} | \
+      curl -fsSL {{ cloud_image_base_url }} | \
       pup {{ distro.pup_filter }} | \
       awk {{ distro.awk_filter }} | \
       sort --unique -V | \
       tail -1
     changed_when: false
-    register: latest_build
+    register: last_build
     retries: 5
-    until: latest_build.stdout != ""
+    until: last_build.stdout != ""
 
-  - name: Identify latest build version
+  - name: Set build version
     set_fact:
-      build_version: "{{ ((latest_build.stdout|replace('-','.')+'.0.0')|split('.'))[:3]|join('.') }}"
-      build: "{{ latest_build.stdout }}"
+      cloud_image_build: "{{ last_build.stdout }}"
 
-- name: Set build version from YAML
-  when: distro_build != '0.0.0'
+- name: Set Vagrant version
   set_fact:
-    build_version: "{{ distro_build }}"
+    vagrant_version: "{{ ((cloud_image_build|replace('-','.')+'.0.0')|split('.'))[:3]|join('.') }}"
 
-- name: Check for providers
-  when:
-  - create
-  - arch.name not in archs
-  include_role:
+- name: Create Vagrant Box Registry version {{ vagrant_version }}
+  uri:
+    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box }}/versions"
+    method: POST
+    body_format: json
+    headers:
+      Content-Type: application/json
+      Authorization: "Bearer {{ vagrant_cloud_token }}"
+    body:
+      name: "{{ vagrant_version }}"
+  register: hcp_create_version
+  failed_when: hcp_create_version.status not in [200, 409]
+  changed_when: hcp_create_version.status == 200
+
+- include_role:
     name: "{{ provider }}"
-  vars:
-    archs: "{{ box_info.json.versions|selectattr('number', 'eq', build_version)|map(attribute='providers')|first|default([])|selectattr('name', 'eq', provider)|map(attribute='architecture') }}"
   loop: "{{ providers }}"
   loop_control:
     loop_var: provider
