@@ -5,11 +5,13 @@
   register: tmp_mount
 
 - name: Mount disk image
-  command: guestmount -a disk.raw -i --rw "{{ tmp_mount.path }}"
+  become: true
+  command: guestmount -a {{ vagrant_disk_path }} -i --rw "{{ tmp_mount.path }}"
   args:
     chdir: "{{ build_path }}"
 
 - name: Inject Vagrant cloud-init configuration file
+  become: true
   template:
     src: "99_vagrant.cfg.j2"
     dest: "{{ tmp_mount.path }}/etc/cloud/cloud.cfg.d/99_vagrant.cfg"
@@ -18,6 +20,7 @@
     mode: '0644'
 
 - name: Unmount disk image
+  become: true
   command: umount "{{ tmp_mount.path }}"
 
 - name: Remove temporary mount directory

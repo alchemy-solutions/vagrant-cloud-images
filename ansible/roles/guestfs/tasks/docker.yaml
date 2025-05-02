@@ -10,6 +10,7 @@
     name: guestfs
     image: guestfs:latest
     privileged: true
+    recreate: true
     command: sleep infinity
     volumes:
     - "{{ build_path }}:/build:rw"
@@ -17,7 +18,7 @@
 - name: Mount disk image
   community.docker.docker_container_exec:
     container: guestfs
-    command: guestmount -a /build/disk.raw -i --rw /mnt
+    command: guestmount -a /build/{{ vagrant_disk_file }} -i --rw /mnt
 
 - name: Create Vagrant cloud-init configuration file
   community.docker.docker_container_copy_into:

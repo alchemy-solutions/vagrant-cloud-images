@@ -1,57 +1,6 @@
 ---
-- name: Create template vars
-  copy:
-    content: |
-      ---
-      cloud_image_build: {{ release.cloud_image_build|default(distro.cloud_image_build|default('null')) }}
-      cloud_image_base_url: "{{ release.cloud_image_base_url|default(distro.cloud_image_base_url|default(None)) }}"
-      cloud_image_url: "{{ release.cloud_image_url|default(distro.cloud_image_url|default(None)) }}"
-      cloud_image_checksum: "{{ release.cloud_image_checksum|default(distro.cloud_image_checksum|default(None)) }}"
-    dest: "{{ build_path }}/distro.yaml"
-  changed_when: false
-
-- name: Load templated vars
-  include_vars: "{{ build_path }}/distro.yaml"
-
-- name: Set build version from URL
-  when: cloud_image_build == None
-  block:
-  - name: Identify latest build
-    shell: |
-      curl -fsSL {{ cloud_image_base_url }} | \
-      pup {{ distro.pup_filter }} | \
-      awk {{ distro.awk_filter }} | \
-      sort --unique -V | \
-      tail -1
-    changed_when: false
-    register: last_build
-    retries: 5
-    until: last_build.stdout != ""
-
-  - name: Set build version
-    set_fact:
-      cloud_image_build: "{{ last_build.stdout }}"
-
-- name: Set Vagrant version
-  set_fact:
-    vagrant_version: "{{ ((cloud_image_build|replace('-','.')+'.0.0')|split('.'))[:3]|join('.') }}"
-
-- name: Create Vagrant Box Registry version {{ vagrant_version }}
-  uri:
-    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box }}/versions"
-    method: POST
-    body_format: json
-    headers:
-      Content-Type: application/json
-      Authorization: "Bearer {{ vagrant_cloud_token }}"
-    body:
-      name: "{{ vagrant_version }}"
-  register: hcp_create_version
-  failed_when: hcp_create_version.status not in [200, 409]
-  changed_when: hcp_create_version.status == 200
-
-- include_role:
-    name: "{{ provider }}"
+- include_tasks: version.yaml
+  when: "filter_provider is not defined or provider==filter_provider"
   loop: "{{ providers }}"
   loop_control:
     loop_var: provider

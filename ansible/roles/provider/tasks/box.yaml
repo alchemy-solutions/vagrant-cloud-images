@@ -1,0 +1,59 @@
+---
+- name: Download {{ cloud_image_url }}
+  get_url:
+    url: "{{ cloud_image_url }}"
+    dest: "{{ cloud_image_path }}"
+    # FIXME: what about checksum with GPG?
+    checksum: "{{ cloud_image_checksum|default(omit) }}"
+  vars:
+    ansible_remote_tmp: "{{ build_path }}"
+
+- name: Read disk image info
+  command: qemu-img info --output=json {{ cloud_image_path }}
+  register: cloud_image_info
+
+- name: Get disk image size
+  set_fact:
+    cloud_image_size: "{{ (cloud_image_info.stdout|from_json)['virtual-size'] }}"
+
+- name: Resize disk image
+  when: cloud_image_size|int < vagrant_disk_size|human_to_bytes
+  command: qemu-img resize "{{ cloud_image_path }}" {{ vagrant_disk_size }}
+  
+- name: Record disk size
+  set_fact:
+    disk_size: "{{ [cloud_image_size|int, vagrant_disk_size|human_to_bytes]|max }}"
+
+- name: Convert disk image to {{ vagrant_disk_format }}
+  when: distro.disk_format != vagrant_disk_format
+  command: qemu-img convert -f {{ distro.disk_format }} -O "{{ vagrant_disk_format }}" "{{ cloud_image_path }}" "{{ vagrant_disk_path }}"
+
+- name: Clone disk image for Vagrant
+  when: distro.disk_format == vagrant_disk_format
+  command: cp "{{ cloud_image_path }}" "{{ vagrant_disk_path }}"
+  args:
+    creates: "{{ vagrant_disk_path }}"
+
+- include_role:
+    name: guestfs
+
+- name: Populate box files
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ build_path }}/{{ item|basename }}"
+  loop: "{{ custom_templates }}"
+
+- name: Create box archive
+  command: tar cvzf "{{ vagrant_box_file }}" {{ files }}
+  args:
+    chdir: "{{ build_path }}"
+  vars:
+    files: "{{ custom_templates|map('regex_replace', '^.*/', '')|join(' ') }} {{ vagrant_disk_file }}"
+
+- name: Cleanup build directory
+  file:
+    path: "{{ build_path }}/{{ item|basename }}"
+    state: absent
+  vars:
+    files: "{{ custom_templates + [vagrant_disk_file] }}"
+  loop: "{{ files }}"

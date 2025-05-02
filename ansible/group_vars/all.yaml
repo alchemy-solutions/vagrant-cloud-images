@@ -3,11 +3,12 @@ dryrun: false
 create: "{{ not dryrun }}"
 update: "{{ not dryrun }}"
 upload: "{{ not dryrun }}"
+preserve: false
 
 build_path: "{{ playbook_dir }}/../build"
 log_path: "{{ build_path }}/build-{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}.log"
 
-# Where to run guestmount? (allowed values: local, docker)
+# Where to run guestfs-tools? (allowed values: guestmount, docker)
 guestfs: docker
 
 providers:
@@ -20,4 +21,4 @@ vagrant_cloud_api: "vagrant/2022-09-30"
 vagrant_cloud_url: "{{ hcp_base_endpoint }}/{{ vagrant_cloud_api }}"
 vagrant_cloud_user: "{{ lookup('env', 'VAGRANT_CLOUD_USER', default='cloud-image') }}"
 vagrant_cloud_token: "{{ lookup('env', 'VAGRANT_CLOUD_TOKEN', default=Undefined) }}"
-vagrant_ssh_key_pub: "{{ lookup('env', 'VAGRANT_SSH_KEY_PUB', default=lookup('url', 'https://raw.githubusercontent.com/hashicorp/vagrant/refs/heads/master/keys/vagrant.pub')) }}"
+vagrant_ssh_key_pub: "{{ lookup('env', 'VAGRANT_SSH_KEY_PUB', default=Undefined) }}"

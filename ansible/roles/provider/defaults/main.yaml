@@ -1,13 +1,14 @@
 ---
-cloud_image_file: "{{ distro.name }}-{{ release.version }}-{{ arch.name }}.{{ distro.disk_format }}"
-cloud_image_path: "{{ build_path }}/{{ cloud_image_file }}"
+vagrant_box_id: "{{ distro.name }}-{{ release.version }}-{{ arch.name }}"
+vagrant_box_file: "{{ distro.name }}-{{ release.version }}-{{ vagrant_version }}-{{ provider }}-{{ arch.name }}.box"
+vagrant_box_path: "{{ build_path }}/{{ vagrant_box_file }}"
 vagrant_disk_file: "box.img"
 vagrant_disk_format: "qcow2"
 vagrant_disk_path: "{{ build_path }}/{{ vagrant_disk_file }}"
 vagrant_disk_size_gb: 10
 vagrant_disk_size: "{{ vagrant_disk_size_gb }}G"
-vagrant_box_file: "{{ distro.name }}-{{ release.version }}-{{ vagrant_version }}-{{ provider }}-{{ arch.name }}.box"
-vagrant_box_path: "{{ build_path }}/{{ vagrant_box_file }}"
+cloud_image_file: "{{ vagrant_box_id }}.{{ distro.disk_format }}"
+cloud_image_path: "{{ build_path }}/{{ cloud_image_file }}"
 custom_templates:
 - templates/Vagrantfile
 - templates/metadata.json

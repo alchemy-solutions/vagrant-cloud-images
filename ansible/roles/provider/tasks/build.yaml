@@ -1,0 +1,109 @@
+---
+- name: Refresh VAGRANT_CLOUD_TOKEN
+  include_tasks: hcp.yaml
+
+- name: Updating Vagrant Cloud box version {{ vagrant_version }}
+  when: not dryrun
+  uri:
+    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_version }}"
+    method: PUT
+    body_format: json
+    headers:
+      Content-Type: application/json
+      Authorization: "Bearer {{ vagrant_cloud_token }}"
+    body:
+      description: "{{ lookup('template', 'description.md.j2') }}"
+  register: hcp_update_version
+  failed_when: hcp_update_version.status != 200
+  changed_when: hcp_update_version.status == 200
+
+- name: Create Vagrant Box Registry provider {{ provider }}
+  when: not dryrun
+  uri:
+    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_version }}/providers"
+    method: POST
+    body_format: json
+    status_code: [200, 409]
+    headers:
+      Content-Type: application/json
+      Authorization: "Bearer {{ vagrant_cloud_token }}"
+    body:
+      name: "{{ provider }}"
+  register: hcp_create_provider
+  changed_when: hcp_create_provider.status == 200
+
+- name: Create Vagrant Box Registry architecture {{ arch.name }}
+  when: not dryrun
+  uri:
+    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_version }}/provider/{{ provider }}/architectures"
+    method: POST
+    body_format: json
+    return_content: true
+    status_code: [200, 409]
+    headers:
+      Content-Type: application/json
+      Authorization: "Bearer {{ vagrant_cloud_token }}"
+    body:
+      architecture_type: "{{ arch.name }}"
+  register: hcp_create_architecture
+  changed_when: hcp_create_architecture.status == 200
+
+- name: Get Vagrant Box Registry download URL
+  uri:
+    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_version }}/provider/{{ provider }}/architecture/{{ arch.name }}/download"
+    method: GET
+    body_format: json
+    return_content: true
+    status_code: [200, 400]
+  register: hcp_download_box
+  retries: 3
+  delay: 5
+  until: not hcp_download_box.failed
+
+- name: Check if Vagrant Box Registry is already present
+  when:
+  - not dryrun
+  - hcp_download_box.status == 200
+  meta: end_role
+
+- include_tasks: box.yaml
+  when: vagrant_box_exists == ''
+  vars:
+    vagrant_box_exists: "{{ lookup('first_found', files=[vagrant_box_path], errors='ignore') }}"
+
+- name: Read Vagrant Box stats
+  stat:
+    path: "{{ vagrant_box_path }}"
+    get_checksum: false
+  register: vagrant_box
+
+- name: Get Vagrant Cloud object store URL
+  when: not dryrun
+  uri:
+    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_version }}/provider/{{ provider }}/architecture/{{ arch.name }}/upload"
+    return_content: true
+    method: GET
+    headers:
+      Content-Type: application/json
+      Authorization: "Bearer {{ vagrant_cloud_token }}"
+  register: vagrant_box_url
+
+- name: Upload Vagrant Box {{ vagrant_box_file }} ({{ vagrant_box.stat.size|human_readable }})
+  when: not dryrun
+  uri:
+    url: "{{ vagrant_box_url.json.url }}"
+    method: PUT
+    src: "{{ vagrant_box_path }}"
+  register: hcp_upload_box
+  retries: 3
+  delay: 5
+  until: not hcp_upload_box.failed
+
+- name: Cleanup build directory
+  when: not preserve
+  file:
+    path: "{{ build_path }}/{{ item }}"
+    state: absent
+  loop:
+  - "{{ cloud_image_path }}"
+  - "{{ vagrant_box_path }}"

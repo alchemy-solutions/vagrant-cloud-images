@@ -23,7 +23,9 @@ jobs:
     - uses: actions/setup-go@v5
     - name: Install dependencies
       run: |
+        sudo apt-get update
+        sudo apt-get install -y libguestfs-tools
         go install github.com/ericchiang/pup@latest
     - name: Build images
       run: |
-        ansible-playbook -e dryrun=true ansible/site.yaml -vvv
+        ansible-playbook -e dryrun=true -e guestfs=guestmount ansible/site.yaml -vvv

@@ -1,9 +1,13 @@
 ---
 - name: Build {{ distro.name }}-{{ release.version }} releases
   set_fact:
-    vagrant_box: "{{ distro.name }}-{{ release.version }}"
+    vagrant_box_name: "{{ distro.name }}-{{ release.version }}"
 
-- name: Create Vagrant Box Registry for {{ vagrant_box }}
+- name: Refresh VAGRANT_CLOUD_TOKEN
+  include_tasks: hcp.yaml
+
+- name: Create Vagrant Box Registry for {{ vagrant_box_name }}
+  when: not dryrun
   uri:
     url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/boxes"
     method: POST
@@ -13,13 +17,14 @@
       Content-Type: application/json
       Authorization: "Bearer {{ vagrant_cloud_token }}"
     body:
-      name: "{{ vagrant_box }}"
+      name: "{{ vagrant_box_name }}"
       short_description: "{{ release.description }}"
   register: hcp_create_box
   failed_when: hcp_create_box.status not in [200, 409]
   changed_when: hcp_create_box.status == 200
 
 - include_tasks: provider.yaml
+  when: "filter_arch is not defined or arch.name==filter_arch"
   loop: "{{ release.arch }}"
   loop_control:
     loop_var: arch
