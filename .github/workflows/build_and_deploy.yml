@@ -23,9 +23,6 @@ jobs:
     - uses: hashicorp/hcp-setup-action@v0
       with:
         version: 'latest'
-    - run: |
-        env
-        hcp auth print-access-token
     - uses: actions/checkout@v4
     - uses: actions/setup-go@v5
     - name: Install dependencies

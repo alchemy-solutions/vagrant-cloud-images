@@ -1,8 +1,8 @@
 name: Testing
 
 on:
-  #push:
   workflow_dispatch:
+  #push:
 
 jobs:
   build:
@@ -13,9 +13,11 @@ jobs:
       id-token: 'write'
 
     steps:
-    - uses: hashicorp/hcp-auth-action@v0
+    - id: hcp_auth
+      uses: hashicorp/hcp-auth-action@v0
       with:
         workload_identity_provider: 'iam/project/cdb1b80e-a7cd-4d5c-a9a2-3a93079d6a36/service-principal/github/workload-identity-provider/github-vagrant-cloud-images'
+        set_access_token: true
     - uses: hashicorp/hcp-setup-action@v0
       with:
         version: 'latest'
@@ -24,8 +26,10 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y libguestfs-tools
+        sudo apt-get install -y libguestfs-tools qemu-utils
         go install github.com/ericchiang/pup@latest
     - name: Build images
+      env:
+        VAGRANT_CLOUD_TOKEN: ${{steps.hcp_auth.outputs.access_token}}
       run: |
         ansible-playbook -e dryrun=true -e guestfs=guestmount ansible/site.yaml -vvv
