@@ -1,0 +1,44 @@
+---
+- name: Create Docker image for guestfs
+  community.docker.docker_image_build:
+    path: "{{ docker_path }}"
+    name: "guestfs:latest"
+
+- name: Create guestfs container
+  # FIXME: use "guestfish" directly to remove privileges
+  community.docker.docker_container:
+    name: guestfs
+    image: guestfs:latest
+    privileged: true
+    recreate: true
+    command: sleep infinity
+    volumes:
+    - "{{ build_path }}:/build:rw"
+
+- name: Mount disk image
+  community.docker.docker_container_exec:
+    container: guestfs
+    command: guestmount -a /build/{{ vagrant_disk_file }} -i --rw /mnt
+
+- name: Create Vagrant cloud-init configuration file
+  community.docker.docker_container_copy_into:
+    container: guestfs
+    content: "{{ lookup('template', '99_vagrant.cfg.j2') }}"
+    #FIXME: container_path "/mnt/etc/cloud/cloud.cfg.d/99_vagrant.cfg"
+    container_path: "/tmp/99_vagrant.cfg"
+    mode: '0644'
+
+- name: Inject Vagrant cloud-init configuration file
+  community.docker.docker_container_exec:
+    container: guestfs
+    command: dd conv=fsync if=/tmp/99_vagrant.cfg of=/mnt/etc/cloud/cloud.cfg.d/99_vagrant.cfg
+
+- name: Unmount disk image
+  community.docker.docker_container_exec:
+    container: guestfs
+    command: umount /mnt
+
+- name: Remove guestfs container
+  community.docker.docker_container:
+    name: guestfs
+    state: absent

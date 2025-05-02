@@ -1,67 +1,30 @@
 ---
 - name: Build {{ distro.name }}-{{ release.version }} releases
   set_fact:
-    vagrant_box: "{{ distro.name }}-{{ release.version }}"
+    vagrant_box_name: "{{ distro.name }}-{{ release.version }}"
 
-- name: Check Vagrant Cloud box
-  uri:
-    url: "https://app.vagrantup.com/api/v2/box/{{ vagrant_cloud_user }}/{{ vagrant_box }}"
-    return_content: true
-  failed_when: false
-  register: box_info
+- name: Refresh VAGRANT_CLOUD_TOKEN
+  include_tasks: hcp.yaml
 
-- name: Update Vagrant Cloud box
-  when:
-  - update
-  - box_info.status == 200
+- name: Create Vagrant Box Registry for {{ vagrant_box_name }}
+  when: not dryrun
   uri:
-    url: "https://app.vagrantup.com/api/v2/box/{{ vagrant_cloud_user }}/{{ vagrant_box }}"
-    method: PUT
-    body_format: json
-    headers:
-      Content-Type: application/json
-      Authorization: "Bearer {{ vagrant_cloud_token }}"
-    body: "{{ data }}"
-  vars:
-    data:
-      box:
-        short_description: "{{ release.description }}"
-        is_private: false
-
-- name: Create Vagrant Cloud box
-  when:
-  - create
-  - box_info.status == 404
-  uri:
-    url: https://app.vagrantup.com/api/v2/boxes
+    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/boxes"
     method: POST
     body_format: json
     return_content: true
     headers:
       Content-Type: application/json
       Authorization: "Bearer {{ vagrant_cloud_token }}"
-    body: "{{ data }}"
-  vars:
-    data:
-      box:
-        username: "{{ vagrant_cloud_user }}"
-        name: "{{ vagrant_box }}"
-        short_description: "{{ release.description }}"
-        is_private: false
-  register: box_create
-
-- name: Set initial box version
-  set_fact:
-    current_box_version: "0.0.0"
-    box_info: "{{ box_create }}"
-  when: box_create is not skipped
-
-- name: Get current box version
-  set_fact:
-    current_box_version: "{{ box_info.json.current_version.version if box_info.json.current_version is defined else '0.0.0' }}"
-  when: box_create is skipped
+    body:
+      name: "{{ vagrant_box_name }}"
+      short_description: "{{ release.description }}"
+  register: hcp_create_box
+  failed_when: hcp_create_box.status not in [200, 409]
+  changed_when: hcp_create_box.status == 200
 
 - include_tasks: provider.yaml
+  when: "filter_arch is not defined or arch.name==filter_arch"
   loop: "{{ release.arch }}"
   loop_control:
     loop_var: arch

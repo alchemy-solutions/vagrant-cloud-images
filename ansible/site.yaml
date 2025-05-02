@@ -1,9 +1,33 @@
 ---
 - hosts: localhost
   connection: local
-  gather_facts: false
+  gather_facts: true
   tasks:
+  - name: Prechecks
+    include_tasks: prechecks.yaml
+
+  - name: Create build directory
+    file:
+      path: "{{ build_path }}"
+      state: directory
+      mode: '0755'
+
+  - name: Load distros data
+    include_vars: "../distros.yaml"
+
+  - name: Filter distros data
+    include_tasks: filter.yaml
+
+  - name: Refresh VAGRANT_CLOUD_TOKEN
+    include_tasks: hcp.yaml
+
   - include_tasks: distro.yaml
     loop: "{{ distros }}"
     loop_control:
       loop_var: distro
+
+  - name: Remove build directory
+    when: not preserve
+    file:
+      path: "{{ build_path }}"
+      state: absent

@@ -1,0 +1,26 @@
+---
+# FIXME: on GitHub actions 'type' does not work 
+#- command: type -p {{ item }}
+- command: |
+    {{ item }} --help
+  changed_when: false
+  failed_when: false
+  register: command_check
+  loop:
+  - hcp
+  - pup
+  - qemu-img
+  - "{{ guestfs }}"
+
+- assert:
+    that:
+    - cmd.rc == 0
+    quiet: true
+    msg: "Command '{{ cmd.item }}' not found."
+  loop: "{{ command_check.results }}"
+  loop_control:
+    loop_var: cmd
+
+- set_fact:
+    vagrant_ssh_key_pub: "{{ lookup('url', 'https://raw.githubusercontent.com/hashicorp/vagrant/refs/heads/master/keys/vagrant.pub') }}"
+  when: vagrant_ssh_key_pub is undefined

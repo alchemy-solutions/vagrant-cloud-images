@@ -1,0 +1,7 @@
+---
+- include_role:
+    name: provider
+  vars:
+    provider: virtualbox
+    box_uuid: "{{ ansible_date_time.iso8601_basic|to_uuid }}"
+    disk_uuid: "{{ ansible_date_time.iso8601_micro|to_uuid }}"

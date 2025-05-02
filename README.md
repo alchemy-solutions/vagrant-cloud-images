@@ -4,21 +4,21 @@ Purpose of this project is to provide [Vagrant Box images](https://app.vagrantup
 colud images of various GNU/Linux distributions with no modifications at
 all (or, at least, the minimum possible).
 
-| distribution | version | vagrant box | method |
-| ------------ | :-----: | ----------- | ------ |
-| AlmaLinux | 9.4 | almalinux-9.4 | cloud-init injection |
-| AlmaLinux | 8.10 | almalinux-8.10 | cloud-init injection |
-| Debian | 12 | debian-12 | cloud-init injection |
-| Debian | 11 | debian-11 | cloud-init injection |
-| Debian | 10 | debian-10 | cloud-init injection |
-| Fedora | 40 | fedora-40 | cloud-init injection |
-| Fedora | 39 | fedora-39 | cloud-init injection |
-| Ubuntu | 24.04 | ubuntu-24.04 | cloud-init injection |
-| Ubuntu | 22.04 | ubuntu-22.04 | cloud-init injection |
-| Ubuntu | 20.04 | ubuntu-20.04 | cloud-init injection |
-| Ubuntu | 18.04 | ubuntu-18.04 | cloud-init injection |
-| Ubuntu | 16.04 | ubuntu-16.04 | cloud-init injection |
-| Ubuntu | 14.04 | ubuntu-14.04 | cloud-init injection |
+| distribution | version | vagrant box | method | end of life |
+| ------------ | :-----: | ----------- | ------ | ----------- |
+| AlmaLinux | 9.5 | almalinux-9.5 | cloud-init injection | May 2032 |
+| AlmaLinux | 8.10 | almalinux-8.10 | cloud-init injection | Mar 2029 |
+| Debian | 12 | debian-12 | cloud-init injection | Jun 2028 |
+| Debian | 11 | debian-11 | cloud-init injection | Aug 2026 |
+| Fedora | 42 | fedora-42 | cloud-init injection | May 2026 |
+| Fedora | 41 | fedora-41 | cloud-init injection | Nov 2025 |
+| Fedora | 40 | fedora-40 | cloud-init injection | May 2025 |
+| Ubuntu | 24.04 | ubuntu-24.04 | cloud-init injection | Apr 2036 |
+| Ubuntu | 22.04 | ubuntu-22.04 | cloud-init injection | Apr 2034 |
+| Ubuntu | 20.04 | ubuntu-20.04 | cloud-init injection | Apr 2032 |
+| Ubuntu | 18.04 | ubuntu-18.04 | cloud-init injection | Apr 2030 |
+| Ubuntu | 16.04 | ubuntu-16.04 | cloud-init injection | Apr 2028 |
+| Ubuntu | 14.04 | ubuntu-14.04 | cloud-init injection | Apr 2026 |
 
 ## cloud-init injection
 
@@ -49,8 +49,17 @@ Packer is not used at all. The disk image are downloaded, mounted, injected, the
 
 There are multiple Vagrant providers available:
 
+* virtualbox
 * libvirt
 * qemu
+
+
+## virtualbox
+
+```bash
+vagrant init cloud-image/<choose-a-distro>
+vagrant up
+```
 
 
 ## libvirt

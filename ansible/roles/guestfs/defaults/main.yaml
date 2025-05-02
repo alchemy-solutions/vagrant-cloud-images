@@ -1,0 +1,2 @@
+---
+docker_path: "{{ playbook_dir }}/../docker"

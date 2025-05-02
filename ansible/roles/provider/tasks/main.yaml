@@ -1,0 +1,10 @@
+---
+- name: Check for Vagrant Box {{ vagrant_box_file }}
+  stat:
+    path: "{{ vagrant_box_path }}.done"
+    get_checksum: false
+  register: vagrant_box_done
+
+- name: Build Vagrant Box {{ vagrant_box_file }}
+  when: not vagrant_box_done.stat.exists
+  include_tasks: build.yaml

@@ -1,0 +1,45 @@
+---
+- name: Filter from distro name
+  when: filter_distro is defined
+  set_fact:
+    distros: "{{ distros|json_query(filter) }}"
+  vars:
+    filter: "[?name=='{{ filter_distro }}']"
+
+#- name: Filter release name
+#  when: filter_release is defined
+#  set_fact:
+#    distros: "{{ distros|rejectattr(' }}"
+#  loop: "{{ distro }}"
+
+- name: Filter from release name
+  when: filter_release is defined
+  block:
+  - set_fact:
+      new_distros: "{{ new_distros|default([]) + [distro|combine({'releases': distro.releases|json_query(filter)})] }}"
+    vars:
+      filter: "[?name=='{{ filter_release }}']"
+    loop: "{{ distros }}"
+    loop_control:
+      loop_var: distro
+
+  - set_fact:
+      distros: "{{ new_distros|json_query(filter) }}"
+    vars:
+      filter: "[?releases]"
+
+- name: Filter from release version
+  when: filter_version is defined
+  block:
+  - set_fact:
+      new_distros: "{{ new_distros|default([]) + [distro|combine({'releases': distro.releases|json_query(filter)})] }}"
+    vars:
+      filter: "[?version=='{{ filter_version }}']"
+    loop: "{{ distros }}"
+    loop_control:
+      loop_var: distro
+
+  - set_fact:
+      distros: "{{ new_distros|json_query(filter) }}"
+    vars:
+      filter: "[?releases]"
