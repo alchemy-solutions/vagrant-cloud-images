@@ -1,0 +1,42 @@
+## Vagrantfile
+
+Create a minimal `Vagrantfile` file as follow:
+
+```ruby
+Vagrant.configure("2") do |config|
+  config.vm.box = "{{ vagrant_cloud_user }}/{{ distro.name }}-{{ release.version }}"
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+{% include 'templates/vagrant-' + distro.name + '.md.j2' ignore missing %}
+
+  # Eventually use cloud-init to execute jobs
+  config.vm.cloud_init do |cloud_init|
+    cloud_init.content_type = "text/cloud-config"
+    cloud_init.inline = <<-EOF
+      package_update: true
+      packages:
+        - nginx
+        - postgresql
+    EOF
+
+  # For libvirt provider
+  #config.vagrant.plugins = "vagrant-libvirt"
+  config.vm.provider :libvirt do |libvirt|
+    libvirt.driver = "kvm"
+    libvirt.uri = 'qemu:///system'
+    #libvirt.socket = '/var/run/libvirt/libvirt-sock'
+    #libvirt.host = 'localhost'
+    #libvirt.username = ''
+    #libvirt.password = ''
+    #libvirt.id_ssh_key_file = "$HOME/.ssh/id_rsa"
+  end
+
+  # For qemu provider (e.g. Apple Silicon)
+  #config.vagrant.plugins = "vagrant-qemu"
+  config.vm.provider :qemu do |qemu|
+    qemu.machine = "virt,accel=hvf,highmem=off"
+    qemu.cpu = "cortex-a72"
+    qemu.smp = "1"
+    qemu.memory = "512M"
+  end
+end
+```

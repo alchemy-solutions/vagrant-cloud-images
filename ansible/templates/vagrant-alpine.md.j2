@@ -1,0 +1,5 @@
+
+  # Alpine Linux does not include bash nor sudo (use sh and doas instead)
+  config.ssh.shell = "sh"
+  config.ssh.sudo_command = "doas %c"
+

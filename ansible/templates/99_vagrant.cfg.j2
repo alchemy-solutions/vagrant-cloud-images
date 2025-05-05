@@ -3,8 +3,10 @@ ssh_pwauth: True
 users:
   - name: vagrant
     plain_text_passwd: vagrant
-    sudo: ALL=(ALL) NOPASSWD:ALL
-    shell: /bin/bash
+    doas:
+      - permit nopass vagrant
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+    shell: /bin/sh
     lock_passwd: false
     ssh_authorized_keys:
       - '{{ vagrant_ssh_key_pub }}'

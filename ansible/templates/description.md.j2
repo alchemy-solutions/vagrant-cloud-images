@@ -4,23 +4,14 @@ This is a Vagrant Box derived from the official Cloud Image without modification
 
 ## Usage
 
-Install `libvirt` and/or `qemu` provider using the standard Vagrant plugin installation command:
+Optionally install `libvirt` or `qemu` provider using the standard Vagrant plugin installation command:
 
 ```bash
 vagrant plugin install vagrant-libvirt
+<OR>
 vagrant plugin install vagrant-qemu
 ```
 
-Create a minimal `Vagrantfile` file as follow:
-
-```ruby
-Vagrant.configure("2") do |config|
-  config.vagrant.plugins = "vagrant-libvirt"
-  #config.vagrant.plugins = "vagrant-qemu"
-
-  config.vm.box = "{{ vagrant_cloud_user }}/{{ distro.name }}-{{ release.version }}"
-  config.vm.synced_folder ".", "/vagrant", disabled: true
-end
-```
+{% include 'templates/vagrant.md.j2' %}
 
 For further information, please refer to the [sources](https://github.com/alchemy-solutions/vagrant-cloud-images).

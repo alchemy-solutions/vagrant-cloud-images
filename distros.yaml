@@ -5,6 +5,7 @@ distros:
 - name: almalinux
   cloud_image_base_url: !unsafe "https://repo.almalinux.org/almalinux/{{ release.name }}/cloud/{{ arch.type }}/images"
   cloud_image_url: !unsafe "{{ cloud_image_base_url }}/AlmaLinux-{{ release.name }}-GenericCloud-{{ release.version }}-{{ cloud_image_build }}.{{ arch.type }}.qcow2"
+  cloud_image_checksum: !unsafe "sha256:{{ cloud_image_base_url }}/CHECKSUM"
   disk_format: qcow2
   pup_filter: "'a text{}'"
   awk_filter: "-F- '/GenericCloud-.*[0-9]{8}/{ split($5,ver,\".\"); print ver[1] }'"
@@ -12,7 +13,6 @@ distros:
   - name: "9"
     version: "9.5"
     description: AlmaLinux 9.5 (Teal Serval) Cloud Image
-    cloud_image_checksum: !unsafe "sha256:{{ cloud_image_base_url }}/CHECKSUM"
     eos: May 2027
     eol: May 2032
     arch:
@@ -25,6 +25,47 @@ distros:
     description: AlmaLinux 8.10 (Cerulean Leopard) Cloud Image
     eos: May 2024
     eol: Mar 2029
+    arch:
+    - name: amd64
+      type: x86_64
+    - name: arm64
+      type: aarch64
+
+# https://alpinelinux.org/releases/
+- name: alpine
+  cloud_image_base_url: !unsafe "https://dl-cdn.alpinelinux.org/alpine/{{ release.name }}/releases/cloud"
+  cloud_image_url: !unsafe "{{ cloud_image_base_url }}/nocloud_alpine-{{ cloud_image_build }}-{{ arch.type }}-uefi-cloudinit-{{ release.revision }}.qcow2"
+  cloud_image_checksum: !unsafe "sha512:{{ cloud_image_url }}.sha512"
+  disk_format: qcow2
+  pup_filter: "'a attr{href}'"
+  awk_filter: "-F- '/^nocloud_alpine-.*-uefi-cloudinit-r0\\.qcow2$/{ print $2 }'"
+  # FIXME: how to automatically get latest revision?
+  releases:
+  - name: "v3.21"
+    version: "3.21"
+    revision: r0
+    description: Alpine Linux v3.21 Cloud Image
+    eos: Nov 2026
+    arch:
+    - name: amd64
+      type: x86_64
+    - name: arm64
+      type: aarch64
+  - name: "v3.20"
+    version: "3.20"
+    revision: r0
+    description: Alpine Linux v3.20 Cloud Image
+    eos: Apr 2026
+    arch:
+    - name: amd64
+      type: x86_64
+    - name: arm64
+      type: aarch64
+  - name: "v3.19"
+    version: "3.19"
+    revision: r0
+    description: Alpine Linux v3.19 Cloud Image
+    eos: Nov 2025
     arch:
     - name: amd64
       type: x86_64

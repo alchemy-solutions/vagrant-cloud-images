@@ -49,6 +49,7 @@
   changed_when: hcp_create_architecture.status == 200
 
 - name: Get Vagrant Box Registry download URL
+  when: not dryrun
   uri:
     url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_version }}/provider/{{ provider }}/architecture/{{ arch.name }}/download"
     method: GET
