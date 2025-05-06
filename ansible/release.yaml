@@ -24,7 +24,11 @@
   changed_when: hcp_create_box.status == 200
 
 - include_tasks: provider.yaml
-  when: "filter_arch is not defined or arch.name==filter_arch"
+  when:
+  - "release_availability is not defined or release_availability|to_iso8601 > ansible_date_time.iso8601"
+  - "filter_arch is not defined or arch.name==filter_arch"
   loop: "{{ release.arch }}"
   loop_control:
     loop_var: arch
+  vars:
+    release_availability: "{{ release.eol|default(release.eos|default(undefined)) }}"

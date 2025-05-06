@@ -17,14 +17,14 @@
   block:
   - name: Identify latest build
     shell: |
-      curl -fsSL {{ cloud_image_base_url }} | \
+      curl --max-time 5 --retry 3 -fsSL {{ cloud_image_base_url }} | \
       pup {{ distro.pup_filter }} | \
       awk {{ distro.awk_filter }} | \
       sort --unique -V | \
       tail -1
     changed_when: false
     register: last_build
-    retries: 5
+    retries: 3
     until: last_build.stdout != ""
 
   - name: Set build version

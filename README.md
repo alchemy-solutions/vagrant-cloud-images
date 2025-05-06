@@ -4,21 +4,24 @@ Purpose of this project is to provide [Vagrant Box images](https://app.vagrantup
 colud images of various GNU/Linux distributions with no modifications at
 all (or, at least, the minimum possible).
 
-| distribution | version | vagrant box | method | end of life |
-| ------------ | :-----: | ----------- | ------ | ----------- |
-| AlmaLinux | 9.5 | almalinux-9.5 | cloud-init injection | May 2032 |
-| AlmaLinux | 8.10 | almalinux-8.10 | cloud-init injection | Mar 2029 |
-| Debian | 12 | debian-12 | cloud-init injection | Jun 2028 |
-| Debian | 11 | debian-11 | cloud-init injection | Aug 2026 |
-| Fedora | 42 | fedora-42 | cloud-init injection | May 2026 |
-| Fedora | 41 | fedora-41 | cloud-init injection | Nov 2025 |
-| Fedora | 40 | fedora-40 | cloud-init injection | May 2025 |
-| Ubuntu | 24.04 | ubuntu-24.04 | cloud-init injection | Apr 2036 |
-| Ubuntu | 22.04 | ubuntu-22.04 | cloud-init injection | Apr 2034 |
-| Ubuntu | 20.04 | ubuntu-20.04 | cloud-init injection | Apr 2032 |
-| Ubuntu | 18.04 | ubuntu-18.04 | cloud-init injection | Apr 2030 |
-| Ubuntu | 16.04 | ubuntu-16.04 | cloud-init injection | Apr 2028 |
-| Ubuntu | 14.04 | ubuntu-14.04 | cloud-init injection | Apr 2026 |
+| distribution | version | vagrant box | end of life |
+| ------------ | :-----: | ----------- | ----------- |
+| AlmaLinux | 9.5 | almalinux-9.5 | May 2032 |
+| AlmaLinux | 8.10 | almalinux-8.10 | Mar 2029 |
+| Alpine Linux | 3.21 | alpine-3.21 | Nov 2026 |
+| Alpine Linux | 3.20 | alpine-3.20 | Apr 2026 |
+| Alpine Linux | 3.19 | alpine-3.19 | Nov 2025 |
+| Debian | 12 | debian-12 | Jun 2028 |
+| Debian | 11 | debian-11 | Aug 2026 |
+| Fedora | 42 | fedora-42 | May 2026 |
+| Fedora | 41 | fedora-41 | Nov 2025 |
+| Fedora | 40 | fedora-40 | May 2025 |
+| Ubuntu | 24.04 | ubuntu-24.04 | Apr 2036 |
+| Ubuntu | 22.04 | ubuntu-22.04 | Apr 2034 |
+| Ubuntu | 20.04 | ubuntu-20.04 | Apr 2032 |
+| Ubuntu | 18.04 | ubuntu-18.04 | Apr 2030 |
+| Ubuntu | 16.04 | ubuntu-16.04 | Apr 2028 |
+| Ubuntu | 14.04 | ubuntu-14.04 | Apr 2026 |
 
 ## cloud-init injection
 
