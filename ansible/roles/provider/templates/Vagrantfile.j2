@@ -1,6 +1,6 @@
 Vagrant.configure("2") do |config|
   config.vagrant.plugins = "vagrant-{{ provider }}"
-  config.vm.box = "{{ vagrant_cloud_user }}/{{ distro.name }}-{{ release.version }}"
+  config.vm.box = "{{ vagrant_cloud_user }}/{{ vagrant_box_name }}"
   config.vm.synced_folder ".", "/vagrant", disabled: true
 end
 

@@ -4,9 +4,13 @@
     content: |
       ---
       cloud_image_build: {{ release.cloud_image_build|default(distro.cloud_image_build|default('null')) }}
-      cloud_image_base_url: "{{ release.cloud_image_base_url|default(distro.cloud_image_base_url|default(None)) }}"
-      cloud_image_url: "{{ release.cloud_image_url|default(distro.cloud_image_url|default(None)) }}"
-      cloud_image_checksum: "{{ release.cloud_image_checksum|default(distro.cloud_image_checksum|default(None)) }}"
+      cloud_image_base_url: "{{ release.cloud_image_base_url|default(distro.cloud_image_base_url) }}"
+      cloud_image_file_name: "{{ release.cloud_image_file_name|default(distro.cloud_image_file_name) }}"
+      cloud_image_url: "{{ release.cloud_image_url|default(distro.cloud_image_url) }}"
+      cloud_image_checksum_type: "{{ release.cloud_image_checksum_type|default(distro.cloud_image_checksum_type|default(None)) }}"
+      cloud_image_checksum_url: "{{ release.cloud_image_checksum_url|default(distro.cloud_image_checksum_url|default(None)) }}"
+      pup_filter: "{{ (release.pup_filter|default(distro.pup_filter))|shell_escape() }}"
+      awk_filter: "{{ (release.awk_filter|default(distro.awk_filter))|shell_escape() }}"
     dest: "{{ build_path }}/distro.yaml"
   changed_when: false
 
@@ -18,8 +22,8 @@
   - name: Identify latest build
     shell: |
       curl --max-time 5 --retry 3 -fsSL {{ cloud_image_base_url }} | \
-      pup {{ distro.pup_filter }} | \
-      awk {{ distro.awk_filter }} | \
+      pup {{ pup_filter }} | \
+      awk {{ awk_filter }} | \
       sort --unique -V | \
       tail -1
     changed_when: false

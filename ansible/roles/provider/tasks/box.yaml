@@ -1,12 +1,33 @@
 ---
+- name: Download checksum {{ cloud_image_checksum_url }}
+  when:
+  - cloud_image_checksum_type
+  - cloud_image_checksum_url
+  uri:
+    url: "{{ cloud_image_checksum_url }}"
+    method: GET
+    return_content: true
+  register: cloud_checksum
+
+- debug:
+    var: cloud_image_file_name
+
+- name: Create checksum string
+  when: cloud_checksum is not skipped
+  set_fact:
+    cloud_image_checksum: "{{ cloud_image_checksum_type }}:{{ cloud_checksum.content|get_checksum(cloud_image_file_name) }}"
+
 - name: Download {{ cloud_image_url }}
   get_url:
     url: "{{ cloud_image_url }}"
     dest: "{{ cloud_image_path }}"
-    # FIXME: what about checksum with GPG?
     checksum: "{{ cloud_image_checksum|default(omit) }}"
+  register: download_image
   vars:
     ansible_remote_tmp: "{{ build_path }}"
+  retries: 3
+  delay: 1
+  until: download_image is success
 
 - name: Read disk image info
   command: qemu-img info --output=json {{ cloud_image_path }}

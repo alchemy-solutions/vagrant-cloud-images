@@ -1,7 +1,7 @@
 ---
-- name: Build {{ distro.name }}-{{ release.version }} releases
+- name: Build {{ distro.name }}-{{ release.code|default(release.version) }} releases
   set_fact:
-    vagrant_box_name: "{{ distro.name }}-{{ release.version }}"
+    vagrant_box_name: "{{ distro.name }}-{{ release.code|default(release.version) }}"
 
 - name: Refresh VAGRANT_CLOUD_TOKEN
   include_tasks: hcp.yaml

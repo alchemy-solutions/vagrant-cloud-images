@@ -4,24 +4,29 @@ Purpose of this project is to provide [Vagrant Box images](https://app.vagrantup
 colud images of various GNU/Linux distributions with no modifications at
 all (or, at least, the minimum possible).
 
-| distribution | version | vagrant box | end of life |
-| ------------ | :-----: | ----------- | ----------- |
-| AlmaLinux | 9.5 | almalinux-9.5 | May 2032 |
-| AlmaLinux | 8.10 | almalinux-8.10 | Mar 2029 |
-| Alpine Linux | 3.21 | alpine-3.21 | Nov 2026 |
-| Alpine Linux | 3.20 | alpine-3.20 | Apr 2026 |
-| Alpine Linux | 3.19 | alpine-3.19 | Nov 2025 |
-| Debian | 12 | debian-12 | Jun 2028 |
-| Debian | 11 | debian-11 | Aug 2026 |
-| Fedora | 42 | fedora-42 | May 2026 |
-| Fedora | 41 | fedora-41 | Nov 2025 |
-| Fedora | 40 | fedora-40 | May 2025 |
-| Ubuntu | 24.04 | ubuntu-24.04 | Apr 2036 |
-| Ubuntu | 22.04 | ubuntu-22.04 | Apr 2034 |
-| Ubuntu | 20.04 | ubuntu-20.04 | Apr 2032 |
-| Ubuntu | 18.04 | ubuntu-18.04 | Apr 2030 |
-| Ubuntu | 16.04 | ubuntu-16.04 | Apr 2028 |
-| Ubuntu | 14.04 | ubuntu-14.04 | Apr 2026 |
+| distribution | version | vagrant box | support |
+| ------------ | :-----: | ----------- | ------- |
+| AlmaLinux | 9 | cloud-image/almalinux-9 | May 2032 |
+| AlmaLinux | 8 | cloud-image/almalinux-8 | Mar 2029 |
+| Alpine Linux | 3.21 | cloud-image/alpine-3.21 | Nov 2026 |
+| Alpine Linux | 3.20 | cloud-image/alpine-3.20 | Apr 2026 |
+| Alpine Linux | 3.19 | cloud-image/alpine-3.19 | Nov 2025 |
+| CentOS Stream | 10 | cloud-image/centos-10-stream | Jan 2030 |
+| CentOS Stream | 9 | cloud-image/centos-9-stream | May 2027 |
+| CentOS Stream | 8 | cloud-image/centos-8-stream | Expired |
+| CentOS | 8 | cloud-image/centos-8 | Expired |
+| CentOS | 7 | cloud-image/centos-7 | Expired |
+| Debian | 12 | cloud-image/debian-12 | Jun 2028 |
+| Debian | 11 | cloud-image/debian-11 | Aug 2026 |
+| Fedora | 42 | cloud-image/fedora-42 | May 2026 |
+| Fedora | 41 | cloud-image/fedora-41 | Nov 2025 |
+| Fedora | 40 | cloud-image/fedora-40 | May 2025 |
+| Ubuntu | 24.04 | cloud-image/ubuntu-24.04 | Apr 2036 |
+| Ubuntu | 22.04 | cloud-image/ubuntu-22.04 | Apr 2034 |
+| Ubuntu | 20.04 | cloud-image/ubuntu-20.04 | Apr 2032 |
+| Ubuntu | 18.04 | cloud-image/ubuntu-18.04 | Apr 2030 |
+| Ubuntu | 16.04 | cloud-image/ubuntu-16.04 | Apr 2028 |
+| Ubuntu | 14.04 | cloud-image/ubuntu-14.04 | Apr 2026 |
 
 ## cloud-init injection
 

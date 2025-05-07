@@ -1,6 +1,6 @@
 ---
-vagrant_box_id: "{{ distro.name }}-{{ release.version }}-{{ arch.name }}"
-vagrant_box_file: "{{ distro.name }}-{{ release.version }}-{{ vagrant_version }}-{{ provider }}-{{ arch.name }}.box"
+vagrant_box_id: "{{ vagrant_box_name }}-{{ arch.name }}"
+vagrant_box_file: "{{ vagrant_box_name }}-{{ vagrant_version }}-{{ provider }}-{{ arch.name }}.box"
 vagrant_box_path: "{{ build_path }}/{{ vagrant_box_file }}"
 vagrant_disk_file: "box.img"
 vagrant_disk_format: "qcow2"

@@ -4,7 +4,7 @@ Create a minimal `Vagrantfile` file as follow:
 
 ```ruby
 Vagrant.configure("2") do |config|
-  config.vm.box = "{{ vagrant_cloud_user }}/{{ distro.name }}-{{ release.version }}"
+  config.vm.box = "{{ vagrant_cloud_user }}/{{ vagrant_box_name }}"
   config.vm.synced_folder ".", "/vagrant", disabled: true
 {% include 'templates/vagrant-' + distro.name + '.md.j2' ignore missing %}
 
