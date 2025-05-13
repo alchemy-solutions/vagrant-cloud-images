@@ -2,15 +2,17 @@
 distros:
 # https://endoflife.date/almalinux
 # https://wiki.almalinux.org/release-notes/
-- name: almalinux
+- name: AlmaLinux
+  code: almalinux
   cloud_image_base_url: !unsafe "https://repo.almalinux.org/almalinux/{{ release.name }}/cloud/{{ arch.type }}/images"
-  cloud_image_file_name: !unsafe "AlmaLinux-{{ release.name }}-GenericCloud-{{ cloud_image_build }}.{{ arch.type }}.qcow2"
+  cloud_image_file_name: !unsafe "AlmaLinux-{{ release.name }}-GenericCloud-{{ cloud_image_version }}.{{ arch.type }}.{{ distro.disk_format }}"
   cloud_image_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_file_name }}"
   cloud_image_checksum_type: sha256
   cloud_image_checksum_url: !unsafe "{{ cloud_image_base_url }}/CHECKSUM"
   disk_format: qcow2
   pup_filter: "'a text{}'"
   awk_filter: "-F- '/GenericCloud-.*[0-9]{8}/{ split($5,ver,\".\"); print $4 \"-\" ver[1] }'"
+  regex_version: ['AlmaLinux-\d+-\w+-([\d\.]+)-(\d+)\.\w+\.\w+', '\1.\2']
   releases:
   - name: "9"
     version: "9"
@@ -34,16 +36,17 @@ distros:
       type: aarch64
 
 # https://alpinelinux.org/releases/
-- name: alpine
+- name: Alpine Linux
+  code: alpine
   cloud_image_base_url: !unsafe "https://dl-cdn.alpinelinux.org/alpine/{{ release.name }}/releases/cloud"
-  cloud_image_file_name: !unsafe "nocloud_alpine-{{ cloud_image_build }}-{{ arch.type }}-uefi-cloudinit-{{ release.revision }}.qcow2"
+  cloud_image_file_name: !unsafe "nocloud_alpine-{{ cloud_image_version }}-{{ arch.type }}-uefi-cloudinit-{{ release.revision }}.{{ distro.disk_format }}"
   cloud_image_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_file_name }}"
   cloud_image_checksum_type: sha512
-  cloud_image_checksum_url: !unsafe "{{ cloud_image_url }}.sha512"
+  cloud_image_checksum_url: !unsafe "{{ cloud_image_url }}.{{ cloud_image_checksum_type }}"
   disk_format: qcow2
   pup_filter: "'a attr{href}'"
-  awk_filter: "-F- '/^nocloud_alpine-.*-uefi-cloudinit-r0\\.qcow2$/{ print $2 }'"
-  # FIXME: how to automatically get latest revision?
+  awk_filter: !unsafe "-F- '/^nocloud_alpine-.*-uefi-cloudinit-r.\\.{{ distro.disk_format }}$/{ split($6,ver,\".\"); print $2 \":\" ver[1] }'"
+  regex_version: ['nocloud_alpine-([\d\.]+)-\w+-\w+-\w+-(r\d+).\w+', '\1-\2']
   releases:
   - name: "v3.21"
     version: "3.21"
@@ -78,14 +81,16 @@ distros:
 
 # https://endoflife.date/centos-stream
 # https://cloud.centos.org/centos/
-- name: centos
+- name: CentOS
+  code: centos
   cloud_image_base_url: !unsafe "https://cloud.centos.org/centos/{{ release.code }}/{{ arch.type }}/images"
-  cloud_image_file_name: !unsafe "CentOS-Stream-GenericCloud-{{ release.version }}-{{ cloud_image_build }}.{{ arch.type }}.{{ distro.disk_format }}"
+  cloud_image_file_name: !unsafe "CentOS-Stream-GenericCloud-{{ release.version }}-{{ cloud_image_version }}.{{ arch.type }}.{{ distro.disk_format }}"
   cloud_image_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_file_name }}"
   cloud_image_checksum_url: !unsafe "{{ cloud_image_base_url }}/CHECKSUM"
   disk_format: qcow2
   pup_filter: "'a attr{href}'"
   awk_filter: !unsafe "-F- '/^CentOS-Stream-GenericCloud-{{ release.version }}-[0-9].*{{ distro.disk_format }}/{ split($5,ver,\".\"); print ver[1] \".\" ver[2] }'"
+  regex_version: ['\w+-\w+-\w+-\d+-(\d+\.\d+)\.\w+\.\w+', '\1']
   cloud_image_checksum_type: sha256
   releases:
   - name: "Stream 10"
@@ -124,10 +129,11 @@ distros:
     version: "8"
     description: CentOS 8
     cloud_image_base_url: !unsafe "https://cloud.centos.org/centos/{{ release.version }}/{{ arch.type }}/images"
-    cloud_image_file_name: !unsafe "CentOS-{{ release.version }}-GenericCloud-{{ cloud_image_build }}.{{ arch.type }}.{{ distro.disk_format }}"
+    cloud_image_file_name: !unsafe "CentOS-{{ release.version }}-GenericCloud-{{ cloud_image_version }}.{{ arch.type }}.{{ distro.disk_format }}"
     cloud_image_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_file_name }}"
     cloud_image_checksum_url: !unsafe "{{ cloud_image_base_url }}/CHECKSUM"
     awk_filter: "-F- '/^CentOS/{ split($5,ver,\".\"); print $4 \"-\" ver[1] \".\" ver[2] }'"
+    regex_version: ['\w+-\d+-\w+-([\d\.]+)-\d+\.\d+\.\w+\.\w+', '\1']
     arch:
     - name: amd64
       type: x86_64
@@ -139,11 +145,12 @@ distros:
     version: "7"
     description: CentOS 7
     cloud_image_base_url: !unsafe "https://cloud.centos.org/centos/{{ release.version }}/images"
-    cloud_image_file_name: !unsafe "CentOS-{{ release.version }}-{{ arch.type }}-GenericCloud-{{ cloud_image_build }}.{{ distro.disk_format }}"
+    cloud_image_file_name: !unsafe "CentOS-{{ release.version }}-{{ arch.type }}-GenericCloud-{{ cloud_image_version }}.{{ distro.disk_format }}"
     cloud_image_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_file_name }}"
     # Checksum file not updated... :(
     cloud_image_checksum_url: ""
     awk_filter: !unsafe "-F- '/^CentOS-{{ release.version }}-{{ arch.type }}-GenericCloud-[0-9]{4}\\.{{ distro.disk_format }}$/{ split($5,ver,\".\"); print ver[1] }'"
+    regex_version: ['\w+-\d+-\w+-\w+-(\d+)\.\w+', '\1']
     arch:
     - name: amd64
       type: x86_64
@@ -153,12 +160,13 @@ distros:
 
 # https://wiki.debian.org/LTS
 # https://cloud.debian.org/images/cloud/
-- name: debian
+- name: Debian
+  code: debian
   cloud_image_base_url: !unsafe "https://cloud.debian.org/images/cloud/{{ release.name }}"
-  cloud_image_file_name: !unsafe "{{ distro.name }}-{{ release.version }}-generic-{{ arch.type }}-{{ cloud_image_build }}.qcow2"
-  cloud_image_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_build }}/{{ cloud_image_file_name }}"
+  cloud_image_file_name: !unsafe "{{ distro.code }}-{{ release.version }}-generic-{{ arch.type }}-{{ cloud_image_version }}.{{ distro.disk_format }}"
+  cloud_image_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_version }}/{{ cloud_image_file_name }}"
   cloud_image_checksum_type: sha512
-  cloud_image_checksum_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_build }}/SHA512SUMS"
+  cloud_image_checksum_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_version }}/SHA512SUMS"
   disk_format: qcow2
   pup_filter: "'td.indexcolname text{}'"
   awk_filter: "-F/ '/[0-9]{8}-[0-9]{4}/{ print $1 }'"
@@ -183,20 +191,33 @@ distros:
       type: amd64
     - name: arm64
       type: arm64
+  - name: buster
+    version: "10"
+    description: Debian 10 (Buster) Cloud Image
+    eos: August 2022
+    eol: June 2024
+    arch:
+    - name: amd64
+      type: amd64
+    - name: arm64
+      type: arm64
 
 # https://fedorapeople.org/groups/schedule
 # https://fedoraproject.org/cloud/download
-- name: fedora
+- name: Fedora
+  code: fedora
   cloud_image_base_url: !unsafe "https://download.fedoraproject.org/pub/fedora/linux/releases/{{ release.name }}/Cloud/{{ arch.type }}/images"
-  cloud_image_file_name: !unsafe "Fedora-Cloud-Base-Generic-{{ release.name }}-{{ cloud_image_build }}.{{ arch.type }}.qcow2"
+  cloud_image_file_name: !unsafe "Fedora-Cloud-Base-Generic-{{ release.name }}-{{ cloud_image_version }}.{{ arch.type }}.{{ distro.disk_format }}"
   cloud_image_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_file_name }}"
   cloud_image_checksum_type: sha256
-  cloud_image_checksum_url: !unsafe "{{ cloud_image_base_url }}/Fedora-Cloud-{{ release.name }}-{{ cloud_image_build }}-{{ arch.type }}-CHECKSUM"
+  cloud_image_checksum_url: !unsafe "{{ cloud_image_base_url }}/Fedora-Cloud-{{ release.name }}-{{ cloud_image_version }}-{{ arch.type }}-CHECKSUM"
   disk_format: qcow2
   pup_filter: "'a attr{href}'"
   awk_filter: "-F- '/^Fedora.*CHECKSUM$/{ print $4 }'"
+  regex_version: ['Fedora-Cloud-Base-Generic-\d+-([\d\.]+)\.\w+\.\w+', '\1']
   releases:
   - name: "42"
+    code: "42"
     version: "42"
     description: Fedora 42 Cloud Image
     eol: May 2026
@@ -206,6 +227,7 @@ distros:
     - name: arm64
       type: aarch64
   - name: "41"
+    code: "41"
     version: "41"
     description: Fedora 41 Cloud Image
     eol: Nov 2025
@@ -215,10 +237,48 @@ distros:
     - name: arm64
       type: aarch64
   - name: "40"
+    code: "40"
     version: "40"
     description: Fedora 40 Cloud Image
     eol: May 2025
-    cloud_image_file_name: !unsafe "Fedora-Cloud-Base-Generic.{{ arch.type }}-{{ release.name }}-{{ cloud_image_build }}.qcow2"
+    cloud_image_file_name: !unsafe "Fedora-Cloud-Base-Generic.{{ arch.type }}-{{ release.name }}-{{ cloud_image_version }}.{{ distro.disk_format }}"
+    regex_version: ['Fedora-Cloud-Base-Generic.\w+-\d+-([\d\.]+)\.\w+', '\1']
+    arch:
+    - name: amd64
+      type: x86_64
+    - name: arm64
+      type: aarch64
+  - name: "39"
+    code: "39"
+    version: "39"
+    description: Fedora 39 Cloud Image
+    eol: November 2024
+    cloud_image_file_name: !unsafe "Fedora-Cloud-Base-{{ release.name }}-{{ cloud_image_version }}.{{ arch.type }}.{{ distro.disk_format }}"
+    regex_version: ['Fedora-Cloud-Base-\d+-([\d\.]+)\.\w+\.\w+', '\1']
+    arch:
+    - name: amd64
+      type: x86_64
+    - name: arm64
+      type: aarch64
+
+# https://download.opensuse.org/repositories/Cloud:/Images:/
+- name: openSUSE Leap
+  code: opensuse-leap
+  cloud_image_base_url: !unsafe "https://download.opensuse.org/repositories/Cloud:/Images:/Leap_{{ release.version }}/images"
+  cloud_image_file_name: !unsafe "openSUSE-Leap-{{ release.version }}.{{ arch.type }}-{{ cloud_image_version }}-NoCloud-{{ cloud_image_build }}.{{ distro.disk_format }}"
+  cloud_image_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_file_name }}"
+  cloud_image_checksum_type: sha256
+  cloud_image_checksum_url: !unsafe "{{ cloud_image_url }}.{{ cloud_image_checksum_type }}"
+  disk_format: qcow2
+  pup_filter: "'a text{}'"
+  awk_filter: !unsafe "-F- '/openSUSE-Leap-.*\\.aarch64-[0-9].*-NoCloud-.*\\.{{ distro.disk_format}}$/{ split($6,ver,\".\"); print $4 \":\" ver[1] \".\" ver[2] }'"
+  regex_version: ['openSUSE-Leap-\d+\.\d+.\w+-([\d\.]+)-NoCloud-Build\d+.(\d+).\w+', '\1-\2']
+  releases:
+  - name: "15.6"
+    code: "15.6"
+    version: "15.6"
+    description: openSUSE Leap 15.6 Cloud Image
+    eol: Dec 2025
     arch:
     - name: amd64
       type: x86_64
@@ -227,12 +287,13 @@ distros:
 
 # https://wiki.ubuntu.com/Releases
 # https://cloud-images.ubuntu.com
-- name: ubuntu
+- name: Ubuntu
+  code: ubuntu
   cloud_image_base_url: !unsafe "https://cloud-images.ubuntu.com/{{ release.name }}"
   cloud_image_file_name: !unsafe "{{ release.name }}-server-cloudimg-{{ arch.type }}.img"
-  cloud_image_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_build }}/{{ cloud_image_file_name }}"
+  cloud_image_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_version }}/{{ cloud_image_file_name }}"
   cloud_image_checksum_type: sha256
-  cloud_image_checksum_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_build }}/SHA256SUMS"
+  cloud_image_checksum_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_version }}/SHA256SUMS"
   disk_format: qcow2
   pup_filter: "'a text{}'"
   awk_filter: "-F/ '/[0-9]{8}\\.?[0-9]*/{ print $1 }'"
@@ -282,7 +343,7 @@ distros:
     description: Ubuntu 16.04 LTS (Xenial Xerus) Cloud Image
     eos: April 2021
     eol: April 2028
-    cloud_image_file_name: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_build }}/{{ release.name }}-server-cloudimg-{{ arch.type }}-disk1.img"
+    cloud_image_file_name: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_version }}/{{ release.name }}-server-cloudimg-{{ arch.type }}-disk1.img"
     arch:
     - name: amd64
       type: amd64
@@ -293,7 +354,7 @@ distros:
     description: Ubuntu 14.04 LTS (Trusty Tahr) Cloud Image
     eos: April 2019
     eol: April 2026
-    cloud_image_file_name: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_build }}/{{ release.name }}-server-cloudimg-{{ arch.type }}-disk1.img"
+    cloud_image_file_name: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_version }}/{{ release.name }}-server-cloudimg-{{ arch.type }}-disk1.img"
     arch:
     - name: amd64
       type: amd64

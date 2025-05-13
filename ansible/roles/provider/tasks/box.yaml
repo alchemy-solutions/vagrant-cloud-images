@@ -9,9 +9,6 @@
     return_content: true
   register: cloud_checksum
 
-- debug:
-    var: cloud_image_file_name
-
 - name: Create checksum string
   when: cloud_checksum is not skipped
   set_fact:

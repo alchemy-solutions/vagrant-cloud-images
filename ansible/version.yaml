@@ -3,7 +3,6 @@
   copy:
     content: |
       ---
-      cloud_image_build: {{ release.cloud_image_build|default(distro.cloud_image_build|default('null')) }}
       cloud_image_base_url: "{{ release.cloud_image_base_url|default(distro.cloud_image_base_url) }}"
       cloud_image_file_name: "{{ release.cloud_image_file_name|default(distro.cloud_image_file_name) }}"
       cloud_image_url: "{{ release.cloud_image_url|default(distro.cloud_image_url) }}"
@@ -17,32 +16,40 @@
 - name: Load templated vars
   include_vars: "{{ build_path }}/distro.yaml"
 
-- name: Set build version from URL
-  block:
-  - name: Identify latest build
-    shell: |
-      curl --max-time 5 --retry 3 -fsSL {{ cloud_image_base_url }} | \
-      pup {{ pup_filter }} | \
-      awk {{ awk_filter }} | \
-      sort --unique -V | \
-      tail -1
-    changed_when: false
-    register: last_build
-    retries: 3
-    until: last_build.stdout != ""
+- name: Identify latest version/build
+  shell: |
+    curl --max-time 5 --retry 3 -fsSL {{ cloud_image_base_url }} | \
+    pup {{ pup_filter }} | \
+    awk {{ awk_filter }} | \
+    sort --unique -V | \
+    tail -1
+  changed_when: false
+  register: last_build
+  retries: 3
+  until: last_build.stdout != ""
 
-  - name: Set build version
-    set_fact:
-      cloud_image_build: "{{ last_build.stdout }}"
-
-- name: Set Vagrant version
+- name: Set build version
   set_fact:
-    vagrant_version: "{{ ((cloud_image_build|replace('-','.')+'.0.0')|split('.'))[:3]|join('.') }}"
+    cloud_image_version: "{{ (last_build.stdout|split(':'))[0] }}"
+    cloud_image_build: "{{ (last_build.stdout|split(':'))[1]|default(None) }}"
+    regex_version: "{{ release.regex_version|default(distro.regex_version|default([])) }}"
+
+- name: Set Vagrant Box version
+  when: regex_version|length > 0
+  set_fact:
+    vagrant_box_version: "{{ ((vagrant_version+'.0.0')|split('.'))[:3]|join('.') }}"
+  vars:
+    vagrant_version: "{{ cloud_image_file_name|regex_replace(regex_version[0], regex_version[1]) }}"
+
+- name: Set Vagrant Box version
+  when: regex_version|length == 0
+  set_fact:
+    vagrant_box_version: "{{ ((cloud_image_version|replace('-','.')+'.0.0')|split('.'))[:3]|join('.') }}"
 
 - name: Refresh VAGRANT_CLOUD_TOKEN
   include_tasks: hcp.yaml
 
-- name: Create Vagrant Box Registry version {{ vagrant_version }}
+- name: Create Vagrant Box Registry version {{ vagrant_box_version }}
   when: not dryrun
   uri:
     url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/versions"
@@ -53,7 +60,7 @@
       Content-Type: application/json
       Authorization: "Bearer {{ vagrant_cloud_token }}"
     body:
-      name: "{{ vagrant_version }}"
+      name: "{{ vagrant_box_version }}"
   register: hcp_create_version
   changed_when: hcp_create_version.status == 200
 
@@ -63,10 +70,10 @@
 - name: Refresh VAGRANT_CLOUD_TOKEN
   include_tasks: hcp.yaml
 
-- name: Release Vagrant box version {{ vagrant_version }}
+- name: Release Vagrant Box version {{ vagrant_box_version }}
   when: not dryrun
   uri:
-    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_version }}/release"
+    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_box_version }}/release"
     method: PUT
     status_code: [200, 400]
     headers:
@@ -74,8 +81,3 @@
       Authorization: "Bearer {{ vagrant_cloud_token }}"
   register: hcp_release_version
   changed_when: hcp_release_version.status == 200
-
-- name: Delete templete vars
-  file:
-    path: "{{ build_path }}/distro.yaml"
-    state: absent

@@ -4,13 +4,7 @@
   set_fact:
     distros: "{{ distros|json_query(filter) }}"
   vars:
-    filter: "[?name=='{{ filter_distro }}']"
-
-#- name: Filter release name
-#  when: filter_release is defined
-#  set_fact:
-#    distros: "{{ distros|rejectattr(' }}"
-#  loop: "{{ distro }}"
+    filter: "[?name=='{{ filter_distro }}'||code=='{{ filter_distro }}']"
 
 - name: Filter from release name
   when: filter_release is defined
@@ -18,7 +12,7 @@
   - set_fact:
       new_distros: "{{ new_distros|default([]) + [distro|combine({'releases': distro.releases|json_query(filter)})] }}"
     vars:
-      filter: "[?name=='{{ filter_release }}']"
+      filter: "[?name=='{{ filter_release }}'||code=='{{ filter_release }}']"
     loop: "{{ distros }}"
     loop_control:
       loop_var: distro
@@ -40,6 +34,4 @@
       loop_var: distro
 
   - set_fact:
-      distros: "{{ new_distros|json_query(filter) }}"
-    vars:
-      filter: "[?releases]"
+      distros: "{{ new_distros|json_query('[?releases]') }}"
