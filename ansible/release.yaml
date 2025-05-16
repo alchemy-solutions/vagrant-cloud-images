@@ -1,7 +1,7 @@
 ---
-- name: Build {{ distro.name }}-{{ release.code|default(release.version) }} releases
+- name: Build {{ distro.code }}-{{ release.code|default(release.version) }} releases
   set_fact:
-    vagrant_box_name: "{{ distro.name }}-{{ release.code|default(release.version) }}"
+    vagrant_box_name: "{{ distro.code }}-{{ release.code|default(release.version) }}"
 
 - name: Refresh VAGRANT_CLOUD_TOKEN
   include_tasks: hcp.yaml
@@ -23,12 +23,25 @@
   failed_when: hcp_create_box.status not in [200, 409]
   changed_when: hcp_create_box.status == 200
 
+- name: Skipping expired release in {{ release_availability }}
+  when:
+  - not expired
+  - release_availability is defined
+  set_fact:
+    release_expred: "{{ release_availability|to_iso8601 < ansible_date_time.iso8601 }}"
+  vars:
+    release_availability: "{{ release.eol|default(release.eos|default(undefined)) }}"
+
+- name: Build expired releases
+  when:
+  - expired
+  set_fact:
+    release_expred: false
+
 - include_tasks: provider.yaml
   when:
-  - "release_availability is not defined or release_availability|to_iso8601 > ansible_date_time.iso8601"
-  - "filter_arch is not defined or arch.name==filter_arch"
+  - not release_expred|default(false)
+  - filter_arch is not defined or arch.name==filter_arch or arch.type==filter_arch
   loop: "{{ release.arch }}"
   loop_control:
     loop_var: arch
-  vars:
-    release_availability: "{{ release.eol|default(release.eos|default(undefined)) }}"

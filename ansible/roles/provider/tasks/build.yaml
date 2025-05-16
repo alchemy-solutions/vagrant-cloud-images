@@ -2,10 +2,10 @@
 - name: Refresh VAGRANT_CLOUD_TOKEN
   include_tasks: hcp.yaml
 
-- name: Updating Vagrant Cloud box version {{ vagrant_version }}
+- name: Updating Vagrant Cloud box version {{ vagrant_box_version }}
   when: not dryrun
   uri:
-    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_version }}"
+    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_box_version }}"
     method: PUT
     body_format: json
     headers:
@@ -20,7 +20,7 @@
 - name: Create Vagrant Box Registry provider {{ provider }}
   when: not dryrun
   uri:
-    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_version }}/providers"
+    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_box_version }}/providers"
     method: POST
     body_format: json
     status_code: [200, 409]
@@ -35,7 +35,7 @@
 - name: Create Vagrant Box Registry architecture {{ arch.name }}
   when: not dryrun
   uri:
-    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_version }}/provider/{{ provider }}/architectures"
+    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_box_version }}/provider/{{ provider }}/architectures"
     method: POST
     body_format: json
     return_content: true
@@ -51,7 +51,7 @@
 - name: Get Vagrant Box Registry download URL
   when: not dryrun
   uri:
-    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_version }}/provider/{{ provider }}/architecture/{{ arch.name }}/download"
+    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_box_version }}/provider/{{ provider }}/architecture/{{ arch.name }}/download"
     method: GET
     body_format: json
     return_content: true
@@ -81,7 +81,7 @@
 - name: Get Vagrant Cloud object store URL
   when: not dryrun
   uri:
-    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_version }}/provider/{{ provider }}/architecture/{{ arch.name }}/upload"
+    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_box_version }}/provider/{{ provider }}/architecture/{{ arch.name }}/upload"
     return_content: true
     method: GET
     headers:

@@ -3,7 +3,13 @@ dryrun: false
 create: "{{ not dryrun }}"
 update: "{{ not dryrun }}"
 upload: "{{ not dryrun }}"
+build: "{{ not dryrun }}"
+
+# Preserve ./build working directory
 preserve: false
+
+# Build expired releases (EOS/EOL)
+expired: false
 
 build_path: "{{ playbook_dir }}/../build"
 log_path: "{{ build_path }}/build-{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}.log"

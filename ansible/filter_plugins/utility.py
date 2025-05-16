@@ -52,7 +52,12 @@ class FilterModule(object):
                 "Checksum algorithm '%s' not supported" % algorithm)
         lines = text.splitlines()
         lines = [line for line in lines if not line.startswith('#')]
-        if filename:
+        re_chk = [
+            re.compile(r'\w+\s+\(\S+\)\s+=\s+([0-9a-fA-F]+)'),  # BSD
+            re.compile(r'([0-9a-fA-F]+)\s+\S+'),  # GNU
+            re.compile(r'([0-9a-fA-F]+)')
+        ]
+        if len(lines) > 1 and filename:
             lines = [
                 line for line in lines
                 if re.search(r'\b' + filename + r'\b', line)]
@@ -60,12 +65,6 @@ class FilterModule(object):
             raise AnsibleFilterError("No checksum found")
         if len(lines) != 1:
             raise AnsibleFilterError("Multiple checksums found")
-        re_chk = [
-            re.compile(r'\w+\s+\(\S+\)\s+=\s+([0-9a-fA-F]+)'),  # BSD
-            re.compile(r'([0-9a-fA-F]+)\s+\S+'),  # GNU
-            re.compile(r'([0-9a-fA-F]+)')
-        ]
-        checksum = None
         for chk in re_chk:
             if match := chk.fullmatch(lines[0]):
                 return match.group(1)

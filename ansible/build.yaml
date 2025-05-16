@@ -1,0 +1,54 @@
+---
+- name: Set build version
+  set_fact:
+    cloud_image_version: "{{ (last_build.stdout|split(':'))[0] }}"
+    cloud_image_build: "{{ (last_build.stdout|split(':'))[1]|default(None) }}"
+    regex_version: "{{ release.regex_version|default(distro.regex_version|default([])) }}"
+
+- name: Set Vagrant Box version
+  when: regex_version|length > 0
+  set_fact:
+    vagrant_box_version: "{{ ((vagrant_version+'.0.0')|split('.'))[:3]|join('.') }}"
+  vars:
+    vagrant_version: "{{ cloud_image_file_name|regex_replace(regex_version[0], regex_version[1]) }}"
+
+- name: Set Vagrant Box version
+  when: regex_version|length == 0
+  set_fact:
+    vagrant_box_version: "{{ ((cloud_image_version|replace('-','.')+'.0.0')|split('.'))[:3]|join('.') }}"
+
+- name: Refresh VAGRANT_CLOUD_TOKEN
+  include_tasks: hcp.yaml
+
+- name: Create Vagrant Box Registry version {{ vagrant_box_version }}
+  when: not dryrun
+  uri:
+    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/versions"
+    method: POST
+    body_format: json
+    status_code: [200, 409]
+    headers:
+      Content-Type: application/json
+      Authorization: "Bearer {{ vagrant_cloud_token }}"
+    body:
+      name: "{{ vagrant_box_version }}"
+  register: hcp_create_version
+  changed_when: hcp_create_version.status == 200
+
+- include_role:
+    name: "{{ provider }}"
+
+- name: Refresh VAGRANT_CLOUD_TOKEN
+  include_tasks: hcp.yaml
+
+- name: Release Vagrant Box version {{ vagrant_box_version }}
+  when: not dryrun
+  uri:
+    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_box_version }}/release"
+    method: PUT
+    status_code: [200, 400]
+    headers:
+      Content-Type: application/json
+      Authorization: "Bearer {{ vagrant_cloud_token }}"
+  register: hcp_release_version
+  changed_when: hcp_release_version.status == 200

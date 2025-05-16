@@ -6,12 +6,6 @@
   - name: Prechecks
     include_tasks: prechecks.yaml
 
-  - name: Create build directory
-    file:
-      path: "{{ build_path }}"
-      state: directory
-      mode: '0755'
-
   - name: Load distros data
     include_vars: "../distros.yaml"
 
@@ -25,9 +19,3 @@
     loop: "{{ distros }}"
     loop_control:
       loop_var: distro
-
-  - name: Remove build directory
-    when: not preserve
-    file:
-      path: "{{ build_path }}"
-      state: absent
