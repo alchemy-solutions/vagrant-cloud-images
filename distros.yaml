@@ -343,7 +343,7 @@ distros:
     description: Ubuntu 16.04 LTS (Xenial Xerus) Cloud Image
     eos: April 2021
     eol: April 2028
-    cloud_image_file_name: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_version }}/{{ release.name }}-server-cloudimg-{{ arch.type }}-disk1.img"
+    cloud_image_file_name: !unsafe "{{ release.name }}-server-cloudimg-{{ arch.type }}-disk1.img"
     arch:
     - name: amd64
       type: amd64
@@ -354,7 +354,7 @@ distros:
     description: Ubuntu 14.04 LTS (Trusty Tahr) Cloud Image
     eos: April 2019
     eol: April 2026
-    cloud_image_file_name: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_version }}/{{ release.name }}-server-cloudimg-{{ arch.type }}-disk1.img"
+    cloud_image_file_name: !unsafe "{{ release.name }}-server-cloudimg-{{ arch.type }}-disk1.img"
     arch:
     - name: amd64
       type: amd64
