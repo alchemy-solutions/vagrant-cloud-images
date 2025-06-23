@@ -116,8 +116,12 @@
     password: "{{ mail_password }}"
     from: "{{ mail_from }}"
     to: "{{ mail_to }}"
-    subject: "A new Vagrant Box has been uploaded"
+    subject: "A new {{ distro.name }} {{ release.name }} Vagrant Box has been uploaded"
     body: |
+      Distro: {{ distro.name }}
+      Release: {{ release.name }}
+      Provider: {{ provider }}
+      Architecture: {{ arch.name }}
       Cloud image: {{ cloud_image_file_name }}
       Cloud version: {{ cloud_image_version }}
       Cloud build: {{ cloud_image_build|default("none") }}
@@ -128,6 +132,10 @@
   when: dryrun
   debug:
     msg: |
+      Distro: {{ distro.name }}
+      Release: {{ release.name }}
+      Provider: {{ provider }}
+      Architecture: {{ arch.name }}
       Cloud image: {{ cloud_image_file_name }}
       Cloud version: {{ cloud_image_version }}
       Cloud build: {{ cloud_image_build|default("none") }}

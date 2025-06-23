@@ -1,14 +1,12 @@
 ---
 - name: Show information summary
   debug:
-    var: data
-  vars:
-    data:
-      cloud_image_file_name: "{{ cloud_image_file_name }}"
-      cloud_image_version: "{{ cloud_image_version }}"
-      cloud_image_build: "{{ cloud_image_build|default(omit) }}"
-      vagrant_box_file: "{{ vagrant_box_file }}"
-      vagrant_box_version: "{{ vagrant_box_version }}"
+    msg: |
+      Cloud image: {{ cloud_image_file_name }}
+      Cloud version: {{ cloud_image_version }}
+      Cloud build: {{ cloud_image_build|default("none") }}
+      Vagrant Box file: {{ vagrant_box_file }}
+      Vagrant Box version: {{ vagrant_box_version }}
 
 - name: Build Vagrant Box {{ vagrant_box_file }}
   when: build
