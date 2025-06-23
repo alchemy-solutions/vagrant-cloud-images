@@ -100,6 +100,23 @@
   delay: 5
   until: not hcp_upload_box.failed
 
+- name: Alert new Vagrant Box uploaded
+  when: mail_password is defined
+  community.general.mail:
+    host: "{{ smtp_server }}"
+    port: "{{ smtp_port|int }}"
+    username: "{{ mail_username }}"
+    password: "{{ mail_password }}"
+    from: "{{ mail_from }}"
+    to: "{{ mail_to }}"
+    subject: "A new Vagrant Box has been uploaded"
+    body: |
+      Cloud image: {{ cloud_image_file_name }}
+      Cloud version: {{ cloud_image_version }}
+      Cloud build: {{ cloud_image_build|default("none") }}
+      Vagrant Box file: {{ vagrant_box_file }}
+      Vagrant Box version: {{ vagrant_box_version }}
+
 - name: Cleanup build directory
   when: not preserve
   file:

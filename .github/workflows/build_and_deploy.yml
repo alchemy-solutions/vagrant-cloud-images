@@ -34,6 +34,12 @@ jobs:
         go install github.com/ericchiang/pup@latest
     - name: Build images
       env:
-        VAGRANT_CLOUD_TOKEN: ${{steps.hcp_auth.outputs.access_token}}
+        MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+        MAIL_USERNAME: ${{ vars.MAIL_USERNAME }}
+        MAIL_FROM: ${{ vars.MAIL_FROM }}
+        MAIL_TO: ${{ vars.MAIL_TO }}
+        SMTP_SERVER: ${{ vars.SMTP_SERVER }}
+        SMTP_PORT: ${{ vars.SMTP_PORT }}
+        VAGRANT_CLOUD_TOKEN: ${{ steps.hcp_auth.outputs.access_token }}
       run: |
         ansible-playbook -e guestfs=guestmount ansible/site.yaml
