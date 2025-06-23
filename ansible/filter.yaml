@@ -4,7 +4,7 @@
   set_fact:
     distros: "{{ distros|json_query(filter) }}"
   vars:
-    filter: "[?name=='{{ filter_distro }}'||code=='{{ filter_distro }}']"
+    filter: "[?starts_with(name,'{{ filter_distro }}')||starts_with(code,'{{ filter_distro }}')]"
 
 - name: Filter from release name
   when: filter_release is defined

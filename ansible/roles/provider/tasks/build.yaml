@@ -100,8 +100,15 @@
   delay: 5
   until: not hcp_upload_box.failed
 
-- name: Alert new Vagrant Box uploaded
-  when: mail_password is defined
+- name: Alert new {{ distro.name }} {{ release.name }} Vagrant Box uploaded
+  when:
+  - not dryrun
+  - mail_username is defined
+  - mail_password is defined
+  - mail_from is defined
+  - mail_to is defined
+  - smtp_server is defined
+  - smtp_port is defined
   community.general.mail:
     host: "{{ smtp_server }}"
     port: "{{ smtp_port|int }}"
@@ -111,6 +118,16 @@
     to: "{{ mail_to }}"
     subject: "A new Vagrant Box has been uploaded"
     body: |
+      Cloud image: {{ cloud_image_file_name }}
+      Cloud version: {{ cloud_image_version }}
+      Cloud build: {{ cloud_image_build|default("none") }}
+      Vagrant Box file: {{ vagrant_box_file }}
+      Vagrant Box version: {{ vagrant_box_version }}
+
+- name: Alert new {{ distro.name }} {{ release.name }} Vagrant Box uploaded
+  when: dryrun
+  debug:
+    msg: |
       Cloud image: {{ cloud_image_file_name }}
       Cloud version: {{ cloud_image_version }}
       Cloud build: {{ cloud_image_build|default("none") }}

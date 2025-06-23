@@ -272,7 +272,7 @@ distros:
   disk_format: qcow2
   pup_filter: "'a text{}'"
   awk_filter: !unsafe "-F- '/openSUSE-Leap-.*\\.aarch64-[0-9].*-NoCloud-.*\\.{{ distro.disk_format}}$/{ split($6,ver,\".\"); print $4 \":\" ver[1] \".\" ver[2] }'"
-  regex_version: ['openSUSE-Leap-\d+\.\d+.\w+-([\d\.]+)-NoCloud-Build\d+.(\d+).\w+', '\1-\2']
+  regex_version: ['openSUSE-Leap-(\d+)\.(\d+)\.\w+-[\d\.]+-NoCloud-Build\d+.(\d+).\w+', '\1.\2.\3']
   releases:
   - name: "15.6"
     code: "15.6"
