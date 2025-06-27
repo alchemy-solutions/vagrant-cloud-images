@@ -1,17 +1,40 @@
 ---
-- name: Create build directory
-  file:
-    path: "{{ build_path }}"
-    state: directory
-    mode: '0755'
+- name: Attempt build {{ distro.name }}
+  block:
+  - name: Create build directory
+    file:
+      path: "{{ build_path }}"
+      state: directory
+      mode: '0755'
+  - include_tasks: release.yaml
+    loop: "{{ distro.releases }}"
+    loop_control:
+      loop_var: release
 
-- include_tasks: release.yaml
-  loop: "{{ distro.releases }}"
-  loop_control:
-    loop_var: release
+  rescue:
+  - name: Failed build {{ distro.name }}
+    when:
+    - mail_username is defined
+    - mail_password is defined
+    - mail_from is defined
+    - mail_to is defined
+    - smtp_server is defined
+    - smtp_port is defined
+    community.general.mail:
+      host: "{{ smtp_server }}"
+      port: "{{ smtp_port|int }}"
+      username: "{{ mail_username }}"
+      password: "{{ mail_password }}"
+      from: "{{ mail_from }}"
+      to: "{{ mail_to }}"
+      subject: "Failed build {{ distro.name }}"
+      body: |
+        Failed task: {{ ansible_failed_task }}
+        Task error: {{ansible_failed_result}}
 
-- name: Remove build directory
-  when: not preserve
-  file:
-    path: "{{ build_path }}"
-    state: absent
+  always:
+  - name: Remove build directory
+    when: not preserve
+    file:
+      path: "{{ build_path }}"
+      state: absent

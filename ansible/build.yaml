@@ -8,14 +8,17 @@
 - name: Set Vagrant Box version
   when: regex_version|length > 0
   set_fact:
-    vagrant_box_version: "{{ ((vagrant_version+'.0.0')|split('.'))[:3]|join('.') }}"
-  vars:
-    vagrant_version: "{{ cloud_image_file_name|regex_replace(regex_version[0], regex_version[1]) }}"
+    vagrant_box_version: "{{ cloud_image_file_name|regex_replace(regex_version[0], regex_version[1]) }}"
 
 - name: Set Vagrant Box version
   when: regex_version|length == 0
   set_fact:
-    vagrant_box_version: "{{ ((cloud_image_version|replace('-','.')+'.0.0')|split('.'))[:3]|join('.') }}"
+    vagrant_box_version: "{{ cloud_image_version|replace('-','.') }}"
+
+- name: Check Vagrant Box version
+  when: vagrant_box_version|split('.')|length < 3
+  set_fact:
+    vagrant_box_version: "{{ ((vagrant_box_version+'.0.0')|split('.'))[:3]|join('.') }}"
 
 - name: Refresh VAGRANT_CLOUD_TOKEN
   include_tasks: hcp.yaml

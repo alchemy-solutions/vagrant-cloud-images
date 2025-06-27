@@ -10,10 +10,21 @@ distros:
   cloud_image_checksum_type: sha256
   cloud_image_checksum_url: !unsafe "{{ cloud_image_base_url }}/CHECKSUM"
   disk_format: qcow2
-  pup_filter: "'a text{}'"
-  awk_filter: "-F- '/GenericCloud-.*[0-9]{8}/{ split($5,ver,\".\"); print $4 \"-\" ver[1] }'"
-  regex_version: ['AlmaLinux-\d+-\w+-([\d\.]+)-(\d+)\.\w+\.\w+', '\1.\2']
+  pup_filter: "'a attr{href}'"
+  #awk_filter: "-F- '/GenericCloud-.*[0-9]{8}/{ split($5,ver,\".\"); print $4 \"-\" ver[1] }'"
+  awk_filter: "-F- '/GenericCloud-.*[0-9]{8}/{ sub(\"\\.[[:alpha:]].*\",X,$5); print $4 \"-\" $5}'"
+  regex_version: ['AlmaLinux-\d+-\w+-([\d\.]+)-([\d\.]+)\.\w+\.\w+', '\1.\2']
   releases:
+  - name: "10"
+    version: "10"
+    description: AlmaLinux 10 Cloud Image
+    eos: May 2030
+    eol: May 2035
+    arch:
+    - name: amd64
+      type: x86_64
+    - name: arm64
+      type: aarch64
   - name: "9"
     version: "9"
     description: AlmaLinux 9 Cloud Image
@@ -48,6 +59,16 @@ distros:
   awk_filter: !unsafe "-F- '/^nocloud_alpine-.*-uefi-cloudinit-r.\\.{{ distro.disk_format }}$/{ split($6,ver,\".\"); print $2 \":\" ver[1] }'"
   regex_version: ['nocloud_alpine-([\d\.]+)-\w+-\w+-\w+-(r\d+).\w+', '\1-\2']
   releases:
+  - name: "v3.22"
+    version: "3.22"
+    revision: r0
+    description: Alpine Linux v3.22 Cloud Image
+    eos: May 2027
+    arch:
+    - name: amd64
+      type: x86_64
+    - name: arm64
+      type: aarch64
   - name: "v3.21"
     version: "3.21"
     revision: r0
