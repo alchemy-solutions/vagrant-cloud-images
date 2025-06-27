@@ -29,8 +29,11 @@
       to: "{{ mail_to }}"
       subject: "Failed build {{ distro.name }}"
       body: |
-        Failed task: {{ ansible_failed_task }}
-        Task error: {{ansible_failed_result}}
+        Failed task:
+        {{ ansible_failed_task|to_yaml(indent=4) }}
+
+        Task error:
+        {{ ansible_failed_result|to_yaml(indent=4) }}
 
   always:
   - name: Remove build directory
