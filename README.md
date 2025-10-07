@@ -18,6 +18,7 @@ all (or, at least, the minimum possible).
 | CentOS Stream | 8 | cloud-image/centos-8-stream | Expired |
 | CentOS | 8 | cloud-image/centos-8 | Expired |
 | CentOS | 7 | cloud-image/centos-7 | Expired |
+| Debian | 13 | cloud-image/debian-13 | Aug 2030 |
 | Debian | 12 | cloud-image/debian-12 | Jun 2028 |
 | Debian | 11 | cloud-image/debian-11 | Aug 2026 |
 | Fedora | 42 | cloud-image/fedora-42 | May 2026 |

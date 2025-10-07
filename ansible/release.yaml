@@ -23,20 +23,12 @@
   failed_when: hcp_create_box.status not in [200, 409]
   changed_when: hcp_create_box.status == 200
 
-- name: Skipping expired release in {{ release_availability }}
-  when:
-  - not expired
-  - release_availability is defined
+- name: Check expired release in {{ release_availability }}
+  when: release_availability is defined
   set_fact:
-    release_expred: "{{ release_availability|to_iso8601 < ansible_date_time.iso8601 }}"
+    release_expred: "{{ not expired|bool and release_availability|to_iso8601 < ansible_date_time.iso8601 }}"
   vars:
     release_availability: "{{ release.eol|default(release.eos|default(undefined)) }}"
-
-- name: Build expired releases
-  when:
-  - expired
-  set_fact:
-    release_expred: false
 
 - include_tasks: provider.yaml
   when:
