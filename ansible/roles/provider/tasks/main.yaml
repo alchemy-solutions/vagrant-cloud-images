@@ -9,5 +9,5 @@
       Vagrant Box version: {{ vagrant_box_version }}
 
 - name: Build Vagrant Box {{ vagrant_box_file }}
-  when: build
+  when: build|bool
   include_tasks: build.yaml

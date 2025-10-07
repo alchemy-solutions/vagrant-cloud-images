@@ -1,8 +1,8 @@
 ---
 - name: Download checksum {{ cloud_image_checksum_url }}
   when:
-  - cloud_image_checksum_type
-  - cloud_image_checksum_url
+  - cloud_image_checksum_type != None
+  - cloud_image_checksum_url != None
   uri:
     url: "{{ cloud_image_checksum_url }}"
     method: GET

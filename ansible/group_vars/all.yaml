@@ -1,9 +1,10 @@
 ---
+verbose: false
 dryrun: false
-create: "{{ not dryrun }}"
-update: "{{ not dryrun }}"
-upload: "{{ not dryrun }}"
-build: "{{ not dryrun }}"
+create: "{{ not dryrun|bool }}"
+update: "{{ not dryrun|bool }}"
+upload: "{{ not dryrun|bool }}"
+build: "{{ not dryrun|bool }}"
 
 # Preserve ./build working directory
 preserve: false

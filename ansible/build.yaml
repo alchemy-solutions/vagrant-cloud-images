@@ -24,7 +24,7 @@
   include_tasks: hcp.yaml
 
 - name: Create Vagrant Box Registry version {{ vagrant_box_version }}
-  when: not dryrun
+  when: not dryrun|bool
   uri:
     url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/versions"
     method: POST
@@ -45,7 +45,7 @@
   include_tasks: hcp.yaml
 
 - name: Release Vagrant Box version {{ vagrant_box_version }}
-  when: not dryrun
+  when: not dryrun|bool
   uri:
     url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_box_version }}/release"
     method: PUT

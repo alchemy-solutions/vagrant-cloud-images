@@ -2,8 +2,10 @@
 - name: Refresh VAGRANT_CLOUD_TOKEN
   when: not lookup('env', 'VAGRANT_CLOUD_TOKEN')
   block:
-  - command: hcp auth print-access-token
+  - name: Get access token from HCP
+    command: hcp auth print-access-token
     register: hcp_auth
 
-  - set_fact:
+  - name: Store HCP access token
+    set_fact:
       vagrant_cloud_token: "{{ hcp_auth.stdout }}"

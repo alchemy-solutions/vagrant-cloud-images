@@ -7,7 +7,7 @@
   include_tasks: hcp.yaml
 
 - name: Create Vagrant Box Registry for {{ vagrant_box_name }}
-  when: not dryrun
+  when: not dryrun|bool
   uri:
     url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/boxes"
     method: POST

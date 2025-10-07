@@ -44,4 +44,4 @@ jobs:
         SMTP_PORT: ${{ vars.SMTP_PORT }}
         VAGRANT_CLOUD_TOKEN: ${{ steps.hcp_auth.outputs.access_token }}
       run: |
-        ansible-playbook -e guestfs=guestmount ansible/site.yaml
+        ansible-playbook -e guestfs=guestmount -e verbose=true ansible/site.yaml

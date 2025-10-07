@@ -3,7 +3,7 @@
   include_tasks: hcp.yaml
 
 - name: Updating Vagrant Cloud box version {{ vagrant_box_version }}
-  when: not dryrun
+  when: not dryrun|bool
   uri:
     url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_box_version }}"
     method: PUT
@@ -18,7 +18,7 @@
   changed_when: hcp_update_version.status == 200
 
 - name: Create Vagrant Box Registry provider {{ provider }}
-  when: not dryrun
+  when: not dryrun|bool
   uri:
     url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_box_version }}/providers"
     method: POST
@@ -33,7 +33,7 @@
   changed_when: hcp_create_provider.status == 200
 
 - name: Create Vagrant Box Registry architecture {{ arch.name }}
-  when: not dryrun
+  when: not dryrun|bool
   uri:
     url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_box_version }}/provider/{{ provider }}/architectures"
     method: POST
@@ -49,7 +49,7 @@
   changed_when: hcp_create_architecture.status == 200
 
 - name: Get Vagrant Box Registry download URL
-  when: not dryrun
+  when: not dryrun|bool
   uri:
     url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_box_version }}/provider/{{ provider }}/architecture/{{ arch.name }}/download"
     method: GET
@@ -63,14 +63,17 @@
 
 - name: Check if Vagrant Box Registry is already present
   when:
-  - not dryrun
+  - not dryrun|bool
   - hcp_download_box.status == 200
   meta: end_role
 
-- include_tasks: box.yaml
-  when: vagrant_box_exists == ''
-  vars:
-    vagrant_box_exists: "{{ lookup('first_found', files=[vagrant_box_path], errors='ignore') }}"
+- name: Check for already built {{ vagrant_box_file }}
+  set_fact:
+    vagrant_box_exists: "{{ lookup('first_found', files=[vagrant_box_path], errors='ignore') != None }}"
+
+- name: Build {{ vagrant_box_file }}
+  when: not vagrant_box_exists
+  include_tasks: box.yaml
 
 - name: Read Vagrant Box stats
   stat:
@@ -78,8 +81,12 @@
     get_checksum: false
   register: vagrant_box
 
+- debug:
+    var: vagrant_box
+  when: verbose|bool
+
 - name: Get Vagrant Cloud object store URL
-  when: not dryrun
+  when: not dryrun|bool
   uri:
     url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_box_version }}/provider/{{ provider }}/architecture/{{ arch.name }}/upload"
     return_content: true
@@ -90,7 +97,7 @@
   register: vagrant_box_url
 
 - name: Upload Vagrant Box {{ vagrant_box_file }} ({{ vagrant_box.stat.size|human_readable }})
-  when: not dryrun
+  when: not dryrun|bool
   uri:
     url: "{{ vagrant_box_url.json.url }}"
     method: PUT
@@ -102,7 +109,7 @@
 
 - name: Alert new {{ distro.name }} {{ release.name }} Vagrant Box uploaded
   when:
-  - not dryrun
+  - not dryrun|bool
   - mail_username is defined
   - mail_password is defined
   - mail_from is defined
@@ -129,7 +136,7 @@
       Vagrant Box version: {{ vagrant_box_version }}
 
 - name: Alert new {{ distro.name }} {{ release.name }} Vagrant Box uploaded
-  when: dryrun
+  when: dryrun|bool
   debug:
     msg: |
       Distro: {{ distro.name }}

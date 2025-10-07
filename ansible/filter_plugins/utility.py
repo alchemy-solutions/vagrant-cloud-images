@@ -30,7 +30,7 @@ class FilterModule(object):
                 month += 2
         except Exception as e:
             raise AnsibleFilterError(
-                "Date string '%s' does not respect compact form (e.g. 'Oct 1974')"
+                "Date string '%s' does not respect compact form 'MMM YYYY' (e.g. 'Oct 1974')"
                 % str_date)
         return f"{year}-{month:02}-00T00:00:00Z"
 
