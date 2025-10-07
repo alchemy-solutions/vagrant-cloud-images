@@ -192,6 +192,16 @@ distros:
   pup_filter: "'td.indexcolname text{}'"
   awk_filter: "-F/ '/[0-9]{8}-[0-9]{4}/{ print $1 }'"
   releases:
+  - name: trixie
+    version: "13"
+    description: Debian 13 (Trixie) Cloud Image
+    eos: August 2028
+    eol: August 2030
+    arch:
+    - name: amd64
+      type: amd64
+    - name: arm64
+      type: arm64
   - name: bookworm
     version: "12"
     description: Debian 12 (Bookworm) Cloud Image
