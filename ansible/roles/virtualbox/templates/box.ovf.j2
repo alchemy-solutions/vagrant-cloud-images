@@ -37,12 +37,12 @@
       </Item>
       <Item>
         <rasd:AllocationUnits>MegaBytes</rasd:AllocationUnits>
-        <rasd:Caption>512 MB of memory</rasd:Caption>
+        <rasd:Caption>1024 MB of memory</rasd:Caption>
         <rasd:Description>Memory Size</rasd:Description>
-        <rasd:ElementName>512 MB of memory</rasd:ElementName>
+        <rasd:ElementName>1024 MB of memory</rasd:ElementName>
         <rasd:InstanceID>2</rasd:InstanceID>
         <rasd:ResourceType>4</rasd:ResourceType>
-        <rasd:VirtualQuantity>512</rasd:VirtualQuantity>
+        <rasd:VirtualQuantity>1024</rasd:VirtualQuantity>
       </Item>
       <Item>
         <rasd:Address>0</rasd:Address>
@@ -76,7 +76,7 @@
     <vbox:Machine ovf:required="false" version="{{ '1.20-macosx' if arch.name=='arm64' else '1.16-linux' }}" uuid="{{ '{' ~ box_uuid ~ '}' }}" name="{{ vagrant_box_id }}">
       <ovf:Info>Complete VirtualBox machine configuration in VirtualBox format</ovf:Info>
       <Hardware>
-        <Memory RAMSize="512"/>
+        <Memory RAMSize="1024"/>
         <HID Pointing="USBMouse" Keyboard="USBKeyboard"/>
         <Boot>
           <Order position="1" device="HardDisk"/>

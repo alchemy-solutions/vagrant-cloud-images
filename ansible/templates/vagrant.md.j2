@@ -5,7 +5,12 @@ Create a minimal `Vagrantfile` file as follow:
 ```ruby
 Vagrant.configure("2") do |config|
   config.vm.box = "{{ vagrant_cloud_user }}/{{ vagrant_box_name }}"
+
+  # Disable synced folder
   config.vm.synced_folder ".", "/vagrant", disabled: true
+  # Or try with NFS (private_network required)
+  #config.vm.synced_folder ".", "/vagrant", type: "nfs", nfs_udp: false
+  #config.vm.network "private_network", ip: "172.19.74.10"
 {% include 'templates/vagrant-' + distro.code + '.md.j2' ignore missing %}
 
   # Eventually use cloud-init to execute jobs
@@ -17,6 +22,12 @@ Vagrant.configure("2") do |config|
         - nginx
         - postgresql
     EOF
+
+  # For virtualbox provider
+  config.vm.provider :virtualbox do |vb|
+    vb.memory = 1024
+    vb.cpus = 2
+  end
 
   # For libvirt provider
   #config.vagrant.plugins = "vagrant-libvirt"

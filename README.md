@@ -111,7 +111,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.box = "cloud-image/<choose-a-distro>"
   config.vm.synced_folder ".", "/vagrant", disabled: true
-  #config.vm.synced_folder ".", "/vagrant", type: "nfs", mount_options: ["vers=3,tcp"]
+  #config.vm.synced_folder ".", "/vagrant", type: "nfs", nfs_udp: false
 
   config.vm.provider :libvirt do |libvirt|
     libvirt.driver = "kvm"
