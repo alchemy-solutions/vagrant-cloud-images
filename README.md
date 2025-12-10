@@ -9,10 +9,11 @@ all (or, at least, the minimum possible).
 | AlmaLinux | 10 | cloud-image/almalinux-10 | May 2035 |
 | AlmaLinux | 9 | cloud-image/almalinux-9 | May 2032 |
 | AlmaLinux | 8 | cloud-image/almalinux-8 | Mar 2029 |
+| Alpine Linux | 3.23 | cloud-image/alpine-3.23 | May 2027 |
 | Alpine Linux | 3.22 | cloud-image/alpine-3.22 | May 2027 |
 | Alpine Linux | 3.21 | cloud-image/alpine-3.21 | Nov 2026 |
 | Alpine Linux | 3.20 | cloud-image/alpine-3.20 | Apr 2026 |
-| Alpine Linux | 3.19 | cloud-image/alpine-3.19 | Nov 2025 |
+| Alpine Linux | 3.19 | cloud-image/alpine-3.19 | Expired |
 | CentOS Stream | 10 | cloud-image/centos-10-stream | Jan 2030 |
 | CentOS Stream | 9 | cloud-image/centos-9-stream | May 2027 |
 | CentOS Stream | 8 | cloud-image/centos-8-stream | Expired |

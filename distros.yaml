@@ -59,6 +59,16 @@ distros:
   awk_filter: !unsafe "-F- '/^nocloud_alpine-.*-uefi-cloudinit-r.\\.{{ distro.disk_format }}$/{ split($6,ver,\".\"); print $2 \":\" ver[1] }'"
   regex_version: ['nocloud_alpine-([\d\.]+)-\w+-\w+-\w+-(r\d+).\w+', '\1-\2']
   releases:
+  - name: "v3.23"
+    version: "3.23"
+    revision: r0
+    description: Alpine Linux v3.23 Cloud Image
+    eos: Nov 2027
+    arch:
+    - name: amd64
+      type: x86_64
+    - name: arm64
+      type: aarch64
   - name: "v3.22"
     version: "3.22"
     revision: r0
