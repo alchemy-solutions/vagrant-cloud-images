@@ -30,7 +30,7 @@
   vars:
     release_availability: "{{ release.eol|default(release.eos|default(undefined)) }}"
 
-- include_tasks: provider.yaml
+- include_tasks: providers.yaml
   when:
   - not release_expred|default(false)
   - filter_arch is not defined or arch.name==filter_arch or arch.type==filter_arch

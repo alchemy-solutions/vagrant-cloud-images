@@ -1,6 +1,0 @@
----
-- include_tasks: version.yaml
-  when: "filter_provider is not defined or provider==filter_provider"
-  loop: "{{ providers }}"
-  loop_control:
-    loop_var: provider

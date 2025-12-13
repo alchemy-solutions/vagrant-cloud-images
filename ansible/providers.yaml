@@ -1,0 +1,18 @@
+---
+- name: Create build directory
+  file:
+    path: "{{ build_path }}"
+    state: directory
+    mode: '0755'
+
+- include_tasks: version.yaml
+  when: "filter_provider is not defined or provider==filter_provider"
+  loop: "{{ providers }}"
+  loop_control:
+    loop_var: provider
+
+- name: Remove build directory
+  when: not preserve
+  file:
+    path: "{{ build_path }}"
+    state: absent
