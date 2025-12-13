@@ -22,8 +22,9 @@ all (or, at least, the minimum possible).
 | Debian | 13 | cloud-image/debian-13 | Aug 2030 |
 | Debian | 12 | cloud-image/debian-12 | Jun 2028 |
 | Debian | 11 | cloud-image/debian-11 | Aug 2026 |
+| Fedora | 43 | cloud-image/fedora-43 | Dec 2026 |
 | Fedora | 42 | cloud-image/fedora-42 | May 2026 |
-| Fedora | 41 | cloud-image/fedora-41 | Nov 2025 |
+| Fedora | 41 | cloud-image/fedora-41 | Expired |
 | Fedora | 40 | cloud-image/fedora-40 | Expired |
 | Fedora | 39 | cloud-image/fedora-39 | Expired |
 | Fedora | 38 | cloud-image/fedora-38 | Expired |

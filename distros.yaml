@@ -257,6 +257,17 @@ distros:
   awk_filter: "-F- '/^Fedora.*CHECKSUM$/{ print $4 }'"
   regex_version: ['Fedora-Cloud-Base-Generic-\d+-([\d\.]+)\.\w+\.\w+', '\1']
   releases:
+  - name: "43"
+    code: "43"
+    version: "43"
+    description: Fedora 43 Cloud Image
+    eol: Dec 2026
+    arch:
+    - name: amd64
+      type: x86_64
+    - name: arm64
+      type: aarch64
+  releases:
   - name: "42"
     code: "42"
     version: "42"
