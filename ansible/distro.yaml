@@ -1,11 +1,6 @@
 ---
 - name: Attempt build {{ distro.name }}
   block:
-  - name: Create build directory
-    file:
-      path: "{{ build_path }}"
-      state: directory
-      mode: '0755'
   - include_tasks: release.yaml
     loop: "{{ distro.releases }}"
     loop_control:

@@ -28,7 +28,8 @@ all (or, at least, the minimum possible).
 | Fedora | 40 | cloud-image/fedora-40 | Expired |
 | Fedora | 39 | cloud-image/fedora-39 | Expired |
 | Fedora | 38 | cloud-image/fedora-38 | Expired |
-| openSUSE Leap | 15.6 | cloud-image/opensuse-leap-15.6 | Dec 2025 |
+| openSUSE Leap | 16.0 | cloud-image/opensuse-leap-16.0 | Oct 2027 |
+| openSUSE Leap | 15.6 | cloud-image/opensuse-leap-15.6 | Expired |
 | Ubuntu | 24.04 | cloud-image/ubuntu-24.04 | Apr 2036 |
 | Ubuntu | 22.04 | cloud-image/ubuntu-22.04 | Apr 2034 |
 | Ubuntu | 20.04 | cloud-image/ubuntu-20.04 | Apr 2032 |

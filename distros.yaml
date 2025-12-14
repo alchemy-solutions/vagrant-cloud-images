@@ -267,7 +267,6 @@ distros:
       type: x86_64
     - name: arm64
       type: aarch64
-  releases:
   - name: "42"
     code: "42"
     version: "42"
@@ -314,23 +313,24 @@ distros:
       type: aarch64
 
 # https://download.opensuse.org/repositories/Cloud:/Images:/
+# https://download.opensuse.org/repositories/openSUSE:/Leap:/
 - name: openSUSE Leap
   code: opensuse-leap
-  cloud_image_base_url: !unsafe "https://download.opensuse.org/repositories/Cloud:/Images:/Leap_{{ release.version }}/images"
-  cloud_image_file_name: !unsafe "openSUSE-Leap-{{ release.version }}.{{ arch.type }}-{{ cloud_image_version }}-NoCloud-{{ cloud_image_build }}.{{ distro.disk_format }}"
+  cloud_image_base_url: !unsafe "https://download.opensuse.org/repositories/openSUSE:/Leap:/{{ release.version }}:/Images/images"
+  cloud_image_file_name: !unsafe "Leap-{{ release.version }}-Minimal-VM.{{ arch.type }}-Cloud-Build{{ cloud_image_build }}.{{ distro.disk_format }}"
   cloud_image_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_file_name }}"
   cloud_image_checksum_type: sha256
   cloud_image_checksum_url: !unsafe "{{ cloud_image_url }}.{{ cloud_image_checksum_type }}"
   disk_format: qcow2
-  pup_filter: "'a text{}'"
-  awk_filter: !unsafe "-F- '/openSUSE-Leap-.*\\.aarch64-[0-9].*-NoCloud-.*\\.{{ distro.disk_format}}$/{ split($6,ver,\".\"); print $4 \":\" ver[1] \".\" ver[2] }'"
-  regex_version: ['openSUSE-Leap-(\d+)\.(\d+)\.\w+-[\d\.]+-NoCloud-Build\d+.(\d+).\w+', '\1.\2.\3']
+  pup_filter: "'a attr{href}'"
+  awk_filter: !unsafe "-F[-.] '/{{ arch.type }}-Cloud-Build.*qcow2$/{ gsub(/Build/,\"\",$9); print $3 \".\" $4 \":\" $9 \".\" $10 }'"
+  regex_version: ['Leap-\d+\.\d+-Minimal-VM\.\w+-Cloud-Build(\d+)\.(\d+)\.\w+', '\1.\2']
   releases:
-  - name: "15.6"
-    code: "15.6"
-    version: "15.6"
-    description: openSUSE Leap 15.6 Cloud Image
-    eol: Dec 2025
+  - name: "16.0"
+    code: "16.0"
+    version: "16.0"
+    description: openSUSE Leap 16.0 Cloud Image
+    eol: Oct 2027
     arch:
     - name: amd64
       type: x86_64
