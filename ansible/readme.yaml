@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+  - name: Load distros data
+    include_vars: "../distros.yaml"
+  - name: Update README.md with distro's info
+    ansible.builtin.template:
+      src: README.md.j2
+      dest: ../README.md

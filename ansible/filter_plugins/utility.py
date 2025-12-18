@@ -1,5 +1,7 @@
 import re
 
+from datetime import datetime
+
 try:
     from ansible.errors import AnsibleFilterError
 except ImportError:
@@ -9,13 +11,15 @@ except ImportError:
 class FilterModule(object):
     def filters(self):
         return {
-            'to_iso8601': self.to_iso8601,
+            'is_expired': self.is_expired,
             'shell_escape': self.shell_escape,
             'get_checksum': self.get_checksum
         }
 
 
-    def to_iso8601(self, str_date):
+    def is_expired(self, str_date=None):
+        if not str_date:
+            return False
         months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
         try:
             (month, year) = str_date.split(' ')
@@ -23,16 +27,11 @@ class FilterModule(object):
             year = int(year)
             assert len(month) >= 3
             month = next((i for i, value in enumerate(months) if value.startswith(month)))
-            if month == 11:
-                month = 1
-                year += 1
-            else:
-                month += 2
         except Exception as e:
             raise AnsibleFilterError(
                 "Date string '%s' does not respect compact form 'MMM YYYY' (e.g. 'Oct 1974')"
                 % str_date)
-        return f"{year}-{month:02}-00T00:00:00Z"
+        return f"{year}-{month:02}" < datetime.today().strftime('%Y-%m')
 
 
     def shell_escape(self, shell_string):

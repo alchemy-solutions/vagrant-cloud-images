@@ -18,7 +18,7 @@
       Authorization: "Bearer {{ vagrant_cloud_token }}"
     body:
       name: "{{ vagrant_box_name }}"
-      short_description: "{{ release.description }}"
+      short_description: "{{ release.description }} Cloud Image"
   register: hcp_create_box
   failed_when: hcp_create_box.status not in [200, 409]
   changed_when: hcp_create_box.status == 200
@@ -26,9 +26,7 @@
 - name: Check expired release in {{ release_availability }}
   when: release_availability is defined
   set_fact:
-    release_expred: "{{ not expired|bool and release_availability|to_iso8601 < ansible_date_time.iso8601 }}"
-  vars:
-    release_availability: "{{ release.eol|default(release.eos|default(undefined)) }}"
+    release_expred: "{{ not expired|bool and release.eol|default(release.eos)|is_expired }}"
 
 - include_tasks: providers.yaml
   when:

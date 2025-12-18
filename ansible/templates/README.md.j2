@@ -6,35 +6,15 @@ all (or, at least, the minimum possible).
 
 | distribution | vagrant box | support |
 | ------------ | ----------- | ------- |
-| AlmaLinux 10 | [cloud-image/almalinux-10](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/almalinux-10) | May 2035 |
-| AlmaLinux 9 | [cloud-image/almalinux-9](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/almalinux-9) | May 2032 |
-| AlmaLinux 8 | [cloud-image/almalinux-8](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/almalinux-8) | Mar 2029 |
-| Alpine Linux v3.23 | [cloud-image/alpine-3.23](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.23) | Nov 2027 |
-| Alpine Linux v3.22 | [cloud-image/alpine-3.22](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.22) | May 2027 |
-| Alpine Linux v3.21 | [cloud-image/alpine-3.21](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.21) | Nov 2026 |
-| Alpine Linux v3.20 | [cloud-image/alpine-3.20](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.20) | Apr 2026 |
-| Alpine Linux v3.19 | [cloud-image/alpine-3.19](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.19) | Expired |
-| CentOS Stream 10 | [cloud-image/centos-10](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-10) | Jan 2030 |
-| CentOS Stream 9 | [cloud-image/centos-9](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-9) | May 2027 |
-| CentOS Stream 8 | [cloud-image/centos-8](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-8) | Expired |
-| CentOS 8 | [cloud-image/centos-8](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-8) | Expired |
-| CentOS 7 | [cloud-image/centos-7](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-7) | Expired |
-| Debian 13 (Trixie) | [cloud-image/debian-13](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/debian-13) | August 2030 |
-| Debian 12 (Bookworm) | [cloud-image/debian-12](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/debian-12) | June 2028 |
-| Debian 11 (Bullseye) | [cloud-image/debian-11](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/debian-11) | June 2026 |
-| Debian 10 (Buster) | [cloud-image/debian-10](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/debian-10) | Expired |
-| Fedora 43 | [cloud-image/fedora-43](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-43) | Dec 2026 |
-| Fedora 42 | [cloud-image/fedora-42](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-42) | May 2026 |
-| Fedora 41 | [cloud-image/fedora-41](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-41) | Expired |
-| Fedora 40 | [cloud-image/fedora-40](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-40) | Expired |
-| Fedora 39 | [cloud-image/fedora-39](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-39) | Expired |
-| openSUSE Leap 16.0 | [cloud-image/opensuse-leap-16.0](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/opensuse-leap-16.0) | Oct 2027 |
-| Ubuntu 24.04 LTS (Noble Numbat) | [cloud-image/ubuntu-24.04](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/ubuntu-24.04) | April 2036 |
-| Ubuntu 22.04 LTS (Jammy Jellyfish) | [cloud-image/ubuntu-22.04](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/ubuntu-22.04) | April 2034 |
-| Ubuntu 20.04 LTS (Focal Fossa) | [cloud-image/ubuntu-20.04](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/ubuntu-20.04) | April 2032 |
-| Ubuntu 18.04 LTS (Bionic Beaver) | [cloud-image/ubuntu-18.04](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/ubuntu-18.04) | April 2030 |
-| Ubuntu 16.04 LTS (Xenial Xerus) | [cloud-image/ubuntu-16.04](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/ubuntu-16.04) | April 2028 |
-| Ubuntu 14.04 LTS (Trusty Tahr) | [cloud-image/ubuntu-14.04](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/ubuntu-14.04) | April 2026 |
+{% for distro in distros %}
+{% for release in distro.releases %}
+{% set expiration = release.eol|default(release.eos|default(None)) %}
+{% set is_expired = expiration|is_expired %}
+{% set cloud_image = 'cloud-image/'+distro.code+'-'+release.version %}
+{% set cloud_image_url = 'https://portal.cloud.hashicorp.com/vagrant/discover/'+cloud_image %}
+| {{ release.description }} | [{{ cloud_image }}]({{ cloud_image_url }}) | {% if is_expired %}Expired{% else %}{{ (expiration == None)|ternary('undefined', expiration) }}{% endif %} |
+{% endfor %}
+{% endfor %}
 
 ## cloud-init injection
 

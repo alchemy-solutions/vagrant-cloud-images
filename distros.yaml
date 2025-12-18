@@ -17,7 +17,7 @@ distros:
   releases:
   - name: "10"
     version: "10"
-    description: AlmaLinux 10 Cloud Image
+    description: AlmaLinux 10
     eos: May 2030
     eol: May 2035
     arch:
@@ -27,7 +27,7 @@ distros:
       type: aarch64
   - name: "9"
     version: "9"
-    description: AlmaLinux 9 Cloud Image
+    description: AlmaLinux 9
     eos: May 2027
     eol: May 2032
     arch:
@@ -37,7 +37,7 @@ distros:
       type: aarch64
   - name: "8"
     version: "8"
-    description: AlmaLinux 8 Cloud Image
+    description: AlmaLinux 8
     eos: May 2024
     eol: Mar 2029
     arch:
@@ -62,7 +62,7 @@ distros:
   - name: "v3.23"
     version: "3.23"
     revision: r0
-    description: Alpine Linux v3.23 Cloud Image
+    description: Alpine Linux v3.23
     eos: Nov 2027
     arch:
     - name: amd64
@@ -72,7 +72,7 @@ distros:
   - name: "v3.22"
     version: "3.22"
     revision: r0
-    description: Alpine Linux v3.22 Cloud Image
+    description: Alpine Linux v3.22
     eos: May 2027
     arch:
     - name: amd64
@@ -82,7 +82,7 @@ distros:
   - name: "v3.21"
     version: "3.21"
     revision: r0
-    description: Alpine Linux v3.21 Cloud Image
+    description: Alpine Linux v3.21
     eos: Nov 2026
     arch:
     - name: amd64
@@ -92,7 +92,7 @@ distros:
   - name: "v3.20"
     version: "3.20"
     revision: r0
-    description: Alpine Linux v3.20 Cloud Image
+    description: Alpine Linux v3.20
     eos: Apr 2026
     arch:
     - name: amd64
@@ -102,7 +102,7 @@ distros:
   - name: "v3.19"
     version: "3.19"
     revision: r0
-    description: Alpine Linux v3.19 Cloud Image
+    description: Alpine Linux v3.19
     eos: Nov 2025
     arch:
     - name: amd64
@@ -165,6 +165,7 @@ distros:
     cloud_image_checksum_url: !unsafe "{{ cloud_image_base_url }}/CHECKSUM"
     awk_filter: "-F- '/^CentOS/{ split($5,ver,\".\"); print $4 \"-\" ver[1] \".\" ver[2] }'"
     regex_version: ['\w+-\d+-\w+-([\d\.]+)-\d+\.\d+\.\w+\.\w+', '\1']
+    eol: Dec 2021
     arch:
     - name: amd64
       type: x86_64
@@ -182,6 +183,7 @@ distros:
     cloud_image_checksum_url: ""
     awk_filter: !unsafe "-F- '/^CentOS-{{ release.version }}-{{ arch.type }}-GenericCloud-[0-9]{4}\\.{{ distro.disk_format }}$/{ split($5,ver,\".\"); print ver[1] }'"
     regex_version: ['\w+-\d+-\w+-\w+-(\d+)\.\w+', '\1']
+    eol: Jun 2024
     arch:
     - name: amd64
       type: x86_64
@@ -204,7 +206,7 @@ distros:
   releases:
   - name: trixie
     version: "13"
-    description: Debian 13 (Trixie) Cloud Image
+    description: Debian 13 (Trixie)
     eos: August 2028
     eol: August 2030
     arch:
@@ -214,7 +216,7 @@ distros:
       type: arm64
   - name: bookworm
     version: "12"
-    description: Debian 12 (Bookworm) Cloud Image
+    description: Debian 12 (Bookworm)
     eos: June 2026
     eol: June 2028
     arch:
@@ -224,7 +226,7 @@ distros:
       type: arm64
   - name: bullseye
     version: "11"
-    description: Debian 11 (Bullseye) Cloud Image
+    description: Debian 11 (Bullseye)
     eos: August 2024
     eol: June 2026
     arch:
@@ -234,7 +236,7 @@ distros:
       type: arm64
   - name: buster
     version: "10"
-    description: Debian 10 (Buster) Cloud Image
+    description: Debian 10 (Buster)
     eos: August 2022
     eol: June 2024
     arch:
@@ -260,7 +262,7 @@ distros:
   - name: "43"
     code: "43"
     version: "43"
-    description: Fedora 43 Cloud Image
+    description: Fedora 43
     eol: Dec 2026
     arch:
     - name: amd64
@@ -270,7 +272,7 @@ distros:
   - name: "42"
     code: "42"
     version: "42"
-    description: Fedora 42 Cloud Image
+    description: Fedora 42
     eol: May 2026
     arch:
     - name: amd64
@@ -280,7 +282,7 @@ distros:
   - name: "41"
     code: "41"
     version: "41"
-    description: Fedora 41 Cloud Image
+    description: Fedora 41
     eol: Nov 2025
     arch:
     - name: amd64
@@ -290,7 +292,7 @@ distros:
   - name: "40"
     code: "40"
     version: "40"
-    description: Fedora 40 Cloud Image
+    description: Fedora 40
     eol: May 2025
     cloud_image_file_name: !unsafe "Fedora-Cloud-Base-Generic.{{ arch.type }}-{{ release.name }}-{{ cloud_image_version }}.{{ distro.disk_format }}"
     regex_version: ['Fedora-Cloud-Base-Generic.\w+-\d+-([\d\.]+)\.\w+', '\1']
@@ -302,7 +304,7 @@ distros:
   - name: "39"
     code: "39"
     version: "39"
-    description: Fedora 39 Cloud Image
+    description: Fedora 39
     eol: November 2024
     cloud_image_file_name: !unsafe "Fedora-Cloud-Base-{{ release.name }}-{{ cloud_image_version }}.{{ arch.type }}.{{ distro.disk_format }}"
     regex_version: ['Fedora-Cloud-Base-\d+-([\d\.]+)\.\w+\.\w+', '\1']
@@ -329,7 +331,7 @@ distros:
   - name: "16.0"
     code: "16.0"
     version: "16.0"
-    description: openSUSE Leap 16.0 Cloud Image
+    description: openSUSE Leap 16.0
     eol: Oct 2027
     arch:
     - name: amd64
@@ -352,7 +354,7 @@ distros:
   releases:
   - name: noble
     version: "24.04"
-    description: Ubuntu 24.04 LTS (Noble Numbat) Cloud Image
+    description: Ubuntu 24.04 LTS (Noble Numbat)
     eos: June 2029
     eol: April 2036
     arch:
@@ -362,7 +364,7 @@ distros:
       type: arm64
   - name: jammy
     version: "22.04"
-    description: Ubuntu 22.04 LTS (Jammy Jellyfish) Cloud Image
+    description: Ubuntu 22.04 LTS (Jammy Jellyfish)
     eos: June 2027
     eol: April 2034
     arch:
@@ -372,7 +374,7 @@ distros:
       type: arm64
   - name: focal
     version: "20.04"
-    description: Ubuntu 20.04 LTS (Focal Fossa) Cloud Image
+    description: Ubuntu 20.04 LTS (Focal Fossa)
     eos: April 2025
     eol: April 2032
     arch:
@@ -382,7 +384,7 @@ distros:
       type: arm64
   - name: bionic
     version: "18.04"
-    description: Ubuntu 18.04 LTS (Bionic Beaver) Cloud Image
+    description: Ubuntu 18.04 LTS (Bionic Beaver)
     eos: June 2023
     eol: April 2030
     arch:
@@ -392,7 +394,7 @@ distros:
       type: arm64
   - name: xenial
     version: "16.04"
-    description: Ubuntu 16.04 LTS (Xenial Xerus) Cloud Image
+    description: Ubuntu 16.04 LTS (Xenial Xerus)
     eos: April 2021
     eol: April 2028
     cloud_image_file_name: !unsafe "{{ release.name }}-server-cloudimg-{{ arch.type }}-disk1.img"
@@ -403,7 +405,7 @@ distros:
       type: arm64
   - name: trusty
     version: "14.04"
-    description: Ubuntu 14.04 LTS (Trusty Tahr) Cloud Image
+    description: Ubuntu 14.04 LTS (Trusty Tahr)
     eos: April 2019
     eol: April 2026
     cloud_image_file_name: !unsafe "{{ release.name }}-server-cloudimg-{{ arch.type }}-disk1.img"
