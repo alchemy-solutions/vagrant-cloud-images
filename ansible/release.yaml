@@ -23,7 +23,7 @@
   failed_when: hcp_create_box.status not in [200, 409]
   changed_when: hcp_create_box.status == 200
 
-- name: Check expired release in {{ release_availability }}
+- name: Check expired release
   when: release_availability is defined
   set_fact:
     release_expred: "{{ not expired|bool and release.eol|default(release.eos)|is_expired }}"

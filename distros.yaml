@@ -352,6 +352,14 @@ distros:
   pup_filter: "'a text{}'"
   awk_filter: "-F/ '/[0-9]{8}\\.?[0-9]*/{ print $1 }'"
   releases:
+  - name: resolute
+    version: "26.04"
+    description: Ubuntu 26.04 LTS (Resolute Racoon)
+    arch:
+    - name: amd64
+      type: amd64
+    - name: arm64
+      type: arm64
   - name: noble
     version: "24.04"
     description: Ubuntu 24.04 LTS (Noble Numbat)

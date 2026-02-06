@@ -1,5 +1,7 @@
 # Vagrant Cloud Images
 
+[//]: # (Do NOT edit the README.md file itself, edit the template file instead: ansible/templates/README.md.j2)
+
 Purpose of this project is to provide [Vagrant Box images](https://app.vagrantup.com/cloud-image) based on public
 colud images of various GNU/Linux distributions with no modifications at
 all (or, at least, the minimum possible).
@@ -29,6 +31,7 @@ all (or, at least, the minimum possible).
 | Fedora 40 | [cloud-image/fedora-40](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-40) | Expired |
 | Fedora 39 | [cloud-image/fedora-39](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-39) | Expired |
 | openSUSE Leap 16.0 | [cloud-image/opensuse-leap-16.0](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/opensuse-leap-16.0) | Oct 2027 |
+| Ubuntu 26.04 LTS (Resolute Racoon) | [cloud-image/ubuntu-26.04](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/ubuntu-26.04) | undefined |
 | Ubuntu 24.04 LTS (Noble Numbat) | [cloud-image/ubuntu-24.04](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/ubuntu-24.04) | April 2036 |
 | Ubuntu 22.04 LTS (Jammy Jellyfish) | [cloud-image/ubuntu-22.04](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/ubuntu-22.04) | April 2034 |
 | Ubuntu 20.04 LTS (Focal Fossa) | [cloud-image/ubuntu-20.04](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/ubuntu-20.04) | April 2032 |
