@@ -25,17 +25,8 @@ This method consists to inject a `cloud-init` configuration file under
 following:
 
 ```yaml
-datasource_list: [ NoCloud, None ]
-ssh_pwauth: True
-users:
-  - name: vagrant
-    plain_text_passwd: vagrant
-    sudo: ALL=(ALL) NOPASSWD:ALL
-    shell: /bin/bash
-    lock_passwd: false
-    ssh_authorized_keys:
-      # https://github.com/hashicorp/vagrant/tree/master/keys
-      - 'ssh-rsa ... vagrant insecure public key'
+{% include '99_vagrant.cfg.j2' %}
+
 ```
 
 That ensure the creation of Vagrant user during the first boot by the
@@ -163,4 +154,23 @@ Start Vagrant:
 
 ```bash
 vagrant up --provider=qemu
+```
+
+## Vagrant cloud-init
+
+Refer to [Vagrant documentation](https://developer.hashicorp.com/vagrant/docs/cloud-init) and [cloud-init documentation](https://docs.cloud-init.io/en/latest/reference/examples.html) for more information on how to use `cloud_init` block inside `Vagrantfile`:
+
+```ruby
+# Use bash as default shell for Vagrant user
+# WARNING: do not use "users:" to avoid overwrite 99_vagrant.cfg
+config.vm.cloud_init do |cloud_init|
+  cloud_init.content_type = "text/cloud-config"
+  cloud_init.inline = <<-EOF
+    package_update: true
+    packages:
+      - bash
+    runcmd:
+      - chsh -s /bin/bash vagrant
+  EOF
+end
 ```

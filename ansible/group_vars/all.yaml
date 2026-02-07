@@ -28,7 +28,8 @@ vagrant_cloud_api: "vagrant/2022-09-30"
 vagrant_cloud_url: "{{ hcp_base_endpoint }}/{{ vagrant_cloud_api }}"
 vagrant_cloud_user: "{{ lookup('env', 'VAGRANT_CLOUD_USER', default='cloud-image') }}"
 vagrant_cloud_token: "{{ lookup('env', 'VAGRANT_CLOUD_TOKEN', default=Undefined) }}"
-vagrant_ssh_key_pub: "{{ lookup('env', 'VAGRANT_SSH_KEY_PUB', default=Undefined) }}"
+vagrant_ssh_default_key_pub: "{{ lookup('url', 'https://raw.githubusercontent.com/hashicorp/vagrant/refs/heads/master/keys/vagrant.pub') }}"
+vagrant_ssh_key_pub: "{{ lookup('env', 'VAGRANT_SSH_KEY_PUB', default=vagrant_ssh_default_key_pub) }}"
 
 # Mail alert
 mail_password: "{{ lookup('env', 'MAIL_PASSWORD', default=Undefined) }}"

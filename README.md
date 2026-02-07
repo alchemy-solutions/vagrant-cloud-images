@@ -51,12 +51,13 @@ ssh_pwauth: True
 users:
   - name: vagrant
     plain_text_passwd: vagrant
-    sudo: ALL=(ALL) NOPASSWD:ALL
-    shell: /bin/bash
+    doas: ["permit nopass vagrant"]
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+    shell: /bin/sh
     lock_passwd: false
     ssh_authorized_keys:
       # https://github.com/hashicorp/vagrant/tree/master/keys
-      - 'ssh-rsa ... vagrant insecure public key'
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key'
 ```
 
 That ensure the creation of Vagrant user during the first boot by the
@@ -184,4 +185,23 @@ Start Vagrant:
 
 ```bash
 vagrant up --provider=qemu
+```
+
+## Vagrant cloud-init
+
+Refer to [Vagrant documentation](https://developer.hashicorp.com/vagrant/docs/cloud-init) and [cloud-init documentation](https://docs.cloud-init.io/en/latest/reference/examples.html) for more information on how to use `cloud_init` block inside `Vagrantfile`:
+
+```ruby
+# Use bash as default shell for Vagrant user
+# WARNING: do not use "users:" to avoid overwrite 99_vagrant.cfg
+config.vm.cloud_init do |cloud_init|
+  cloud_init.content_type = "text/cloud-config"
+  cloud_init.inline = <<-EOF
+    package_update: true
+    packages:
+      - bash
+    runcmd:
+      - chsh -s /bin/bash vagrant
+  EOF
+end
 ```
