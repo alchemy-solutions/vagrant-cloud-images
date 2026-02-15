@@ -31,6 +31,11 @@ vagrant_cloud_token: "{{ lookup('env', 'VAGRANT_CLOUD_TOKEN', default=Undefined)
 vagrant_ssh_default_key_pub: "{{ lookup('url', 'https://raw.githubusercontent.com/hashicorp/vagrant/refs/heads/master/keys/vagrant.pub') }}"
 vagrant_ssh_key_pub: "{{ lookup('env', 'VAGRANT_SSH_KEY_PUB', default=vagrant_ssh_default_key_pub) }}"
 
+# Cleanup
+hcp_min_version_retention: 5
+hcp_max_version_retention: 10
+hcp_max_version_days: 183 # 6 months
+
 # Mail alert
 mail_password: "{{ lookup('env', 'MAIL_PASSWORD', default=Undefined) }}"
 mail_username: "{{ lookup('env', 'MAIL_USERNAME', default=Undefined) }}"

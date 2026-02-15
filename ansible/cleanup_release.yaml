@@ -1,0 +1,31 @@
+---
+- name: Get releases for {{ vagrant_box_name }}
+  uri:
+    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/versions"
+    method: GET
+    body_format: json
+    return_content: true
+    status_code: [200, 400]
+  register: hcp_box_versions
+  retries: 3
+  delay: 5
+  until: not hcp_box_versions.failed
+
+- name: Delete older versions
+  when:
+  - hcp_index_version >= hcp_min_version_retention
+  - (now(utc=true) - created_at).days > hcp_max_version_days or hcp_index_version >= hcp_max_version_retention
+  uri:
+    url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ hcp_box_version.name }}"
+    method: DELETE
+    headers:
+      Content-Type: application/json
+      Authorization: "Bearer {{ vagrant_cloud_token }}"
+  register: hcp_box_delete_version
+  vars:
+    iso8601format: '%Y-%m-%dT%H:%M:%S'
+    created_at: "{{ hcp_box_version.created_at[:19]|to_datetime('%Y-%m-%dT%H:%M:%S') }}"
+  loop: "{{ hcp_box_versions.json.versions }}"
+  loop_control:
+    loop_var: hcp_box_version
+    index_var: hcp_index_version

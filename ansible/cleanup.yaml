@@ -1,0 +1,30 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: true
+  tasks:
+  - name: Load distros data
+    include_vars: "../distros.yaml"
+
+  - name: Filter distros data
+    include_tasks: filter.yaml
+
+  - name: Refresh VAGRANT_CLOUD_TOKEN
+    include_tasks: hcp.yaml
+
+  - name: Build list of "<code>-<release>"
+    set_fact:
+      distro_release_list: >-
+        {{
+          distro_release_list | default([]) +
+          [ distro.code ~ "-" ~ release.code|default(release.version) ]
+        }}
+    loop: "{{ distros|subelements('releases') }}"
+    vars:
+      distro: "{{ item.0 }}"
+      release: "{{ item.1 }}"
+
+  - include_tasks: cleanup_release.yaml
+    loop: "{{ distro_release_list }}"
+    loop_control:
+      loop_var: vagrant_box_name

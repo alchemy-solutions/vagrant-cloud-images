@@ -169,7 +169,7 @@ For an Apple Silicon, create a `Vagrantfile` as follow:
 Vagrant.configure("2") do |config|
   config.vagrant.plugins = "vagrant-qemu"
 
-  config.vm.box = "cloud-image/debian-12"
+  config.vm.box = "cloud-image/<choose-a-distro>"
   config.vm.synced_folder ".", "/vagrant", disabled: true
 
   config.vm.provider :qemu do |qemu|

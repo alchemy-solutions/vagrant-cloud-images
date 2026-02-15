@@ -1,10 +1,12 @@
-name: Testing
+name: Cleanup
 
 on:
+  schedule:
+  - cron: '45 1 * * 6'
   workflow_dispatch:
 
 jobs:
-  testing:
+  cleanup:
     runs-on: ubuntu-latest
 
     permissions:
@@ -21,16 +23,8 @@ jobs:
       with:
         version: 'latest'
     - uses: actions/checkout@v4
-    - uses: actions/setup-go@v5
-      with:
-        cache: false
-    - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y libguestfs-tools qemu-utils
-        go install github.com/ericchiang/pup@latest
-    - name: Test images
+    - name: Cleanup images
       env:
         VAGRANT_CLOUD_TOKEN: ${{ steps.hcp_auth.outputs.access_token }}
       run: |
-        ansible-playbook -e dryrun=true -e guestfs=guestmount ansible/site.yaml -vvv
+        ansible-playbook ansible/cleanup.yaml -vvv
