@@ -58,12 +58,11 @@ config.vm.cloud_init do |cloud_init|
   cloud_init.inline = <<-EOF
     #cloud-config
     chpasswd:
-      expire: false
+      expire: False
       users:
         - name: vagrant
           password: N3wP4ssw0rd
           type: text
-      expire: False
     ssh_pwauth: True
   EOF
 end
