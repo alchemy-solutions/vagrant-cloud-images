@@ -42,28 +42,69 @@ all (or, at least, the minimum possible).
 ## cloud-init injection
 
 This method consists to inject a `cloud-init` configuration file under
-`/etc/cloud/cloud.cfg.d/99_vagrant.cfg` with a content similar to the
-following:
+`/etc/cloud/cloud.cfg.d/99_vagrant.cfg` with the following content:
 
 ```yaml
 datasource_list: [ NoCloud, None ]
-ssh_pwauth: True
+ssh_pwauth: False
+ssh_authorized_keys:
+  # https://github.com/hashicorp/vagrant/tree/master/keys
+  - 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key'
 users:
+  # Preserve default distro user
+  - default
+  # Create Vagrant user with disabled password
   - name: vagrant
     plain_text_passwd: vagrant
     doas: ["permit nopass vagrant"]
     sudo: ["ALL=(ALL) NOPASSWD:ALL"]
     shell: /bin/sh
-    lock_passwd: false
+    lock_passwd: true
     ssh_authorized_keys:
       # https://github.com/hashicorp/vagrant/tree/master/keys
       - 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key'
 ```
 
-That ensure the creation of Vagrant user during the first boot by the
-`cloud-init` service included in every GNU/Linux cloud images.
+Packer is not used at all. The disk image are downloaded, mounted, injected, then packed in a [Box Vagrant Format](https://developer.hashicorp.com/vagrant/docs/boxes/format) tarball. That ensure the creation of Vagrant user during the first boot by the `cloud-init` service included in every GNU/Linux cloud images.
 
-Packer is not used at all. The disk image are downloaded, mounted, injected, then packed in a tarball [Box Vagrant Format](https://developer.hashicorp.com/vagrant/docs/boxes/format).
+Refer to [Vagrant documentation](https://developer.hashicorp.com/vagrant/docs/cloud-init) and [cloud-init documentation](https://docs.cloud-init.io/en/latest/reference/examples.html) for more information on how to use `cloud_init` block inside `Vagrantfile`:
+
+```ruby
+# Use bash as default shell for Vagrant user and enable SSH password authentication
+# WARNING: do not use "users:" to avoid overwrite 99_vagrant.cfg
+config.vm.cloud_init do |cloud_init|
+  cloud_init.content_type = "text/cloud-config"
+  cloud_init.inline = <<-EOF
+    #cloud-config
+    package_update: True
+    packages:
+      - bash
+    runcmd:
+      - chsh -s /bin/bash vagrant
+      - passwd -u vagrant
+    ssh_pwauth: True
+  EOF
+end
+```
+
+```ruby
+# Change Vagrant user password and enable SSH authentication
+# WARNING: do not use "users:" to avoid overwrite 99_vagrant.cfg
+config.vm.cloud_init do |cloud_init|
+  cloud_init.content_type = "text/cloud-config"
+  cloud_init.inline = <<-EOF
+    #cloud-config
+    chpasswd:
+      expire: false
+      users:
+        - name: vagrant
+          password: N3wP4ssw0rd
+          type: text
+      expire: False
+    ssh_pwauth: True
+  EOF
+end
+```
 
 # Usage
 
@@ -185,23 +226,4 @@ Start Vagrant:
 
 ```bash
 vagrant up --provider=qemu
-```
-
-## Vagrant cloud-init
-
-Refer to [Vagrant documentation](https://developer.hashicorp.com/vagrant/docs/cloud-init) and [cloud-init documentation](https://docs.cloud-init.io/en/latest/reference/examples.html) for more information on how to use `cloud_init` block inside `Vagrantfile`:
-
-```ruby
-# Use bash as default shell for Vagrant user
-# WARNING: do not use "users:" to avoid overwrite 99_vagrant.cfg
-config.vm.cloud_init do |cloud_init|
-  cloud_init.content_type = "text/cloud-config"
-  cloud_init.inline = <<-EOF
-    package_update: true
-    packages:
-      - bash
-    runcmd:
-      - chsh -s /bin/bash vagrant
-  EOF
-end
 ```

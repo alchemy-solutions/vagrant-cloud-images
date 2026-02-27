@@ -1,12 +1,18 @@
 datasource_list: [ NoCloud, None ]
-ssh_pwauth: True
+ssh_pwauth: False
+ssh_authorized_keys:
+  # https://github.com/hashicorp/vagrant/tree/master/keys
+  - '{{ vagrant_ssh_key_pub }}'
 users:
+  # Preserve default distro user
+  - default
+  # Create Vagrant user with disabled password
   - name: vagrant
     plain_text_passwd: vagrant
     doas: ["permit nopass vagrant"]
     sudo: ["ALL=(ALL) NOPASSWD:ALL"]
     shell: /bin/sh
-    lock_passwd: false
+    lock_passwd: true
     ssh_authorized_keys:
       # https://github.com/hashicorp/vagrant/tree/master/keys
       - '{{ vagrant_ssh_key_pub }}'
