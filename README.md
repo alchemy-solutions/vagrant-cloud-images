@@ -31,6 +31,9 @@ all (or, at least, the minimum possible).
 | Fedora 40 | [cloud-image/fedora-40](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-40) | Expired |
 | Fedora 39 | [cloud-image/fedora-39](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-39) | Expired |
 | openSUSE Leap 16.0 | [cloud-image/opensuse-leap-16.0](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/opensuse-leap-16.0) | Oct 2027 |
+| Rocky Linux 10 (Red Quartz) | [cloud-image/rocky-10](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/rocky-10) | May 2035 |
+| Rocky Linux 9 (Blue Onyx) | [cloud-image/rocky-9](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/rocky-9) | May 2032 |
+| Rocky Linux 8 (Green Obsidian) | [cloud-image/rocky-8](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/rocky-8) | May 2029 |
 | Ubuntu 26.04 LTS (Resolute Racoon) | [cloud-image/ubuntu-26.04](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/ubuntu-26.04) | undefined |
 | Ubuntu 24.04 LTS (Noble Numbat) | [cloud-image/ubuntu-24.04](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/ubuntu-24.04) | April 2036 |
 | Ubuntu 22.04 LTS (Jammy Jellyfish) | [cloud-image/ubuntu-22.04](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/ubuntu-22.04) | April 2034 |

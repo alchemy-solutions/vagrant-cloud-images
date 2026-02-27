@@ -11,7 +11,6 @@ distros:
   cloud_image_checksum_url: !unsafe "{{ cloud_image_base_url }}/CHECKSUM"
   disk_format: qcow2
   pup_filter: "'a attr{href}'"
-  #awk_filter: "-F- '/GenericCloud-.*[0-9]{8}/{ split($5,ver,\".\"); print $4 \"-\" ver[1] }'"
   awk_filter: "-F- '/GenericCloud-.*[0-9]{8}/{ sub(\"\\.[[:alpha:]].*\",X,$5); print $4 \"-\" $5}'"
   regex_version: ['AlmaLinux-\d+-\w+-([\d\.]+)-([\d\.]+)\.\w+\.\w+', '\1.\2']
   releases:
@@ -333,6 +332,50 @@ distros:
     version: "16.0"
     description: openSUSE Leap 16.0
     eol: Oct 2027
+    arch:
+    - name: amd64
+      type: x86_64
+    - name: arm64
+      type: aarch64
+
+# https://rockylinux.org/download
+- name: Rocky Linux
+  code: rocky
+  cloud_image_base_url: !unsafe "https://dl.rockylinux.org/pub/rocky/{{ release.version }}/images/{{ arch.type }}"
+  cloud_image_file_name: !unsafe "Rocky-{{ release.version }}-GenericCloud-Base-{{ cloud_image_version }}-{{ cloud_image_build }}.{{ arch.type }}.qcow2"
+  cloud_image_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_file_name }}"
+  cloud_image_checksum_type: sha256
+  cloud_image_checksum_url: !unsafe "{{ cloud_image_url }}.CHECKSUM"
+  disk_format: qcow2
+  pup_filter: "'a attr{href}'"
+  awk_filter: !unsafe "-F- '/^Rocky-{{ release.version }}-GenericCloud-Base-.*\\.{{ distro.disk_format }}$/{ split($6,ver,\".\"); print $5 \":\" ver[1] \".\" ver[2] }'"
+  regex_version: ['Rocky-\d+-GenericCloud-Base-(\d+)\.(\d+)-(\d+)\.(\d+)\.\w+\.\w+', '\1.\2.\3.\4']
+  releases:
+  - name: Red Quartz
+    version: "10"
+    description: Rocky Linux 10 (Red Quartz)
+    eos: May 2030
+    eol: May 2035
+    arch:
+    - name: amd64
+      type: x86_64
+    - name: arm64
+      type: aarch64
+  - name: Blue Onyx
+    version: "9"
+    description: Rocky Linux 9 (Blue Onyx)
+    eos: May 2027
+    eol: May 2032
+    arch:
+    - name: amd64
+      type: x86_64
+    - name: arm64
+      type: aarch64
+  - name: Green Obsidian
+    version: "8"
+    description: Rocky Linux 8 (Green Obsidian)
+    eos: May 2024
+    eol: May 2029
     arch:
     - name: amd64
       type: x86_64

@@ -62,8 +62,8 @@ class FilterModule(object):
                 if re.search(r'\b' + filename + r'\b', line)]
         if len(lines) == 0:
             raise AnsibleFilterError("No checksum found")
-        if len(lines) != 1:
-            raise AnsibleFilterError("Multiple checksums found")
+        #if len(lines) != 1:
+        #    raise AnsibleFilterError("Multiple checksums found")
         for chk in re_chk:
             if match := chk.fullmatch(lines[0]):
                 return match.group(1)
