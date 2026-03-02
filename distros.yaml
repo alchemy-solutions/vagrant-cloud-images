@@ -109,6 +109,25 @@ distros:
     - name: arm64
       type: aarch64
 
+# https://fastly.mirror.pkgbuild.com/images/latest/
+- name: Arch Linux
+  code: arch
+  cloud_image_base_url: !unsafe "https://fastly.mirror.pkgbuild.com/images/latest"
+  cloud_image_file_name: !unsafe "Arch-Linux-{{ arch.type }}-cloudimg-{{ cloud_image_version }}.{{ distro.disk_format }}"
+  cloud_image_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_file_name }}"
+  cloud_image_checksum_type: sha256
+  cloud_image_checksum_url: !unsafe "{{ cloud_image_url }}.SHA256"
+  disk_format: qcow2
+  pup_filter: "'a attr{href}'"
+  awk_filter: !unsafe "-F- '/^Arch-Linux-{{ arch.type }}-cloudimg-.*{{ distro.disk_format }}$/{ split($5,ver,\".\"); print ver[1] \".\" ver[2] }'"
+  releases:
+  - name: "Linux"
+    code: "linux"
+    description: Arch Linux
+    arch:
+    - name: amd64
+      type: x86_64
+
 # https://endoflife.date/centos-stream
 # https://cloud.centos.org/centos/
 - name: CentOS
@@ -116,12 +135,12 @@ distros:
   cloud_image_base_url: !unsafe "https://cloud.centos.org/centos/{{ release.code }}/{{ arch.type }}/images"
   cloud_image_file_name: !unsafe "CentOS-Stream-GenericCloud-{{ release.version }}-{{ cloud_image_version }}.{{ arch.type }}.{{ distro.disk_format }}"
   cloud_image_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_file_name }}"
+  cloud_image_checksum_type: sha256
   cloud_image_checksum_url: !unsafe "{{ cloud_image_base_url }}/CHECKSUM"
   disk_format: qcow2
   pup_filter: "'a attr{href}'"
   awk_filter: !unsafe "-F- '/^CentOS-Stream-GenericCloud-{{ release.version }}-[0-9].*{{ distro.disk_format }}/{ split($5,ver,\".\"); print ver[1] \".\" ver[2] }'"
   regex_version: ['\w+-\w+-\w+-\d+-(\d+\.\d+)\.\w+\.\w+', '\1']
-  cloud_image_checksum_type: sha256
   releases:
   - name: "Stream 10"
     code: "10-stream"

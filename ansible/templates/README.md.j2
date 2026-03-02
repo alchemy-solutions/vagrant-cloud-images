@@ -12,7 +12,7 @@ all (or, at least, the minimum possible).
 {% for release in distro.releases %}
 {% set expiration = release.eol|default(release.eos|default(None)) %}
 {% set is_expired = expiration|is_expired %}
-{% set cloud_image = 'cloud-image/'+distro.code+'-'+release.version %}
+{% set cloud_image = 'cloud-image/'+distro.code+'-'+release.version|default(release.code) %}
 {% set cloud_image_url = 'https://portal.cloud.hashicorp.com/vagrant/discover/'+cloud_image %}
 | {{ release.description }} | [{{ cloud_image }}]({{ cloud_image_url }}) | {% if is_expired %}Expired{% else %}{{ (expiration == None)|ternary('undefined', expiration) }}{% endif %} |
 {% endfor %}
@@ -38,7 +38,7 @@ Refer to [Vagrant documentation](https://developer.hashicorp.com/vagrant/docs/cl
 config.vm.cloud_init do |cloud_init|
   cloud_init.content_type = "text/cloud-config"
   cloud_init.inline = <<-EOF
-    #cloud-config
+    timezone: Europe/Rome
     package_update: True
     packages:
       - bash
@@ -56,7 +56,7 @@ end
 config.vm.cloud_init do |cloud_init|
   cloud_init.content_type = "text/cloud-config"
   cloud_init.inline = <<-EOF
-    #cloud-config
+    timezone: Europe/Rome
     chpasswd:
       expire: False
       users:

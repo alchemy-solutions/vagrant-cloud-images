@@ -16,6 +16,7 @@ all (or, at least, the minimum possible).
 | Alpine Linux v3.21 | [cloud-image/alpine-3.21](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.21) | Nov 2026 |
 | Alpine Linux v3.20 | [cloud-image/alpine-3.20](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.20) | Apr 2026 |
 | Alpine Linux v3.19 | [cloud-image/alpine-3.19](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.19) | Expired |
+| Arch Linux | [cloud-image/arch-linux](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/arch-linux) | undefined |
 | CentOS Stream 10 | [cloud-image/centos-10](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-10) | Jan 2030 |
 | CentOS Stream 9 | [cloud-image/centos-9](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-9) | May 2027 |
 | CentOS Stream 8 | [cloud-image/centos-8](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-8) | Expired |
@@ -78,7 +79,7 @@ Refer to [Vagrant documentation](https://developer.hashicorp.com/vagrant/docs/cl
 config.vm.cloud_init do |cloud_init|
   cloud_init.content_type = "text/cloud-config"
   cloud_init.inline = <<-EOF
-    #cloud-config
+    timezone: Europe/Rome
     package_update: True
     packages:
       - bash
@@ -96,7 +97,7 @@ end
 config.vm.cloud_init do |cloud_init|
   cloud_init.content_type = "text/cloud-config"
   cloud_init.inline = <<-EOF
-    #cloud-config
+    timezone: Europe/Rome
     chpasswd:
       expire: False
       users:

@@ -5,18 +5,19 @@ Create a minimal `Vagrantfile` file as follow:
 ```ruby
 Vagrant.configure("2") do |config|
   config.vm.box = "{{ vagrant_cloud_user }}/{{ vagrant_box_name }}"
+{% include 'templates/vagrant-' + distro.code + '.md.j2' ignore missing %}
 
   # Disable synced folder
   config.vm.synced_folder ".", "/vagrant", disabled: true
   # Or try with NFS (private_network required)
   #config.vm.synced_folder ".", "/vagrant", type: "nfs", nfs_udp: false
   #config.vm.network "private_network", ip: "172.19.74.10"
-{% include 'templates/vagrant-' + distro.code + '.md.j2' ignore missing %}
 
   # Eventually use cloud-init to execute jobs
   config.vm.cloud_init do |cloud_init|
     cloud_init.content_type = "text/cloud-config"
     cloud_init.inline = <<-EOF
+      timezone: Europe/Rome
       package_update: true
       packages:
         - nginx
