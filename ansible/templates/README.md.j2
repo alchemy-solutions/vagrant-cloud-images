@@ -160,7 +160,7 @@ end
 ## qemu
 
 Install [`qemu`](https://github.com/ppggff/vagrant-qemu)
-provider using the standard Vagrant plugin installation commnd:
+provider using the standard Vagrant plugin installation command:
 
 ```bash
 vagrant plugin install vagrant-qemu
@@ -180,6 +180,27 @@ Vagrant.configure("2") do |config|
     qemu.cpu = "cortex-a72"
     qemu.smp = "1"
     qemu.memory = "512M"
+  end
+end
+```
+
+To run an x86_64 distro on an Apple Silicon:
+
+```ruby
+Vagrant.configure("2") do |config|
+  config.vagrant.plugins = "vagrant-qemu"
+
+  config.vm.box = "cloud-image/<choose-a-distro>"
+  config.vm.box_architecture = "amd64"
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  config.vm.provider :qemu do |qemu|
+    qemu.arch = "x86_64"
+    qemu.machine = "q35"
+    qemu.cpu = "max"
+    qemu.smp = "cpus=2,sockets=1,cores=2,threads=1"
+    qemu.net_device = "virtio-net-pci"
+    qemu.extra_qemu_args = %w(-accel tcg,thread=multi,tb-size=512)
   end
 end
 ```
