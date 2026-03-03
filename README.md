@@ -221,6 +221,15 @@ Vagrant.configure("2") do |config|
     qemu.cpu = "max"
     qemu.smp = "2"
     qemu.memory = "1024M"
+    # Enable GUI (qemu.gui is unimplemented):
+    #qemu.no_daemonize = true
+    #qemu.other_default = %w(
+    #  -device virtio-gpu-pci
+    #  -device virtio-keyboard-pci
+    #  -device virtio-mouse-pci
+    #  -display cocoa
+    #  -parallel null
+    #)
   end
 end
 ```
@@ -242,6 +251,9 @@ Vagrant.configure("2") do |config|
     qemu.smp = "cpus=2,sockets=1,cores=2,threads=1"
     qemu.net_device = "virtio-net-pci"
     qemu.extra_qemu_args = %w(-accel tcg,thread=multi,tb-size=512)
+    # Enable GUI (qemu.gui is unimplemented):
+    #qemu.no_daemonize = true
+    #qemu.other_default = %w(-parallel null)
   end
 end
 ```
