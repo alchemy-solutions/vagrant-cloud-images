@@ -218,6 +218,9 @@ Vagrant.configure("2") do |config|
 
   config.vm.provider :qemu do |qemu|
     qemu.machine = "virt,accel=hvf,highmem=off"
+    # NOTE: if 64KB granular kernel is not supported by HVF accelerator,
+    # e.g. Rocky Linux 8, remove it:
+    #qemu.machine = "virt,highmem=off"
     qemu.cpu = "max"
     qemu.smp = "2"
     qemu.memory = "1024M"
