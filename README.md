@@ -218,9 +218,9 @@ Vagrant.configure("2") do |config|
 
   config.vm.provider :qemu do |qemu|
     qemu.machine = "virt,accel=hvf,highmem=off"
-    qemu.cpu = "cortex-a72"
-    qemu.smp = "1"
-    qemu.memory = "512M"
+    qemu.cpu = "max"
+    qemu.smp = "2"
+    qemu.memory = "1024M"
   end
 end
 ```
