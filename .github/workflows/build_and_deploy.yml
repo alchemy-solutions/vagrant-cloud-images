@@ -23,15 +23,10 @@ jobs:
       with:
         version: 'latest'
     - uses: actions/checkout@v4
-    - uses: actions/setup-go@v6
-      with:
-        go-version: '1.25'
-        cache: false
     - name: Install dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y libguestfs-tools qemu-utils
-        go install github.com/ericchiang/pup@latest
     - name: Build images
       env:
         VAGRANT_CLOUD_TOKEN: ${{ steps.hcp_auth.outputs.access_token }}

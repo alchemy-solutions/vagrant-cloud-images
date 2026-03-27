@@ -124,27 +124,25 @@
     from: "{{ mail_from }}"
     to: "{{ mail_to }}"
     subject: "A new {{ distro.name }} {{ release.name }} Vagrant Box has been uploaded"
-    body: |
+    body: |-
       Distro: {{ distro.name }}
       Release: {{ release.name }}
       Provider: {{ provider }}
       Architecture: {{ arch.name }}
       Cloud image: {{ cloud_image_file_name }}
       Cloud version: {{ cloud_image_version }}
-      Cloud build: {{ cloud_image_build|default("none") }}
       Vagrant Box file: {{ vagrant_box_file }}
       Vagrant Box version: {{ vagrant_box_version }}
 
 - name: Alert new {{ distro.name }} {{ release.name }} Vagrant Box uploaded
   debug:
-    msg: |
+    msg: |-
       Distro: {{ distro.name }}
       Release: {{ release.name }}
       Provider: {{ provider }}
       Architecture: {{ arch.name }}
       Cloud image: {{ cloud_image_file_name }}
       Cloud version: {{ cloud_image_version }}
-      Cloud build: {{ cloud_image_build|default("none") }}
       Vagrant Box file: {{ vagrant_box_file }}
       Vagrant Box version: {{ vagrant_box_version }}
 

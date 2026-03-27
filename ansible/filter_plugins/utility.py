@@ -1,6 +1,9 @@
 import re
+import urllib.request
+import urllib.parse
 
 from datetime import datetime
+from html.parser import HTMLParser
 
 try:
     from ansible.errors import AnsibleFilterError
@@ -8,12 +11,32 @@ except ImportError:
     AnsibleFilterError = Exception
 
 
+class AnchorLinkExtractor(HTMLParser):
+    def __init__(self, base_url, pattern):
+        super().__init__()
+        self.base_url = base_url
+        self.links = set()
+        try:
+            self.regex = re.compile(pattern)
+        except re.error as e:
+            raise AnsibleFilterError(f"Invalid regex: {e}")
+
+    def handle_starttag(self, tag, attrs):
+        if tag.lower() == "a":
+            for attr, value in attrs:
+                if attr.lower() == "href":
+                    if self.regex.search(value):
+                        self.links.add(value)
+
+
 class FilterModule(object):
     def filters(self):
         return {
             'is_expired': self.is_expired,
             'shell_escape': self.shell_escape,
-            'get_checksum': self.get_checksum
+            'get_checksum': self.get_checksum,
+            'get_links': self.get_links,
+            'get_latest_version': self.get_latest_version
         }
 
 
@@ -68,3 +91,31 @@ class FilterModule(object):
             if match := chk.fullmatch(lines[0]):
                 return match.group(1)
         raise AnsibleFilterError("Uknown checksum format")
+
+    def get_links(self, url, pattern=''):
+        try:
+            with urllib.request.urlopen(url) as response:
+                content_type = response.headers.get("Content-Type", "")
+                if "text/html" not in content_type:
+                    raise AnsibleFilterError("Error: URL does not contain HTML content.")
+                html = response.read().decode("utf-8", errors="ignore")
+                parser = AnchorLinkExtractor(url, pattern)
+                parser.feed(html)
+                return sorted(parser.links)
+        except Exception as e:
+            raise AnsibleFilterError(f"Error: {e}")
+
+    def get_latest_version(self, url, pattern=''):
+        try:
+            with urllib.request.urlopen(url) as response:
+                content_type = response.headers.get("Content-Type", "")
+                if "text/html" not in content_type:
+                    raise AnsibleFilterError("Error: URL does not contain HTML content.")
+                html = response.read().decode("utf-8", errors="ignore")
+                parser = AnchorLinkExtractor(url, pattern)
+                parser.feed(html)
+                last = sorted(parser.links)[-1]
+                version = parser.regex.search(last)
+                return version.groupdict()
+        except Exception as e:
+            raise AnsibleFilterError(f"Error: {e}")

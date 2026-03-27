@@ -8,27 +8,28 @@
       cloud_image_url: "{{ release.cloud_image_url|default(distro.cloud_image_url) }}"
       cloud_image_checksum_type: "{{ release.cloud_image_checksum_type|default(distro.cloud_image_checksum_type|default(None)) }}"
       cloud_image_checksum_url: "{{ release.cloud_image_checksum_url|default(distro.cloud_image_checksum_url|default(None)) }}"
-      pup_filter: "{{ (release.pup_filter|default(distro.pup_filter))|shell_escape() }}"
-      awk_filter: "{{ (release.awk_filter|default(distro.awk_filter))|shell_escape() }}"
+      cloud_image_version_filter: "{{ (release.cloud_image_version_filter|default(distro.cloud_image_version_filter)) }}"
+      cloud_image_version_pattern: "{{ (release.cloud_image_version_pattern|default(distro.cloud_image_version_pattern)) }}"
     dest: "{{ build_path }}/distro.yaml"
   changed_when: false
 
 - name: Load templated vars
   include_vars: "{{ build_path }}/distro.yaml"
 
-- name: Identify latest version/build
-  shell: |
-    curl --max-time 5 --retry 3 -fsSL {{ cloud_image_base_url }} | \
-    pup {{ pup_filter }} | \
-    awk {{ awk_filter }} | \
-    sort --unique -V | \
-    tail -1
-  changed_when: false
-  register: last_build
-  retries: 5
-  delay: 10
-  until: last_build.stdout != ''
-  ignore_errors: true
+- name: Get latest version
+  set_fact:
+    cloud_last_version: "{{ cloud_image_base_url|get_latest_version(cloud_image_version_filter) }}"
+
+- name: Set version values
+  set_fact:
+    cloud_image_version: "{{ cloud_last_version['version']|default(None) }}"
+    cloud_image_major: "{{ cloud_last_version['major']|default(None) }}"
+    cloud_image_minor: "{{ cloud_last_version['minor']|default(None) }}"
+    cloud_image_patch: "{{ cloud_last_version['patch']|default(None) }}"
+    cloud_image_build: "{{ cloud_last_version['build']|default(None) }}"
+
+- name: Set version
+  set_fact:
+    cloud_image_version: "{{ cloud_image_version_pattern }}"
 
 - include_tasks: build.yaml
-  when: last_build is success
