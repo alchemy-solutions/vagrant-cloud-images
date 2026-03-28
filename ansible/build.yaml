@@ -1,7 +1,7 @@
 ---
 - name: Set Vagrant Box version
   set_fact:
-    vagrant_box_version: "{{ cloud_image_version }}"
+    vagrant_box_version: "{{ cloud_image_version_pattern }}"
 
 - name: Fix Vagrant Box version
   when: vagrant_box_version|split('.')|length < 3

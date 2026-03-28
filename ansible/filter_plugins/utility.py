@@ -51,9 +51,7 @@ class FilterModule(object):
             assert len(month) >= 3
             month = next((i for i, value in enumerate(months) if value.startswith(month)))
         except Exception as e:
-            raise AnsibleFilterError(
-                "Date string '%s' does not respect compact form 'MMM YYYY' (e.g. 'Oct 1974')"
-                % str_date)
+            raise AnsibleFilterError(f"Date string '{str_date}' does not respect compact form 'MMM YYYY' (e.g. 'Oct 1974')")
         return f"{year}-{month:02}" < datetime.today().strftime('%Y-%m')
 
 
@@ -70,8 +68,7 @@ class FilterModule(object):
         # TODO: GPG check
         algorithms = ['md5', 'sha1', 'sha256', 'sha512']
         if algorithm and algorithm not in algorithms:
-            raise AnsibleFilterError(
-                "Checksum algorithm '%s' not supported" % algorithm)
+            raise AnsibleFilterError(f"Checksum algorithm '{algorithm}' not supported")
         lines = text.splitlines()
         lines = [line for line in lines if not line.startswith('#')]
         re_chk = [
@@ -84,7 +81,7 @@ class FilterModule(object):
                 line for line in lines
                 if re.search(r'\b' + filename + r'\b', line)]
         if len(lines) == 0:
-            raise AnsibleFilterError("No checksum found")
+            raise AnsibleFilterError("No checksum found"+(f" for {filename}" if filename else ""))
         #if len(lines) != 1:
         #    raise AnsibleFilterError("Multiple checksums found")
         for chk in re_chk:

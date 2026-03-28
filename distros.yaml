@@ -11,7 +11,7 @@ distros:
   cloud_image_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_file_name }}"
   cloud_image_checksum_type: sha256
   cloud_image_checksum_url: !unsafe "{{ cloud_image_base_url }}/CHECKSUM"
-  cloud_image_version_filter: !unsafe 'GenericCloud-(?P<major>\\d+)\\.(?P<minor>\\d+)(?:-(?P<patch>\\d+\\.\\d+))?'
+  cloud_image_version_filter: !unsafe 'GenericCloud-(?P<major>\\d+)\\.(?P<minor>\\d+)(?:-(?P<patch>\\d+(?:\\.\\d+)?))?'
   cloud_image_version_pattern: !unsafe "{{ cloud_image_major }}.{{ cloud_image_minor }}{{ '.'+cloud_image_patch if cloud_image_patch != None else '' }}"
   disk_format: qcow2
   releases:
@@ -181,7 +181,7 @@ distros:
     cloud_image_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_file_name }}"
     cloud_image_checksum_url: !unsafe "{{ cloud_image_base_url }}/CHECKSUM"
     cloud_image_version_filter: !unsafe 'CentOS-{{ release.version }}-GenericCloud-(?P<version>\\d+\\.\\d+\\.\\d+)-(?P<build>\\d+\\.\\d+)\\.{{ arch.type }}\\.{{ distro.disk_format }}$'
-    cloud_image_version_pattern: !unsafe "{{ cloud_image_version }}-{{ cloud_image_build }}"
+    cloud_image_version_pattern: !unsafe "{{ cloud_image_version }}"
     eol: Dec 2021
     arch:
     - name: amd64
@@ -215,7 +215,7 @@ distros:
   cloud_image_file_name: !unsafe "{{ distro.code }}-{{ release.version }}-generic-{{ arch.type }}-{{ cloud_image_major }}-{{ cloud_image_minor }}.{{ distro.disk_format }}"
   cloud_image_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_major }}-{{ cloud_image_minor }}/{{ cloud_image_file_name }}"
   cloud_image_checksum_type: sha512
-  cloud_image_checksum_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_version }}/SHA512SUMS"
+  cloud_image_checksum_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_major }}-{{ cloud_image_minor }}/SHA512SUMS"
   cloud_image_version_filter: !unsafe '(?P<major>\\d{8})-(?P<minor>\\d+)'
   cloud_image_version_pattern: !unsafe "{{ cloud_image_major }}.{{ cloud_image_minor }}"
   disk_format: qcow2

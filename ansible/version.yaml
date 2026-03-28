@@ -28,8 +28,4 @@
     cloud_image_patch: "{{ cloud_last_version['patch']|default(None) }}"
     cloud_image_build: "{{ cloud_last_version['build']|default(None) }}"
 
-- name: Set version
-  set_fact:
-    cloud_image_version: "{{ cloud_image_version_pattern }}"
-
 - include_tasks: build.yaml

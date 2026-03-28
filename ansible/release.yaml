@@ -23,15 +23,24 @@
   failed_when: hcp_create_box.status not in [200, 409]
   changed_when: hcp_create_box.status == 200
 
-- name: Check expired release
-  when: release_availability is defined
+- name: Set expiration
   set_fact:
-    release_expred: "{{ not expired|bool and release.eol|default(release.eos)|is_expired }}"
+    release_expiration: "{{ release.eol|default(release.eos|default('Dec 2999')) }}"
 
 - include_tasks: providers.yaml
   when:
-  - not release_expred|default(false)
+  - expired|bool or not release_expiration|is_expired
   - filter_arch is not defined or arch.name==filter_arch or arch.type==filter_arch
+  loop: "{{ release.arch }}"
+  loop_control:
+    loop_var: arch
+
+- name: Skip expired release
+  when:
+  - not expired|bool and release_expiration|is_expired
+  - filter_arch is not defined or arch.name==filter_arch or arch.type==filter_arch
+  debug:
+    msg: "Skip expired release ({{ release_expiration }})"
   loop: "{{ release.arch }}"
   loop_control:
     loop_var: arch
