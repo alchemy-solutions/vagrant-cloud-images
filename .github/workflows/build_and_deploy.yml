@@ -16,13 +16,17 @@ jobs:
     steps:
     - id: hcp_auth
       uses: hashicorp/hcp-auth-action@v0
+      env:
+        ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
       with:
         workload_identity_provider: 'iam/project/cdb1b80e-a7cd-4d5c-a9a2-3a93079d6a36/service-principal/github/workload-identity-provider/github-vagrant-cloud-images'
         set_access_token: true
     - uses: hashicorp/hcp-setup-action@v0
+      env:
+        ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
       with:
         version: 'latest'
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: Install dependencies
       run: |
         sudo apt-get update
