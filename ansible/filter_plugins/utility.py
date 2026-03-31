@@ -4,11 +4,31 @@ import urllib.parse
 
 from datetime import datetime
 from html.parser import HTMLParser
+from typing import NamedTuple
 
 try:
     from ansible.errors import AnsibleFilterError
 except ImportError:
     AnsibleFilterError = Exception
+
+
+class SemanticVersion:
+    version = []
+    build = None
+
+    def __init__(self, text, sep='.', build_sep='-'):
+        assert isinstance(text, str), "Initial value of wrong type"
+        version, self.build, *_ = text.split(build_sep) + [None]
+        self.version = [int(number) for number in version.split(sep)]
+        while len(self.version) < 3:
+            self.version.append(0)
+
+    def __repr__(self):
+        version = '.'.join([str(number) for number in self.version])
+        if self.build is None:
+            return version
+        else:
+            return f"{version}-{self.build}"
 
 
 class AnchorLinkExtractor(HTMLParser):
@@ -36,9 +56,9 @@ class FilterModule(object):
             'shell_escape': self.shell_escape,
             'get_checksum': self.get_checksum,
             'get_links': self.get_links,
-            'get_latest_version': self.get_latest_version
+            'get_latest_version': self.get_latest_version,
+            'semantic_version': self.semantic_version
         }
-
 
     def is_expired(self, str_date=None):
         if not str_date:
@@ -54,7 +74,6 @@ class FilterModule(object):
             raise AnsibleFilterError(f"Date string '{str_date}' does not respect compact form 'MMM YYYY' (e.g. 'Oct 1974')")
         return f"{year}-{month:02}" < datetime.today().strftime('%Y-%m')
 
-
     def shell_escape(self, shell_string):
         escaped_string = ''
         for char in shell_string:
@@ -62,7 +81,6 @@ class FilterModule(object):
                 escaped_string += '\\'
             escaped_string += char
         return escaped_string
-
 
     def get_checksum(self, text, filename=None, algorithm=''):
         # TODO: GPG check
@@ -113,6 +131,21 @@ class FilterModule(object):
                 parser.feed(html)
                 last = sorted(parser.links)[-1]
                 version = parser.regex.search(last)
-                return version.groupdict()
+                return {k: v for k, v in version.groupdict().items() if v is not None}
         except Exception as e:
             raise AnsibleFilterError(f"Error: {e}")
+
+    def semantic_version(self, text, major=None, minor=None, patch=None, build=None):
+        ver = SemanticVersion(text)
+        try:
+            if major is not None:
+                ver.version[0] = int(major)
+            if minor is not None:
+                ver.version[1] = int(minor)
+            if patch is not None:
+                ver.version[2] = int(patch)
+        except Exception as e:
+            raise AnsibleFilterError(f"Not integer components: {e}")
+        if build is not None:
+            ver.build = build
+        return f"{ver}"

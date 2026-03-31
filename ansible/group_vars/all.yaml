@@ -12,6 +12,15 @@ preserve: false
 # Build expired releases (EOS/EOL)
 expired: false
 
+# Overwrite existing box
+overwrite: false
+
+# Overwrite semantic version
+major_version: null
+minor_version: null
+patch_version: null
+build_version: null
+
 build_path: "{{ playbook_dir }}/../build"
 log_path: "{{ build_path }}/build-{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}.log"
 

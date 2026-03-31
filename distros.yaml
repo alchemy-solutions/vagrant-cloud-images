@@ -402,11 +402,11 @@ distros:
   code: ubuntu
   cloud_image_base_url: !unsafe "https://cloud-images.ubuntu.com/{{ release.name }}"
   cloud_image_file_name: !unsafe "{{ release.name }}-server-cloudimg-{{ arch.type }}.img"
-  cloud_image_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_version }}/{{ cloud_image_file_name }}"
+  cloud_image_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_version_pattern }}/{{ cloud_image_file_name }}"
   cloud_image_checksum_type: sha256
-  cloud_image_checksum_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_version }}/SHA256SUMS"
+  cloud_image_checksum_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_version_pattern }}/SHA256SUMS"
   cloud_image_version_filter: !unsafe '(?P<major>\\d{8})(?:\\.(?P<minor>\\d+))?'
-  cloud_image_version_pattern: !unsafe "{{ cloud_image_major }}{{ '.' if cloud_image_minor != None else '' }}{{ cloud_image_minor }}"
+  cloud_image_version_pattern: !unsafe "{{ cloud_image_major }}{{ '.'+cloud_image_minor if cloud_image_minor != None else '' }}"
   disk_format: qcow2
   pup_filter: "'a text{}'"
   awk_filter: "-F/ '/[0-9]{8}\\.?[0-9]*/{ print $1 }'"

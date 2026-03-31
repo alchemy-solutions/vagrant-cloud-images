@@ -20,12 +20,16 @@
   set_fact:
     cloud_last_version: "{{ cloud_image_base_url|get_latest_version(cloud_image_version_filter) }}"
 
-- name: Set version values
+- name: Get version values
   set_fact:
-    cloud_image_version: "{{ cloud_last_version['version']|default(None) }}"
-    cloud_image_major: "{{ cloud_last_version['major']|default(None) }}"
-    cloud_image_minor: "{{ cloud_last_version['minor']|default(None) }}"
-    cloud_image_patch: "{{ cloud_last_version['patch']|default(None) }}"
-    cloud_image_build: "{{ cloud_last_version['build']|default(None) }}"
+    cloud_image_version: "{{ cloud_last_version.version|default(None) if cloud_last_version.version is defined else None}}"
+    cloud_image_major: "{{ cloud_last_version.major|default(None) if cloud_last_version.major is defined else None}}"
+    cloud_image_minor: "{{ cloud_last_version.minor|default(None) if cloud_last_version.minor is defined else None}}"
+    cloud_image_patch: "{{ cloud_last_version.patch|default(None) if cloud_last_version.patch is defined else None}}"
+    cloud_image_build: "{{ cloud_last_version.build|default(None) if cloud_last_version.build is defined else None}}"
+
+- name: Set Vagrant Box version
+  set_fact:
+    vagrant_box_version: "{{ cloud_image_version_pattern|semantic_version(major_version, minor_version, patch_version, build_version) }}"
 
 - include_tasks: build.yaml

@@ -3,7 +3,7 @@
   debug:
     msg: |-
       Cloud image: {{ cloud_image_file_name }}
-      Cloud version: {{ cloud_image_version }}
+      Cloud version: {{ cloud_image_version_pattern }}
       Vagrant Box file: {{ vagrant_box_file }}
       Vagrant Box version: {{ vagrant_box_version }}
 

@@ -64,6 +64,7 @@
 - name: Check if Vagrant Box Registry is already present
   when:
   - create|bool
+  - not overwrite|bool
   - hcp_download_box.status == 200
   meta: end_role
 
