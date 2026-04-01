@@ -33,4 +33,4 @@ jobs:
       env:
         VAGRANT_CLOUD_TOKEN: ${{ steps.hcp_auth.outputs.access_token }}
       run: |
-        ansible-playbook -e dryrun=true -e guestfs=guestmount ansible/site.yaml -vvv
+        ansible-playbook -e dryrun=true -e guestfs=guestfish ansible/site.yaml -vvv

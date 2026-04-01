@@ -1,0 +1,3 @@
+---
+- name: Inject Vagrant cloud-init configuration file
+  command: guestfish -a {{ vagrant_disk_path }} -i upload {{ build_path }}/99_vagrant.cfg /etc/cloud/cloud.cfg.d/99_vagrant.cfg

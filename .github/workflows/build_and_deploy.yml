@@ -41,4 +41,4 @@ jobs:
         SMTP_SERVER: ${{ vars.SMTP_SERVER }}
         SMTP_PORT: ${{ vars.SMTP_PORT }}
       run: |
-        ansible-playbook -e verbuse=true -e guestfs=guestmount ansible/site.yaml
+        ansible-playbook -e verbuse=true -e guestfs=guestfish ansible/site.yaml

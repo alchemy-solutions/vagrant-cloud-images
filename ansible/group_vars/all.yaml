@@ -24,7 +24,7 @@ build_version: null
 build_path: "{{ playbook_dir }}/../build"
 log_path: "{{ build_path }}/build-{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}.log"
 
-# Where to run guestfs-tools? (allowed values: guestmount, docker)
+# Where to run guestfs-tools? (allowed values: guestfish, docker)
 guestfs: docker
 
 providers:

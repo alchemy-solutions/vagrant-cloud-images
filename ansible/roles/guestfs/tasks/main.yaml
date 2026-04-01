@@ -1,2 +1,7 @@
 ---
+- name: Create Vagrant cloud-init configuration file
+  template:
+    src: "99_vagrant.cfg.j2"
+    dest: "{{ build_path }}/99_vagrant.cfg"
+
 - include_tasks: "{{ guestfs }}.yaml"
