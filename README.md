@@ -35,7 +35,7 @@ all (or, at least, the minimum possible).
 | Rocky Linux 10 (Red Quartz) | [cloud-image/rocky-10](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/rocky-10) | May 2035 |
 | Rocky Linux 9 (Blue Onyx) | [cloud-image/rocky-9](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/rocky-9) | May 2032 |
 | Rocky Linux 8 (Green Obsidian) | [cloud-image/rocky-8](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/rocky-8) | May 2029 |
-| Ubuntu 26.04 LTS (Resolute Racoon) | [cloud-image/ubuntu-26.04](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/ubuntu-26.04) | undefined |
+| Ubuntu 26.04 LTS (Resolute Racoon) | [cloud-image/ubuntu-26.04](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/ubuntu-26.04) | April 2038 |
 | Ubuntu 24.04 LTS (Noble Numbat) | [cloud-image/ubuntu-24.04](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/ubuntu-24.04) | April 2036 |
 | Ubuntu 22.04 LTS (Jammy Jellyfish) | [cloud-image/ubuntu-22.04](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/ubuntu-22.04) | April 2034 |
 | Ubuntu 20.04 LTS (Focal Fossa) | [cloud-image/ubuntu-20.04](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/ubuntu-20.04) | April 2032 |

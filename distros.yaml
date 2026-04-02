@@ -414,6 +414,8 @@ distros:
   - name: resolute
     version: "26.04"
     description: Ubuntu 26.04 LTS (Resolute Racoon)
+    eos: June 2031
+    eol: April 2038
     arch:
     - name: amd64
       type: amd64

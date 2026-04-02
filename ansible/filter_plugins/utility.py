@@ -69,7 +69,7 @@ class FilterModule(object):
             month = month.lower()
             year = int(year)
             assert len(month) >= 3
-            month = next((i for i, value in enumerate(months) if value.startswith(month)))
+            month = next((i+1 for i, value in enumerate(months) if value.startswith(month)))
         except Exception as e:
             raise AnsibleFilterError(f"Date string '{str_date}' does not respect compact form 'MMM YYYY' (e.g. 'Oct 1974')")
         return f"{year}-{month:02}" < datetime.today().strftime('%Y-%m')
