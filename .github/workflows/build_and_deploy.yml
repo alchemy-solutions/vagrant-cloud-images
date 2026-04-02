@@ -31,6 +31,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y libguestfs-tools qemu-utils
+        sudo chmod 0644 /boot/vmlinuz*
     - name: Build images
       env:
         VAGRANT_CLOUD_TOKEN: ${{ steps.hcp_auth.outputs.access_token }}
