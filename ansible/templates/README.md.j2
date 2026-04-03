@@ -61,8 +61,11 @@ config.vm.cloud_init do |cloud_init|
       expire: False
       users:
         - name: vagrant
-          password: N3wP4ssw0rd
-          type: text
+          password: $6$w96606u5V4VpuqMc$aueKDVIMimcTUAxDLhARONDOP9uXJvVtNi8N4.APE97XYmrm/jgWuKTkPrKzG4JfK617Ybv8PkS2qUKMtVzmL1
+          type: hash
+          # For clear text password:
+          #password: N3wP4ssw0rd
+          #type: text
     ssh_pwauth: True
   EOF
 end
