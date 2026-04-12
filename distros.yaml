@@ -50,7 +50,7 @@ distros:
 - name: Alpine Linux
   code: alpine
   cloud_image_base_url: !unsafe "https://dl-cdn.alpinelinux.org/alpine/{{ release.name }}/releases/cloud"
-  cloud_image_file_name: !unsafe "nocloud_alpine-{{ cloud_image_version }}-{{ arch.type }}-uefi-cloudinit-{{ release.revision }}.{{ distro.disk_format }}"
+  cloud_image_file_name: !unsafe "nocloud_alpine-{{ cloud_image_version }}-{{ arch.type }}-uefi-cloudinit-{{ cloud_image_build }}.{{ distro.disk_format }}"
   cloud_image_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_file_name }}"
   cloud_image_checksum_type: sha512
   cloud_image_checksum_url: !unsafe "{{ cloud_image_url }}.{{ cloud_image_checksum_type }}"
@@ -60,7 +60,6 @@ distros:
   releases:
   - name: "v3.23"
     version: "3.23"
-    revision: r0
     description: Alpine Linux v3.23
     eos: Nov 2027
     arch:
@@ -70,7 +69,6 @@ distros:
       type: aarch64
   - name: "v3.22"
     version: "3.22"
-    revision: r0
     description: Alpine Linux v3.22
     eos: May 2027
     arch:
@@ -80,7 +78,6 @@ distros:
       type: aarch64
   - name: "v3.21"
     version: "3.21"
-    revision: r0
     description: Alpine Linux v3.21
     eos: Nov 2026
     arch:
@@ -90,7 +87,6 @@ distros:
       type: aarch64
   - name: "v3.20"
     version: "3.20"
-    revision: r0
     description: Alpine Linux v3.20
     eos: Apr 2026
     arch:
@@ -100,7 +96,6 @@ distros:
       type: aarch64
   - name: "v3.19"
     version: "3.19"
-    revision: r0
     description: Alpine Linux v3.19
     eos: Nov 2025
     arch:

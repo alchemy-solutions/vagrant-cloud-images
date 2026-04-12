@@ -17,9 +17,9 @@ all (or, at least, the minimum possible).
 | Alpine Linux v3.20 | [cloud-image/alpine-3.20](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.20) | Apr 2026 |
 | Alpine Linux v3.19 | [cloud-image/alpine-3.19](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.19) | Expired |
 | Arch Linux | [cloud-image/arch-linux](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/arch-linux) | undefined |
-| CentOS Stream 10 | [cloud-image/centos-10](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-10) | Jan 2030 |
-| CentOS Stream 9 | [cloud-image/centos-9](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-9) | May 2027 |
-| CentOS Stream 8 | [cloud-image/centos-8](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-8) | Expired |
+| CentOS Stream 10 | [cloud-image/centos-10-stream](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-10-stream) | Jan 2030 |
+| CentOS Stream 9 | [cloud-image/centos-9-stream](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-9-stream) | May 2027 |
+| CentOS Stream 8 | [cloud-image/centos-8-stream](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-8-stream) | Expired |
 | CentOS 8 | [cloud-image/centos-8](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-8) | Expired |
 | CentOS 7 | [cloud-image/centos-7](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-7) | Expired |
 | Debian 13 (Trixie) | [cloud-image/debian-13](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/debian-13) | August 2030 |
