@@ -150,8 +150,5 @@
 - name: Cleanup build directory
   when: not preserve|bool
   file:
-    path: "{{ build_path }}/{{ item }}"
+    path: "{{ build_path }}/{{ vagrant_box_path }}"
     state: absent
-  loop:
-  - "{{ cloud_image_path }}"
-  - "{{ vagrant_box_path }}"
