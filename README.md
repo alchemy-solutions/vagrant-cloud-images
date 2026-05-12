@@ -14,7 +14,7 @@ all (or, at least, the minimum possible).
 | Alpine Linux v3.23 | [cloud-image/alpine-3.23](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.23) | Nov 2027 |
 | Alpine Linux v3.22 | [cloud-image/alpine-3.22](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.22) | May 2027 |
 | Alpine Linux v3.21 | [cloud-image/alpine-3.21](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.21) | Nov 2026 |
-| Alpine Linux v3.20 | [cloud-image/alpine-3.20](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.20) | Apr 2026 |
+| Alpine Linux v3.20 | [cloud-image/alpine-3.20](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.20) | Expired |
 | Alpine Linux v3.19 | [cloud-image/alpine-3.19](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.19) | Expired |
 | Arch Linux | [cloud-image/arch-linux](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/arch-linux) | undefined |
 | CentOS Stream 10 | [cloud-image/centos-10-stream](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-10-stream) | Jan 2030 |
@@ -31,7 +31,6 @@ all (or, at least, the minimum possible).
 | Fedora 41 | [cloud-image/fedora-41](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-41) | Expired |
 | Fedora 40 | [cloud-image/fedora-40](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-40) | Expired |
 | Fedora 39 | [cloud-image/fedora-39](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-39) | Expired |
-| openSUSE Leap 16.0 | [cloud-image/opensuse-leap-16.0](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/opensuse-leap-16.0) | Oct 2027 |
 | Rocky Linux 10 (Red Quartz) | [cloud-image/rocky-10](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/rocky-10) | May 2035 |
 | Rocky Linux 9 (Blue Onyx) | [cloud-image/rocky-9](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/rocky-9) | May 2032 |
 | Rocky Linux 8 (Green Obsidian) | [cloud-image/rocky-8](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/rocky-8) | May 2029 |
@@ -41,7 +40,7 @@ all (or, at least, the minimum possible).
 | Ubuntu 20.04 LTS (Focal Fossa) | [cloud-image/ubuntu-20.04](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/ubuntu-20.04) | April 2032 |
 | Ubuntu 18.04 LTS (Bionic Beaver) | [cloud-image/ubuntu-18.04](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/ubuntu-18.04) | April 2030 |
 | Ubuntu 16.04 LTS (Xenial Xerus) | [cloud-image/ubuntu-16.04](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/ubuntu-16.04) | April 2028 |
-| Ubuntu 14.04 LTS (Trusty Tahr) | [cloud-image/ubuntu-14.04](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/ubuntu-14.04) | April 2026 |
+| Ubuntu 14.04 LTS (Trusty Tahr) | [cloud-image/ubuntu-14.04](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/ubuntu-14.04) | Expired |
 
 ## cloud-init injection
 

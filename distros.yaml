@@ -324,30 +324,6 @@ distros:
     - name: arm64
       type: aarch64
 
-# https://download.opensuse.org/repositories/Cloud:/Images:/
-# https://download.opensuse.org/repositories/openSUSE:/Leap:/
-- name: openSUSE Leap
-  code: opensuse-leap
-  cloud_image_base_url: !unsafe "https://download.opensuse.org/repositories/openSUSE:/Leap:/{{ release.version }}:/Images/images"
-  cloud_image_file_name: !unsafe "Leap-{{ release.version }}-Minimal-VM.{{ arch.type }}-Cloud-Build{{ cloud_image_version }}.{{ distro.disk_format }}"
-  cloud_image_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_file_name }}"
-  cloud_image_checksum_type: sha256
-  cloud_image_checksum_url: !unsafe "{{ cloud_image_url }}.{{ cloud_image_checksum_type }}"
-  cloud_image_version_filter: !unsafe 'Leap-{{ release.version }}-Minimal-VM.{{ arch.type }}-Cloud-Build(?P<version>\\d+\\.\\d+)\\.{{ distro.disk_format }}$'
-  cloud_image_version_pattern: !unsafe "{{ cloud_image_version }}"
-  disk_format: qcow2
-  releases:
-  - name: "16.0"
-    code: "16.0"
-    version: "16.0"
-    description: openSUSE Leap 16.0
-    eol: Oct 2027
-    arch:
-    - name: amd64
-      type: x86_64
-    - name: arm64
-      type: aarch64
-
 # https://rockylinux.org/download
 - name: Rocky Linux
   code: rocky
