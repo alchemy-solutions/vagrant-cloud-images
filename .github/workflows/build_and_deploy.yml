@@ -32,6 +32,17 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y libguestfs-tools qemu-utils
         sudo chmod 0644 /boot/vmlinuz*
+    - name: Build README.md
+      run: |
+        git config --global user.name 'Ettore Simone'
+        git config --global user.email '1446844+signal-09@users.noreply.github.com'
+        ansible-playbook ansible/readme.yaml
+        TEXT=$(git diff README.md | awk -F'|' '/^\+.*Expired \|/{ print "*" $2 }')
+        if [[ -n "$TEXT" ]]; then
+            git add README.md
+            git commit -m "Expired distro"$'\n'$'\n'"${TEXT}"
+            git push
+        fi
     - name: Build images
       env:
         VAGRANT_CLOUD_TOKEN: ${{ steps.hcp_auth.outputs.access_token }}
