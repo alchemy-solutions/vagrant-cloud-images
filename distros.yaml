@@ -364,6 +364,63 @@ distros:
     - name: arm64
       type: aarch64
 
+# https://yum.oracle.com/oracle-linux-templates.html
+# https://www.oracle.com/a/ocom/docs/elsp-lifetime-069338.pdf
+- name: Oracle Linux
+  code: oracle-linux
+  cloud_image_base_url: "https://yum.oracle.com/oracle-linux-templates.html"
+  cloud_image_file_name: !unsafe "{{ release.name }}U{{ cloud_image_minor }}_{{ arch.type }}-kvm-b{{ cloud_image_patch }}.{{ distro.disk_format }}"
+  cloud_image_url: !unsafe "https://yum.oracle.com/templates/OracleLinux/{{ release.name }}/u{{ cloud_image_minor }}/{{ arch.type }}/{{ cloud_image_file_name }}"
+  cloud_image_version_filter: !unsafe 'OL(?P<major>{{ release.version }})U(?P<minor>\\d+)_{{ arch.type }}-kvm-b(?P<patch>\\d+)\\.{{ distro.disk_format }}$'
+  cloud_image_version_pattern: !unsafe "{{ cloud_image_major }}.{{ cloud_image_minor }}.{{ cloud_image_patch }}"
+  disk_format: qcow2
+  releases:
+  - name: "OL10"
+    code: "10"
+    version: "10"
+    #cloud_image_url: !unsafe "https://yum.oracle.com/templates/OracleLinux/OL10/u1/x86_64/OL10U1_x86_64-kvm-b270.qcow2"
+    #cloud_image_url: !unsafe "https://yum.oracle.com/templates/OracleLinux/OL9/u7/x86_64/OL9U7_x86_64-kvm-b269.qcow2"
+    #cloud_image_url: !unsafe "https://yum.oracle.com/templates/OracleLinux/OL8/u10/aarch64/OL8U10_aarch64-kvm-b161.qcow2"
+    description: Oracle Linux 10
+    eos: Jun 2035
+    eol: Jun 2038
+    arch:
+    - name: amd64
+      type: x86_64
+    - name: arm64
+      type: aarch64
+  - name: "OL9"
+    code: "9"
+    version: "9"
+    description: Oracle Linux 9
+    eos: Jun 2032
+    eol: Jun 2035
+    arch:
+    - name: amd64
+      type: x86_64
+    - name: arm64
+      type: aarch64
+  - name: "OL8"
+    code: "8"
+    version: "8"
+    description: Oracle Linux 8
+    eos: Jul 2029
+    eol: Jul 2032
+    arch:
+    - name: amd64
+      type: x86_64
+    - name: arm64
+      type: aarch64
+  - name: "OL7"
+    code: "7"
+    version: "7"
+    description: Oracle Linux 7
+    eos: Dec 2024
+    eol: Jul 2029
+    arch:
+    - name: amd64
+      type: x86_64
+
 # https://rockylinux.org/download
 - name: Rocky Linux
   code: rocky

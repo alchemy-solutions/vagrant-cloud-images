@@ -6,15 +6,17 @@ Purpose of this project is to provide [Vagrant Box images](https://app.vagrantup
 colud images of various GNU/Linux distributions with no modifications at
 all (or, at least, the minimum possible).
 
-| distribution | vagrant box | support |
-| ------------ | ----------- | ------- |
+| distribution | vagrant box | EOS | EOL |
+| ------------ | ----------- | --- | --- |
 {% for distro in distros %}
 {% for release in distro.releases %}
-{% set expiration = release.eol|default(release.eos|default(None)) %}
-{% set is_expired = expiration|is_expired %}
+{% set eos = release.eos|default(None) %}
+{% set eol = release.eol|default(None) %}
+{% set is_eos = eos|is_expired %}
+{% set is_eol = eol|is_expired %}
 {% set cloud_image = 'cloud-image/'+distro.code+'-'+release.code|default(release.version) %}
 {% set cloud_image_url = 'https://portal.cloud.hashicorp.com/vagrant/discover/'+cloud_image %}
-| {{ release.description }} | [{{ cloud_image }}]({{ cloud_image_url }}) | {% if is_expired %}Expired{% else %}{{ (expiration == None)|ternary('undefined', expiration) }}{% endif %} |
+| {{ release.description }} | [{{ cloud_image }}]({{ cloud_image_url }}) | {% if is_eos %}Expired{% else %}{{ (eos == None)|ternary('Undefined', eos) }}{% endif %} | {% if is_eol %}Expired{% else %}{{ (eol == None)|ternary('Undefined', eol) }}{% endif %} |
 {% endfor %}
 {% endfor %}
 
