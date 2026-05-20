@@ -1,0 +1,9 @@
+---
+- name: Extract disk image
+  ansible.builtin.command: unxz --force {{ cloud_image_file }}
+  args:
+    chdir: "{{ build_path }}"
+
+- name: Rename cloud image file
+  ansible.builtin.set_fact:
+    cloud_image_file: "{{ vagrant_box_id }}.{{ distro.disk_format }}"

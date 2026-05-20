@@ -9,6 +9,7 @@
   loop:
   - hcp
   - qemu-img
+  - unxz
   - "{{ guestfs }}"
 
 - assert:

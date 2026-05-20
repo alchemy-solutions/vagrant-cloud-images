@@ -26,6 +26,10 @@
   delay: 1
   until: download_image is success
 
+- name: "Uncompress {{ cloud_image_file }}"
+  when: distro.disk_compress is defined
+  include_tasks: "uncompress/{{ distro.disk_compress }}.yaml"
+
 - name: Read disk image info
   command: qemu-img info --output=json {{ cloud_image_path }}
   register: cloud_image_info

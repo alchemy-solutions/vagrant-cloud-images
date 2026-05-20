@@ -379,8 +379,6 @@ distros:
   cloud_image_version_filter: !unsafe '(?P<major>\\d{8})(?:\\.(?P<minor>\\d+))?'
   cloud_image_version_pattern: !unsafe "{{ cloud_image_major }}{{ '.'+cloud_image_minor if cloud_image_minor != None else '' }}"
   disk_format: qcow2
-  pup_filter: "'a text{}'"
-  awk_filter: "-F/ '/[0-9]{8}\\.?[0-9]*/{ print $1 }'"
   releases:
   - name: resolute
     version: "26.04"
