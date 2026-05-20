@@ -27,6 +27,7 @@
     cloud_image_minor: "{{ cloud_last_version.minor|default(None) if cloud_last_version.minor is defined else None}}"
     cloud_image_patch: "{{ cloud_last_version.patch|default(None) if cloud_last_version.patch is defined else None}}"
     cloud_image_build: "{{ cloud_last_version.build|default(None) if cloud_last_version.build is defined else None}}"
+    cloud_image_kernel: "{{ cloud_last_version.kernel|default(None) if cloud_last_version.kernel is defined else None}}"
 
 - name: Set Vagrant Box version
   set_fact:
