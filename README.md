@@ -16,6 +16,7 @@ all (or, at least, the minimum possible).
 | Alpine Linux v3.21 | [cloud-image/alpine-3.21](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.21) | Nov 2026 |
 | Alpine Linux v3.20 | [cloud-image/alpine-3.20](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.20) | Expired |
 | Alpine Linux v3.19 | [cloud-image/alpine-3.19](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.19) | Expired |
+| Amazon Linux 2023 | [cloud-image/amazon-linux-2023](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/amazon-linux-2023) | Sep 2029 |
 | Arch Linux | [cloud-image/arch-linux](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/arch-linux) | undefined |
 | CentOS Stream 10 | [cloud-image/centos-10-stream](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-10-stream) | Jan 2030 |
 | CentOS Stream 9 | [cloud-image/centos-9-stream](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-9-stream) | May 2027 |

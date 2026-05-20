@@ -104,6 +104,31 @@ distros:
     - name: arm64
       type: aarch64
 
+# https://cdn.amazonlinux.com/al2023/os-images/latest/kvm/
+- name: Amazon Linux
+  code: amazon-linux
+  cloud_image_base_url: !unsafe "https://cdn.amazonlinux.com/{{ release.name }}/os-images/latest/{{ arch.url }}/"
+  cloud_image_file_name: !unsafe "{{ release.name }}-kvm-{{ release.version }}.{{ cloud_image_version }}-kernel-6.1-{{ arch.type }}.xfs.gpt.{{ distro.disk_format }}"
+  cloud_image_url: !unsafe "{{ cloud_image_base_url }}{{ cloud_image_file_name }}"
+  cloud_image_checksum_type: sha256
+  cloud_image_checksum_url: !unsafe "{{ cloud_image_base_url }}SHA256SUMS"
+  cloud_image_version_filter: !unsafe '{{ release.name }}-kvm-{{ release.version }}\\.(?P<version>\\d+\\.\\d+\\.\\d+)-.*\\.{{ distro.disk_format }}$'
+  cloud_image_version_pattern: !unsafe "{{ cloud_image_version }}"
+  disk_format: qcow2
+  releases:
+  - name: al2023
+    code: "2023"
+    version: 2023
+    description: Amazon Linux 2023
+    eos: Sep 2029
+    arch:
+    - name: amd64
+      type: x86_64
+      url: kvm
+    - name: arm64
+      type: arm64
+      url: kvm-arm64
+
 # https://fastly.mirror.pkgbuild.com/images/latest/
 - name: Arch Linux
   code: arch
