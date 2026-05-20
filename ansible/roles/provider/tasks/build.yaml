@@ -108,7 +108,7 @@
   delay: 5
   until: not hcp_upload_box.failed
 
-- name: Alert new {{ distro.name }} {{ release.name }} Vagrant Box uploaded
+- name: New Vagrant Box for {{ release.description }} uploaded
   when:
   - upload|bool
   - mail_username is defined
@@ -124,7 +124,7 @@
     password: "{{ mail_password }}"
     from: "{{ mail_from }}"
     to: "{{ mail_to }}"
-    subject: "A new {{ distro.name }} {{ release.name }} Vagrant Box has been uploaded"
+    subject: "A new Vagrant Box for {{ release.description }} has been uploaded"
     body: |-
       Distro: {{ distro.name }}
       Release: {{ release.name }}
@@ -135,7 +135,7 @@
       Vagrant Box file: {{ vagrant_box_file }}
       Vagrant Box version: {{ vagrant_box_version }}
 
-- name: Alert new {{ distro.name }} {{ release.name }} Vagrant Box uploaded
+- name: New Vagrant Box for {{ release.description }} uploaded
   debug:
     msg: |-
       Distro: {{ distro.name }}
