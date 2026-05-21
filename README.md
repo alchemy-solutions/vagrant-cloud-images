@@ -11,28 +11,28 @@ all (or, at least, the minimum possible).
 | AlmaLinux 10 | [cloud-image/almalinux-10](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/almalinux-10) | May 2030 | May 2035 |
 | AlmaLinux 9 | [cloud-image/almalinux-9](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/almalinux-9) | May 2027 | May 2032 |
 | AlmaLinux 8 | [cloud-image/almalinux-8](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/almalinux-8) | Expired | Mar 2029 |
-| Alpine Linux v3.23 | [cloud-image/alpine-3.23](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.23) | Nov 2027 | Undefined |
-| Alpine Linux v3.22 | [cloud-image/alpine-3.22](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.22) | May 2027 | Undefined |
-| Alpine Linux v3.21 | [cloud-image/alpine-3.21](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.21) | Nov 2026 | Undefined |
-| Alpine Linux v3.20 | [cloud-image/alpine-3.20](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.20) | Expired | Undefined |
-| Alpine Linux v3.19 | [cloud-image/alpine-3.19](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.19) | Expired | Undefined |
-| Amazon Linux 2023 | [cloud-image/amazon-linux-2023](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/amazon-linux-2023) | Sep 2029 | Undefined |
-| Amazon Linux 2 | [cloud-image/amazon-linux-2](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/amazon-linux-2) | Jun 2026 | Undefined |
+| Alpine Linux v3.23 | [cloud-image/alpine-3.23](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.23) | Nov 2027 | Nov 2027 |
+| Alpine Linux v3.22 | [cloud-image/alpine-3.22](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.22) | May 2027 | May 2027 |
+| Alpine Linux v3.21 | [cloud-image/alpine-3.21](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.21) | Nov 2026 | Nov 2026 |
+| Alpine Linux v3.20 | [cloud-image/alpine-3.20](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.20) | Expired | Expired |
+| Alpine Linux v3.19 | [cloud-image/alpine-3.19](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.19) | Expired | Expired |
+| Amazon Linux 2023 | [cloud-image/amazon-linux-2023](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/amazon-linux-2023) | Sep 2029 | Sep 2029 |
+| Amazon Linux 2 | [cloud-image/amazon-linux-2](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/amazon-linux-2) | Jun 2026 | Jun 2026 |
 | Arch Linux | [cloud-image/arch-linux](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/arch-linux) | Undefined | Undefined |
-| CentOS Stream 10 | [cloud-image/centos-10-stream](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-10-stream) | Jan 2030 | Undefined |
-| CentOS Stream 9 | [cloud-image/centos-9-stream](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-9-stream) | May 2027 | Undefined |
-| CentOS Stream 8 | [cloud-image/centos-8-stream](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-8-stream) | Expired | Undefined |
-| CentOS 8 | [cloud-image/centos-8](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-8) | Undefined | Expired |
-| CentOS 7 | [cloud-image/centos-7](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-7) | Undefined | Expired |
+| CentOS Stream 10 | [cloud-image/centos-10-stream](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-10-stream) | Jan 2030 | Jan 2030 |
+| CentOS Stream 9 | [cloud-image/centos-9-stream](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-9-stream) | May 2027 | May 2027 |
+| CentOS Stream 8 | [cloud-image/centos-8-stream](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-8-stream) | Expired | Expired |
+| CentOS 8 | [cloud-image/centos-8](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-8) | Expired | Expired |
+| CentOS 7 | [cloud-image/centos-7](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-7) | Expired | Expired |
 | Debian 13 (Trixie) | [cloud-image/debian-13](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/debian-13) | August 2028 | August 2030 |
 | Debian 12 (Bookworm) | [cloud-image/debian-12](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/debian-12) | June 2026 | June 2028 |
 | Debian 11 (Bullseye) | [cloud-image/debian-11](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/debian-11) | Expired | June 2026 |
 | Debian 10 (Buster) | [cloud-image/debian-10](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/debian-10) | Expired | Expired |
-| Fedora 43 | [cloud-image/fedora-43](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-43) | Undefined | Dec 2026 |
-| Fedora 42 | [cloud-image/fedora-42](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-42) | Undefined | May 2026 |
-| Fedora 41 | [cloud-image/fedora-41](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-41) | Undefined | Expired |
-| Fedora 40 | [cloud-image/fedora-40](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-40) | Undefined | Expired |
-| Fedora 39 | [cloud-image/fedora-39](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-39) | Undefined | Expired |
+| Fedora 43 | [cloud-image/fedora-43](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-43) | Dec 2026 | Dec 2026 |
+| Fedora 42 | [cloud-image/fedora-42](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-42) | May 2026 | May 2026 |
+| Fedora 41 | [cloud-image/fedora-41](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-41) | Expired | Expired |
+| Fedora 40 | [cloud-image/fedora-40](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-40) | Expired | Expired |
+| Fedora 39 | [cloud-image/fedora-39](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-39) | Expired | Expired |
 | Oracle Linux 10 | [cloud-image/oracle-linux-10](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/oracle-linux-10) | Jun 2035 | Jun 2038 |
 | Oracle Linux 9 | [cloud-image/oracle-linux-9](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/oracle-linux-9) | Jun 2032 | Jun 2035 |
 | Oracle Linux 8 | [cloud-image/oracle-linux-8](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/oracle-linux-8) | Jul 2029 | Jul 2032 |

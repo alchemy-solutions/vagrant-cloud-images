@@ -10,8 +10,8 @@ all (or, at least, the minimum possible).
 | ------------ | ----------- | --- | --- |
 {% for distro in distros %}
 {% for release in distro.releases %}
-{% set eos = release.eos|default(None) %}
-{% set eol = release.eol|default(None) %}
+{% set eos = release.eos|default(release.eol|default(None)) %}
+{% set eol = release.eol|default(eos) %}
 {% set is_eos = eos|is_expired %}
 {% set is_eol = eol|is_expired %}
 {% set cloud_image = 'cloud-image/'+distro.code+'-'+release.code|default(release.version) %}
