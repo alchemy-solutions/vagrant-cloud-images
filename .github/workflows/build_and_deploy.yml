@@ -37,7 +37,7 @@ jobs:
         git config --global user.name 'Ettore Simone'
         git config --global user.email '1446844+signal-09@users.noreply.github.com'
         ansible-playbook ansible/readme.yaml
-        TEXT=$(git diff README.md | awk -F'|' '/^\+.*Expired \|/{ print "*" $2 }')
+        TEXT=$(git diff README.md | awk -F'|' '/^\+.*:red_circle:/{ print "*" $2 }')
         if [[ -n "$TEXT" ]]; then
             git add README.md
             git commit -m "Expired distro"$'\n'$'\n'"${TEXT}"

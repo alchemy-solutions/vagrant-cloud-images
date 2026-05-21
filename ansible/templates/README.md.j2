@@ -12,11 +12,9 @@ all (or, at least, the minimum possible).
 {% for release in distro.releases %}
 {% set eos = release.eos|default(release.eol|default(None)) %}
 {% set eol = release.eol|default(eos) %}
-{% set is_eos = eos|is_expired %}
-{% set is_eol = eol|is_expired %}
 {% set cloud_image = 'cloud-image/'+distro.code+'-'+release.code|default(release.version) %}
 {% set cloud_image_url = 'https://portal.cloud.hashicorp.com/vagrant/discover/'+cloud_image %}
-| {{ release.description }} | [{{ cloud_image }}]({{ cloud_image_url }}) | {% if is_eos %}Expired{% else %}{{ (eos == None)|ternary('Undefined', eos) }}{% endif %} | {% if is_eol %}Expired{% else %}{{ (eol == None)|ternary('Undefined', eol) }}{% endif %} |
+| {{ release.description }} | [{{ cloud_image }}]({{ cloud_image_url }}) | {% if distro.rolling|default(False) %}:green_circle: | :green_circle:{% else %}{% if eos|is_expired %}:red_circle: `{{ eos }}`{% else %}{% if eos == None %}-{% else %}:green_circle: `{{ eos }}`{% endif %}{% endif %} | {% if eol|is_expired %}:red_circle: `{{ eol }}`{% else %}{% if eol == None %}-{% else %}:green_circle: `{{ eol }}`{% endif %}{% endif %}{% endif %} |
 {% endfor %}
 {% endfor %}
 

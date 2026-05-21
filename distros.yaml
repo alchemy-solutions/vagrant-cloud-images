@@ -155,6 +155,7 @@ distros:
   cloud_image_version_filter: !unsafe 'Arch-Linux-{{ arch.type }}-cloudimg-(?P<version>\\d+\\.\\d+)\\.{{ distro.disk_format }}$'
   cloud_image_version_pattern: !unsafe "{{ cloud_image_version }}"
   disk_format: qcow2
+  rolling: True
   releases:
   - name: "Linux"
     code: "linux"
@@ -258,8 +259,8 @@ distros:
   - name: trixie
     version: "13"
     description: Debian 13 (Trixie)
-    eos: August 2028
-    eol: August 2030
+    eos: Aug 2028
+    eol: Aug 2030
     arch:
     - name: amd64
       type: amd64
@@ -268,8 +269,8 @@ distros:
   - name: bookworm
     version: "12"
     description: Debian 12 (Bookworm)
-    eos: June 2026
-    eol: June 2028
+    eos: Jun 2026
+    eol: Jun 2028
     arch:
     - name: amd64
       type: amd64
@@ -278,8 +279,8 @@ distros:
   - name: bullseye
     version: "11"
     description: Debian 11 (Bullseye)
-    eos: August 2024
-    eol: June 2026
+    eos: Aug 2024
+    eol: Jun 2026
     arch:
     - name: amd64
       type: amd64
@@ -288,8 +289,8 @@ distros:
   - name: buster
     version: "10"
     description: Debian 10 (Buster)
-    eos: August 2022
-    eol: June 2024
+    eos: Aug 2022
+    eol: Jun 2024
     arch:
     - name: amd64
       type: amd64
@@ -355,7 +356,7 @@ distros:
     code: "39"
     version: "39"
     description: Fedora 39
-    eol: November 2024
+    eol: Nov 2024
     cloud_image_file_name: !unsafe "Fedora-Cloud-Base-{{ release.name }}-{{ cloud_image_version }}.{{ arch.type }}.{{ distro.disk_format }}"
     cloud_image_version_filter: !unsafe 'Fedora-Cloud-Base-{{ release.name }}-(?P<version>\\d+\\.\\d+)\\.{{ arch.type }}\\.{{ distro.disk_format }}$'
     arch:
@@ -480,8 +481,8 @@ distros:
   - name: resolute
     version: "26.04"
     description: Ubuntu 26.04 LTS (Resolute Racoon)
-    eos: June 2031
-    eol: April 2038
+    eos: Jun 2031
+    eol: Apr 2038
     arch:
     - name: amd64
       type: amd64
@@ -490,8 +491,8 @@ distros:
   - name: noble
     version: "24.04"
     description: Ubuntu 24.04 LTS (Noble Numbat)
-    eos: June 2029
-    eol: April 2036
+    eos: Jun 2029
+    eol: Apr 2036
     arch:
     - name: amd64
       type: amd64
@@ -500,8 +501,8 @@ distros:
   - name: jammy
     version: "22.04"
     description: Ubuntu 22.04 LTS (Jammy Jellyfish)
-    eos: June 2027
-    eol: April 2034
+    eos: Jun 2027
+    eol: Apr 2034
     arch:
     - name: amd64
       type: amd64
@@ -510,8 +511,8 @@ distros:
   - name: focal
     version: "20.04"
     description: Ubuntu 20.04 LTS (Focal Fossa)
-    eos: April 2025
-    eol: April 2032
+    eos: Apr 2025
+    eol: Apr 2032
     arch:
     - name: amd64
       type: amd64
@@ -520,8 +521,8 @@ distros:
   - name: bionic
     version: "18.04"
     description: Ubuntu 18.04 LTS (Bionic Beaver)
-    eos: June 2023
-    eol: April 2030
+    eos: Jun 2023
+    eol: Apr 2030
     arch:
     - name: amd64
       type: amd64
@@ -530,8 +531,8 @@ distros:
   - name: xenial
     version: "16.04"
     description: Ubuntu 16.04 LTS (Xenial Xerus)
-    eos: April 2021
-    eol: April 2028
+    eos: Apr 2021
+    eol: Apr 2028
     cloud_image_file_name: !unsafe "{{ release.name }}-server-cloudimg-{{ arch.type }}-disk1.img"
     arch:
     - name: amd64
@@ -541,8 +542,8 @@ distros:
   - name: trusty
     version: "14.04"
     description: Ubuntu 14.04 LTS (Trusty Tahr)
-    eos: April 2019
-    eol: April 2026
+    eos: Apr 2019
+    eol: Apr 2026
     cloud_image_file_name: !unsafe "{{ release.name }}-server-cloudimg-{{ arch.type }}-disk1.img"
     arch:
     - name: amd64
