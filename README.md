@@ -29,7 +29,7 @@ all (or, at least, the minimum possible).
 | Debian 11 (Bullseye) | [cloud-image/debian-11](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/debian-11) | :red_circle: `Aug 2024` | :green_circle: `Jun 2026` |
 | Debian 10 (Buster) | [cloud-image/debian-10](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/debian-10) | :red_circle: `Aug 2022` | :red_circle: `Jun 2024` |
 | Fedora 43 | [cloud-image/fedora-43](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-43) | :green_circle: `Dec 2026` | :green_circle: `Dec 2026` |
-| Fedora 42 | [cloud-image/fedora-42](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-42) | :green_circle: `May 2026` | :green_circle: `May 2026` |
+| Fedora 42 | [cloud-image/fedora-42](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-42) | :red_circle: `May 2026` | :red_circle: `May 2026` |
 | Fedora 41 | [cloud-image/fedora-41](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-41) | :red_circle: `Nov 2025` | :red_circle: `Nov 2025` |
 | Fedora 40 | [cloud-image/fedora-40](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-40) | :red_circle: `May 2025` | :red_circle: `May 2025` |
 | Fedora 39 | [cloud-image/fedora-39](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-39) | :red_circle: `Nov 2024` | :red_circle: `Nov 2024` |
