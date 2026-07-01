@@ -17,7 +17,7 @@ all (or, at least, the minimum possible).
 | Alpine Linux v3.20 | [cloud-image/alpine-3.20](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.20) | :red_circle: `Apr 2026` | :red_circle: `Apr 2026` |
 | Alpine Linux v3.19 | [cloud-image/alpine-3.19](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.19) | :red_circle: `Nov 2025` | :red_circle: `Nov 2025` |
 | Amazon Linux 2023 | [cloud-image/amazon-linux-2023](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/amazon-linux-2023) | :green_circle: `Sep 2029` | :green_circle: `Sep 2029` |
-| Amazon Linux 2 | [cloud-image/amazon-linux-2](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/amazon-linux-2) | :green_circle: `Jun 2026` | :green_circle: `Jun 2026` |
+| Amazon Linux 2 | [cloud-image/amazon-linux-2](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/amazon-linux-2) | :red_circle: `Jun 2026` | :red_circle: `Jun 2026` |
 | Arch Linux | [cloud-image/arch-linux](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/arch-linux) | :green_circle: | :green_circle: |
 | CentOS Stream 10 | [cloud-image/centos-10-stream](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-10-stream) | :green_circle: `Jan 2030` | :green_circle: `Jan 2030` |
 | CentOS Stream 9 | [cloud-image/centos-9-stream](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-9-stream) | :green_circle: `May 2027` | :green_circle: `May 2027` |
@@ -25,8 +25,8 @@ all (or, at least, the minimum possible).
 | CentOS 8 | [cloud-image/centos-8](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-8) | :red_circle: `Dec 2021` | :red_circle: `Dec 2021` |
 | CentOS 7 | [cloud-image/centos-7](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/centos-7) | :red_circle: `Jun 2024` | :red_circle: `Jun 2024` |
 | Debian 13 (Trixie) | [cloud-image/debian-13](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/debian-13) | :green_circle: `Aug 2028` | :green_circle: `Aug 2030` |
-| Debian 12 (Bookworm) | [cloud-image/debian-12](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/debian-12) | :green_circle: `Jun 2026` | :green_circle: `Jun 2028` |
-| Debian 11 (Bullseye) | [cloud-image/debian-11](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/debian-11) | :red_circle: `Aug 2024` | :green_circle: `Jun 2026` |
+| Debian 12 (Bookworm) | [cloud-image/debian-12](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/debian-12) | :red_circle: `Jun 2026` | :green_circle: `Jun 2028` |
+| Debian 11 (Bullseye) | [cloud-image/debian-11](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/debian-11) | :red_circle: `Aug 2024` | :red_circle: `Jun 2026` |
 | Debian 10 (Buster) | [cloud-image/debian-10](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/debian-10) | :red_circle: `Aug 2022` | :red_circle: `Jun 2024` |
 | Fedora 43 | [cloud-image/fedora-43](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-43) | :green_circle: `Dec 2026` | :green_circle: `Dec 2026` |
 | Fedora 42 | [cloud-image/fedora-42](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-42) | :red_circle: `May 2026` | :red_circle: `May 2026` |
