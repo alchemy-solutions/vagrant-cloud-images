@@ -11,6 +11,7 @@ all (or, at least, the minimum possible).
 | AlmaLinux 10 | [cloud-image/almalinux-10](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/almalinux-10) | :green_circle: `May 2030` | :green_circle: `May 2035` |
 | AlmaLinux 9 | [cloud-image/almalinux-9](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/almalinux-9) | :green_circle: `May 2027` | :green_circle: `May 2032` |
 | AlmaLinux 8 | [cloud-image/almalinux-8](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/almalinux-8) | :red_circle: `May 2024` | :green_circle: `Mar 2029` |
+| Alpine Linux v3.24 | [cloud-image/alpine-3.24](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.24) | :green_circle: `Jun 2028` | :green_circle: `Jun 2028` |
 | Alpine Linux v3.23 | [cloud-image/alpine-3.23](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.23) | :green_circle: `Nov 2027` | :green_circle: `Nov 2027` |
 | Alpine Linux v3.22 | [cloud-image/alpine-3.22](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.22) | :green_circle: `May 2027` | :green_circle: `May 2027` |
 | Alpine Linux v3.21 | [cloud-image/alpine-3.21](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/alpine-3.21) | :green_circle: `Nov 2026` | :green_circle: `Nov 2026` |

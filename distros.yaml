@@ -50,14 +50,23 @@ distros:
 - name: Alpine Linux
   code: alpine
   cloud_image_base_url: !unsafe "https://dl-cdn.alpinelinux.org/alpine/{{ release.name }}/releases/cloud"
-  cloud_image_file_name: !unsafe "nocloud_alpine-{{ cloud_image_version }}-{{ arch.type }}-uefi-cloudinit-{{ cloud_image_build }}.{{ distro.disk_format }}"
+  cloud_image_file_name: !unsafe "generic_alpine-{{ cloud_image_version }}-{{ arch.type }}-uefi-cloudinit-{{ cloud_image_build }}.{{ distro.disk_format }}"
   cloud_image_url: !unsafe "{{ cloud_image_base_url }}/{{ cloud_image_file_name }}"
   cloud_image_checksum_type: sha512
   cloud_image_checksum_url: !unsafe "{{ cloud_image_url }}.{{ cloud_image_checksum_type }}"
-  cloud_image_version_filter: !unsafe 'nocloud_alpine-(?P<version>\\d+\\.\\d+\\.\\d+)-{{ arch.type }}-uefi-cloudinit-(?P<build>r\\d+)\\.{{ distro.disk_format }}$'
+  cloud_image_version_filter: !unsafe 'generic_alpine-(?P<version>\\d+\\.\\d+\\.\\d+)-{{ arch.type }}-uefi-cloudinit-(?P<build>r\\d+)\\.{{ distro.disk_format }}$'
   cloud_image_version_pattern: !unsafe "{{ cloud_image_version }}-{{ cloud_image_build }}"
   disk_format: qcow2
   releases:
+  - name: "v3.24"
+    version: "3.24"
+    description: Alpine Linux v3.24
+    eos: Jun 2028
+    arch:
+    - name: amd64
+      type: x86_64
+    - name: arm64
+      type: aarch64
   - name: "v3.23"
     version: "3.23"
     description: Alpine Linux v3.23
