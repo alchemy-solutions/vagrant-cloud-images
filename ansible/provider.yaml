@@ -19,6 +19,8 @@
 - name: Get latest version
   set_fact:
     cloud_last_version: "{{ cloud_image_base_url|get_latest_version(cloud_image_version_filter) }}"
+  retries: 3
+  delay: 5
 
 - name: Get version values
   set_fact:
