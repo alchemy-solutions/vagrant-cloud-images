@@ -1,2 +1,3 @@
 ---
 docker_path: "{{ playbook_dir }}/../docker"
+guestfish_mount: "{{ release.cloud_init_partition|default(distro.cloud_init_partition|default(None)) }}"

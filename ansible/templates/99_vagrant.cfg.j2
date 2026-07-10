@@ -8,7 +8,7 @@ users:
   - default
   # Create Vagrant user with disabled password
   - name: vagrant
-    plain_text_passwd: vagrant
+    password: {{ 'vagrant'|password_hash }}
     doas: ["permit nopass vagrant"]
     sudo: ["ALL=(ALL) NOPASSWD:ALL"]
     shell: /bin/sh

@@ -34,6 +34,8 @@ all (or, at least, the minimum possible).
 | Fedora 41 | [cloud-image/fedora-41](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-41) | :red_circle: `Nov 2025` | :red_circle: `Nov 2025` |
 | Fedora 40 | [cloud-image/fedora-40](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-40) | :red_circle: `May 2025` | :red_circle: `May 2025` |
 | Fedora 39 | [cloud-image/fedora-39](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/fedora-39) | :red_circle: `Nov 2024` | :red_circle: `Nov 2024` |
+| Flatcar Container Linux (Stable) | [cloud-image/flatcar-stable](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/flatcar-stable) | :green_circle: | :green_circle: |
+| Flatcar Container Linux (LTS) | [cloud-image/flatcar-lts](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/flatcar-lts) | :green_circle: | :green_circle: |
 | Oracle Linux 10 | [cloud-image/oracle-linux-10](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/oracle-linux-10) | :green_circle: `Jun 2035` | :green_circle: `Jun 2038` |
 | Oracle Linux 9 | [cloud-image/oracle-linux-9](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/oracle-linux-9) | :green_circle: `Jun 2032` | :green_circle: `Jun 2035` |
 | Oracle Linux 8 | [cloud-image/oracle-linux-8](https://portal.cloud.hashicorp.com/vagrant/discover/cloud-image/oracle-linux-8) | :green_circle: `Jul 2029` | :green_circle: `Jul 2032` |
@@ -59,20 +61,21 @@ datasource_list: [ NoCloud, None ]
 ssh_pwauth: False
 ssh_authorized_keys:
   # https://github.com/hashicorp/vagrant/tree/master/keys
-  - 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key'
+  - '{{ vagrant_ssh_key_pub }}'
 users:
   # Preserve default distro user
   - default
   # Create Vagrant user with disabled password
   - name: vagrant
-    plain_text_passwd: vagrant
+    password: {{ 'vagrant'|password_hash }}
     doas: ["permit nopass vagrant"]
     sudo: ["ALL=(ALL) NOPASSWD:ALL"]
     shell: /bin/sh
     lock_passwd: true
     ssh_authorized_keys:
       # https://github.com/hashicorp/vagrant/tree/master/keys
-      - 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key'
+      - '{{ vagrant_ssh_key_pub }}'
+
 ```
 
 Packer is not used at all. The disk image are downloaded, mounted, injected, then packed in a [Box Vagrant Format](https://developer.hashicorp.com/vagrant/docs/boxes/format) tarball. That ensure the creation of Vagrant user during the first boot by the `cloud-init` service included in every GNU/Linux cloud images.

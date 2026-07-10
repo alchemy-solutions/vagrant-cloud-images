@@ -6,7 +6,7 @@
     mode: '0755'
 
 - include_tasks: provider.yaml
-  when: "filter_provider is not defined or provider==filter_provider"
+  when: filter_provider is not defined or provider == filter_provider
   loop: "{{ providers }}"
   loop_control:
     loop_var: provider

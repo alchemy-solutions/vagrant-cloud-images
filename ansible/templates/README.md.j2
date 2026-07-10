@@ -24,7 +24,7 @@ This method consists to inject a `cloud-init` configuration file under
 `/etc/cloud/cloud.cfg.d/99_vagrant.cfg` with the following content:
 
 ```yaml
-{% include '99_vagrant.cfg.j2' %}
+{{ lookup('ansible.builtin.file', 'templates/99_vagrant.cfg.j2') }}
 
 ```
 

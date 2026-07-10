@@ -374,6 +374,40 @@ distros:
     - name: arm64
       type: aarch64
 
+# https://stable.release.flatcar-linux.net/amd64-usr/
+# https://lts.release.flatcar-linux.net/amd64-usr/
+- name: Flatcar Container Linux
+  code: flatcar
+  cloud_image_base_url: !unsafe "https://{{ release.code }}.release.flatcar-linux.net/{{ arch.type }}-usr/"
+  cloud_image_file_name: !unsafe "flatcar_production_openstack_image.img"
+  cloud_image_url: !unsafe "{{ cloud_image_base_url }}{{ cloud_image_version }}/{{ cloud_image_file_name }}"
+  cloud_image_checksum_type: sha512
+  #cloud_image_checksum_url: !unsafe "{{ cloud_image_url }}.DIGESTS"
+  cloud_image_version_filter: !unsafe '/(?P<version>\\d+\\.\\d+\\.\\d+)/'
+  cloud_image_version_pattern: !unsafe "{{ cloud_image_version }}"
+  cloud_init_tool: ignite
+  cloud_init_partition: /dev/sda6
+  disk_format: qcow2
+  rolling: True
+  releases:
+  - name: "Stable"
+    code: "stable"
+    description: Flatcar Container Linux (Stable)
+    arch:
+    - name: amd64
+      type: amd64
+    - name: arm64
+      type: arm64
+  - name: "LTS"
+    code: "lts"
+    description: Flatcar Container Linux (LTS)
+    arch:
+    - name: amd64
+      type: amd64
+    - name: arm64
+      type: arm64
+
+
 # https://yum.oracle.com/oracle-linux-templates.html
 # https://www.oracle.com/a/ocom/docs/elsp-lifetime-069338.pdf
 - name: Oracle Linux

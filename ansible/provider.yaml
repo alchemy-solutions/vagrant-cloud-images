@@ -10,11 +10,18 @@
       cloud_image_checksum_url: "{{ release.cloud_image_checksum_url|default(distro.cloud_image_checksum_url|default(None)) }}"
       cloud_image_version_filter: "{{ (release.cloud_image_version_filter|default(distro.cloud_image_version_filter)) }}"
       cloud_image_version_pattern: "{{ (release.cloud_image_version_pattern|default(distro.cloud_image_version_pattern)) }}"
+      cloud_init_tool: "{{ distro.cloud_init_tool|default('cloud-init') }}"
     dest: "{{ build_path }}/distro.yaml"
   changed_when: false
 
 - name: Load templated vars
   include_vars: "{{ build_path }}/distro.yaml"
+
+- debug:
+    msg: |
+      cloud_image_base_url: {{ cloud_image_base_url }}
+      cloud_image_version_filter: {{ cloud_image_version_filter }}
+  when: verbose|bool
 
 - name: Get latest version
   set_fact:

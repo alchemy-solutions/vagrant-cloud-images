@@ -1,0 +1,17 @@
+{
+  "ignition": { "version": "3.0.0" },
+  "passwd": {
+    "users": [
+      {
+        "name": "vagrant",
+        "passwordHash": "{{ 'vagrant'|password_hash }}",
+        "groups": [
+          "sudo"
+        ],
+        "sshAuthorizedKeys": [
+          "{{ vagrant_ssh_key_pub }}"
+        ]
+      }
+    ]
+  }
+}
