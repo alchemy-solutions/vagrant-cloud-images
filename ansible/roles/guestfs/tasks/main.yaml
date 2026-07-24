@@ -1,7 +1,8 @@
 ---
 - name: Create Vagrant cloud-init configuration file
-  template:
+  ansible.builtin.template:
     src: "99_vagrant.cfg.j2"
     dest: "{{ build_path }}/99_vagrant.cfg"
 
-- include_tasks: "{{ guestfs }}.yaml"
+- name: Include guestfs tasks
+  ansible.builtin.include_tasks: "{{ guestfs }}.yaml"

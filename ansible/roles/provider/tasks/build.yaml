@@ -1,10 +1,10 @@
 ---
 - name: Refresh VAGRANT_CLOUD_TOKEN
-  include_tasks: hcp.yaml
+  ansible.builtin.include_tasks: hcp.yaml
 
 - name: Updating Vagrant Cloud box version {{ vagrant_box_version }}
   when: update|bool
-  uri:
+  ansible.builtin.uri:
     url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_box_version }}"
     method: PUT
     body_format: json
@@ -19,7 +19,7 @@
 
 - name: Create Vagrant Box Registry provider {{ provider }}
   when: create|bool
-  uri:
+  ansible.builtin.uri:
     url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_box_version }}/providers"
     method: POST
     body_format: json
@@ -34,7 +34,7 @@
 
 - name: Create Vagrant Box Registry architecture {{ arch.name }}
   when: create|bool
-  uri:
+  ansible.builtin.uri:
     url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_box_version }}/provider/{{ provider }}/architectures"
     method: POST
     body_format: json
@@ -50,7 +50,7 @@
 
 - name: Get Vagrant Box Registry download URL
   when: create|bool
-  uri:
+  ansible.builtin.uri:
     url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_box_version }}/provider/{{ provider }}/architecture/{{ arch.name }}/download"
     method: GET
     body_format: json
@@ -66,29 +66,30 @@
   - create|bool
   - not overwrite|bool
   - hcp_download_box.status == 200
-  meta: end_role
+  ansible.builtin.meta: end_role
 
 - name: Check for already built {{ vagrant_box_file }}
-  set_fact:
+  ansible.builtin.set_fact:
     vagrant_box_exists: "{{ lookup('first_found', files=[vagrant_box_path], errors='ignore') != None }}"
 
 - name: Build {{ vagrant_box_file }}
   when: not vagrant_box_exists
-  include_tasks: box.yaml
+  ansible.builtin.include_tasks: box.yaml
 
 - name: Read Vagrant Box stats
-  stat:
+  ansible.builtin.stat:
     path: "{{ vagrant_box_path }}"
     get_checksum: false
   register: vagrant_box
 
-- debug:
+- name: Debug Vagrant Box stats
+  ansible.builtin.debug:
     var: vagrant_box
   when: verbose|bool
 
 - name: Get Vagrant Cloud object store URL
   when: upload|bool
-  uri:
+  ansible.builtin.uri:
     url: "{{ vagrant_cloud_url }}/registry/{{ vagrant_cloud_user }}/box/{{ vagrant_box_name }}/version/{{ vagrant_box_version }}/provider/{{ provider }}/architecture/{{ arch.name }}/upload"
     return_content: true
     method: GET
@@ -99,7 +100,7 @@
 
 - name: Upload Vagrant Box {{ vagrant_box_file }} ({{ vagrant_box.stat.size|human_readable }})
   when: upload|bool
-  uri:
+  ansible.builtin.uri:
     url: "{{ vagrant_box_url.json.url }}"
     method: PUT
     src: "{{ vagrant_box_path }}"
@@ -135,8 +136,8 @@
       Vagrant Box file: {{ vagrant_box_file }}
       Vagrant Box version: {{ vagrant_box_version }}
 
-- name: New Vagrant Box for {{ release.description }} uploaded
-  debug:
+- name: New Vagrant Box for {{ release.description }} uploaded summary
+  ansible.builtin.debug:
     msg: |-
       Distro: {{ distro.name }}
       Release: {{ release.name }}
@@ -149,6 +150,6 @@
 
 - name: Cleanup build directory
   when: not preserve|bool
-  file:
+  ansible.builtin.file:
     path: "{{ build_path }}/{{ vagrant_box_path }}"
     state: absent
