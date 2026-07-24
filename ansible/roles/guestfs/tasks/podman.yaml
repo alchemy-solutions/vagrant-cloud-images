@@ -1,0 +1,24 @@
+---
+- name: Create Podman image for guestfs
+  containers.podman.podman_image:
+    path: "{{ docker_path }}"
+    name: "guestfs:latest"
+
+- name: Create guestfs container
+  containers.podman.podman_container:
+    name: guestfs
+    image: guestfs:latest
+    recreate: true
+    command: sleep infinity
+    volumes:
+    - "{{ build_path }}:/build:rw"
+
+- name: Inject Vagrant cloud-init configuration file
+  containers.podman.podman_container_exec:
+    container: guestfs
+    command: guestfish -a /build/{{ vagrant_disk_file }} -i upload /build/99_vagrant.cfg /etc/cloud/cloud.cfg.d/99_vagrant.cfg
+
+- name: Remove guestfs container
+  containers.podman.podman_container:
+    name: guestfs
+    state: absent
