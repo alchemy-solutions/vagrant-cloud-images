@@ -3,9 +3,9 @@
   when: not lookup('env', 'VAGRANT_CLOUD_TOKEN')
   block:
   - name: Get access token from HCP
-    command: hcp auth print-access-token
+    ansible.builtin.command: hcp auth print-access-token
     register: hcp_auth
 
   - name: Store HCP access token
-    set_fact:
+    ansible.builtin.set_fact:
       vagrant_cloud_token: "{{ hcp_auth.stdout }}"

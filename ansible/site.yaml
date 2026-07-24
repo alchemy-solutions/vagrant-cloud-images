@@ -4,18 +4,19 @@
   gather_facts: true
   tasks:
   - name: Prechecks
-    include_tasks: prechecks.yaml
+    ansible.builtin.include_tasks: prechecks.yaml
 
   - name: Load distros data
-    include_vars: "../distros.yaml"
+    ansible.builtin.include_vars: "../distros.yaml"
 
   - name: Filter distros data
-    include_tasks: filter.yaml
+    ansible.builtin.include_tasks: filter.yaml
 
   - name: Refresh VAGRANT_CLOUD_TOKEN
-    include_tasks: hcp.yaml
+    ansible.builtin.include_tasks: hcp.yaml
 
-  - include_tasks: distro.yaml
+  - name: Include distro tasks
+    ansible.builtin.include_tasks: distro.yaml
     loop: "{{ distros }}"
     loop_control:
       loop_var: distro

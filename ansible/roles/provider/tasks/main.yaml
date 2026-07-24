@@ -1,6 +1,6 @@
 ---
 - name: Show information summary
-  debug:
+  ansible.builtin.debug:
     msg: |-
       Cloud image: {{ cloud_image_file_name }}
       Cloud version: {{ cloud_image_version_pattern }}
@@ -9,4 +9,4 @@
 
 - name: Build Vagrant Box {{ vagrant_box_file }}
   when: build|bool
-  include_tasks: build.yaml
+  ansible.builtin.include_tasks: build.yaml

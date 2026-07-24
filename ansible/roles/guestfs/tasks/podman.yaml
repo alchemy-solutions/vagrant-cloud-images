@@ -15,7 +15,7 @@
 
 - name: Inject Vagrant cloud-init configuration file
   containers.podman.podman_container_exec:
-    container: guestfs
+    name: guestfs
     command: guestfish -a /build/{{ vagrant_disk_file }} -i upload /build/99_vagrant.cfg /etc/cloud/cloud.cfg.d/99_vagrant.cfg
 
 - name: Remove guestfs container
