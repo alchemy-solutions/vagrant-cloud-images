@@ -319,6 +319,16 @@ distros:
   cloud_image_version_pattern: !unsafe "{{ cloud_image_version }}"
   disk_format: qcow2
   releases:
+  - name: "44"
+    code: "44"
+    version: "44"
+    description: Fedora 44
+    eol: Jun 2027
+    arch:
+    - name: amd64
+      type: x86_64
+    - name: arm64
+      type: aarch64
   - name: "43"
     code: "43"
     version: "43"
